@@ -29,7 +29,7 @@ public class Updater {
             else startGame = true;
         }
         else {
-
+            // update enemies and add boolean for is wave or not
         }
         GlassFrame.getINSTANCE().repaint();
     }
@@ -42,5 +42,6 @@ public class Updater {
         Controller.getINSTANCE().logic.epsilonView.setCurrentHp(epsilon.getHp());
         Controller.getINSTANCE().logic.epsilonView.setCurrentXp(epsilon.getXp());
         Controller.getINSTANCE().logic.epsilonView.setCurrentVertices(epsilon.getVertices());
+        Controller.getINSTANCE().logic.epsilonView.setCurrentRadius(epsilon.getRadius());
     }
 }

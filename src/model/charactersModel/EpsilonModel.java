@@ -1,6 +1,7 @@
 package model.charactersModel;
 
 import controller.constant.Constants;
+import model.collision.Collidable;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -8,9 +9,10 @@ import java.util.ArrayList;
 
 import static controller.constant.Constants.*;
 
-public class EpsilonModel {
+public class EpsilonModel implements Collidable {
     Point2D center;
     int xp, hp;
+    double radius;
     public double xVelocity, yVelocity;
     ArrayList<Point2D> vertices;
 
@@ -20,7 +22,9 @@ public class EpsilonModel {
         hp = INITIAL_HP;
         xVelocity = 0;
         yVelocity = 0;
+        radius = EPSILON_RADIUS;
         vertices = new ArrayList<>();
+        Collidable.collidables.add(this);
     }
     public void moveWithKeys(double xFactor, double yFactor, Dimension panelSize) {
         xVelocity = xVelocity + (xFactor * 0.5);
@@ -36,15 +40,24 @@ public class EpsilonModel {
     }
     public void adjustLocation(Dimension panelSize) {
         double x = center.getX();
-        x = Math.max(x, EPSILON_RADIUS);
-        x = Math.min(x, panelSize.width);
+        x = Math.max(x, radius);
+        x = Math.min(x, panelSize.width - radius);
 
         double y = center.getY();
-        y = Math.max(y, EPSILON_RADIUS);
-        y = Math.min(y, panelSize.height);
+        y = Math.max(y, radius);
+        y = Math.min(y, panelSize.height - radius);
 
         center.setLocation(x, y);
     }
+    @Override
+    public boolean isCircular() {
+        return true;
+    }
+    @Override
+    public double getRadius() {
+        return radius;
+    }
+
     public Point2D getCenter() {
         return center;
     }

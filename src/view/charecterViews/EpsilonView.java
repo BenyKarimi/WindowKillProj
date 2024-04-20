@@ -9,9 +9,11 @@ public final class EpsilonView {
     private static EpsilonView INSTANCE;
     Point2D currentCenter;
     int currentXp, currentHp;
+    double currentRadius;
     ArrayList<Point2D> currentVertices;
     public EpsilonView() {
         currentCenter = new Point2D.Double(EPSILON_RADIUS, EPSILON_RADIUS);
+        currentRadius = EPSILON_RADIUS;
         currentVertices = new ArrayList<>();
     }
 
@@ -20,6 +22,12 @@ public final class EpsilonView {
             INSTANCE = new EpsilonView();
         }
         return INSTANCE;
+    }
+    public double getCurrentRadius() {
+        return currentRadius;
+    }
+    public void setCurrentRadius(double currentRadius) {
+        this.currentRadius = currentRadius;
     }
 
     public Point2D getCurrentCenter() {

@@ -1,6 +1,9 @@
 package controller;
 
 
+import view.charecterViews.SquareEnemyView;
+import view.charecterViews.TriangleEnemyView;
+
 public final class Controller {
     private static Controller INSTANCE;
     Updater updater;
@@ -10,7 +13,12 @@ public final class Controller {
         updater = new Updater();
         updater.epsilon = logic.epsilon;
     }
-
+    public void createTriangleEnemyView(String id) {
+        new TriangleEnemyView(id);
+    }
+    public void createSquareEnemyView(String id) {
+        new SquareEnemyView(id);
+    }
     public static Controller getINSTANCE() {
         if (INSTANCE == null) INSTANCE = new Controller();
         return INSTANCE;

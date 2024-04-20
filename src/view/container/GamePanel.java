@@ -5,7 +5,6 @@ import view.charecterViews.EpsilonView;
 import javax.swing.*;
 import java.awt.*;
 
-import static controller.constant.Constants.EPSILON_RADIUS;
 import static controller.constant.Constants.GAME_PANEL_INITIAL_DIMENSION;
 
 public final class GamePanel extends JPanel {
@@ -35,7 +34,16 @@ public final class GamePanel extends JPanel {
         drawEpsilon((Graphics2D) g);
     }
     public void drawEpsilon(Graphics2D g) {
+        EpsilonView epsilonView = EpsilonView.getINSTANCE();
+//        Image epsilonImage = new ImageIcon("resources/Epsilon.jpeg").getImage();
+//        g.drawImage(epsilonImage
+//                , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
+//                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
+//                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius(), null);
+
         g.setColor(Color.GREEN);
-        g.fillOval((int)EpsilonView.getINSTANCE().getCurrentCenter().getX() - EPSILON_RADIUS, (int)EpsilonView.getINSTANCE().getCurrentCenter().getY() - EPSILON_RADIUS, EPSILON_RADIUS, EPSILON_RADIUS);
+        g.fillOval((int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
+                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
+                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius());
     }
 }
