@@ -4,6 +4,8 @@ import view.charecterViews.EpsilonView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import static controller.constant.Constants.GAME_PANEL_INITIAL_DIMENSION;
 
@@ -18,6 +20,12 @@ public final class GamePanel extends JPanel {
         this.setLocationToCenter(GlassFrame.getINSTANCE());
 
         GlassFrame.getINSTANCE().add(this);
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+        });
     }
     public void setLocationToCenter(GlassFrame glassFrame){
         setLocation(glassFrame.getWidth()/2-getWidth()/2,glassFrame.getHeight()/2-getHeight()/2);

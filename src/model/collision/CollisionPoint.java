@@ -7,4 +7,8 @@ public class CollisionPoint {
     public CollisionPoint(Point2D collisionPoint) {
         this.collisionPoint = collisionPoint;
     }
+
+    public Point2D getCollisionPoint() {
+        return collisionPoint;
+    }
 }
