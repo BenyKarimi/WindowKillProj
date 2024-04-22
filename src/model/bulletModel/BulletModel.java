@@ -22,7 +22,7 @@ public class BulletModel implements Collidable, Movable {
         this.direction = direction;
         speed = 5;
         id = UUID.randomUUID().toString();
-        radius = 2.0;
+        radius = 5.0;
         bulletModelList.add(this);
         Collidable.collidables.add(this);
         Movable.movable.add(this);

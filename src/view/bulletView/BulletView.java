@@ -11,6 +11,7 @@ public class BulletView {
 
     public BulletView(String id) {
         this.id = id;
+        this.currentCenter = new Point2D.Double(0, 0);
         bulletViewList.add(this);
     }
 

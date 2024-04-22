@@ -4,9 +4,7 @@ import controller.TypedActionHandel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 
 import static controller.constant.Constants.GLASS_FRAME_DIMENSION;
 

@@ -11,6 +11,7 @@ public class SquareEnemyView {
 
     public SquareEnemyView(String id) {
         this.id = id;
+        currentCenter = new Point2D.Double(0, 0);
         squareEnemyViewList.add(this);
     }
 

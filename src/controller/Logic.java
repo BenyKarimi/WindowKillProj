@@ -53,7 +53,6 @@ public class Logic {
     }
     public void checkGameOver() {
         if (epsilon.getHp() <= 0) {
-            GlassFrame.getINSTANCE().removeAll();
             /// has to change and go to game over panel
         }
     }

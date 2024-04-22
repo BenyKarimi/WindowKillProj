@@ -1,14 +1,20 @@
 package controller;
 
 import controller.constant.Constants;
+import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareEnemy;
 import model.charactersModel.TriangleEnemy;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
+import model.movement.Direction;
 import model.movement.ImpactMechanism;
 import model.movement.Movable;
+import view.bulletView.BulletView;
+import view.charecterViews.SquareEnemyView;
+import view.charecterViews.TriangleEnemyView;
+import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 import view.container.GlassFrame;
 
@@ -41,6 +47,10 @@ public class Updater {
         }
         else {
             // update enemies and add boolean for is wave or not
+            updateTriangleEnemyView();
+            updateSquareEnemyView();
+            updateCollectibleView();
+            updateBulletView();
         }
         GlassFrame.getINSTANCE().repaint();
     }
@@ -52,24 +62,29 @@ public class Updater {
         checkCollisionBulletAndPanel(); // should be finished
         moveAllModels();
         Controller.getINSTANCE().logic.checkGameOver();
-        isWave = Controller.getINSTANCE().logic.makeWave();
+        if (startGame) isWave = Controller.getINSTANCE().logic.makeWave();
     }
     /// model functions
-    public void updateEpsilonModel() {
+    private void updateEpsilonModel() {
         TypedActionHandel.doMove();
         epsilon.adjustLocation(new Dimension(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight()));
+        if (epsilon.getSpeed() > 0) {
+            epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / 10));
+        }
     }
-    public void updateEnemiesModel() {
+    private void updateEnemiesModel() {
         for (SquareEnemy ptr : SquareEnemy.squareEnemyList) {
             ptr.updateDirection(epsilon.getCenter());
-            ptr.updateSpeed();
+            ptr.calculateVertices();
+//            ptr.updateSpeed();
         }
         for (TriangleEnemy ptr : TriangleEnemy.triangleEnemyList) {
             ptr.updateDirection(epsilon.getCenter());
-            ptr.updateSpeed(epsilon.getCenter());
+            ptr.calculateVertices();
+//            ptr.updateSpeed(epsilon.getCenter());
         }
     }
-    public void updateCollectibleModel() {
+    private void updateCollectibleModel() {
         int ptr = 0;
         Rectangle epsilonRect = new Rectangle((int)(epsilon.getCenter().getX() - epsilon.getRadius())
                 , (int)(epsilon.getCenter().getY() - epsilon.getRadius())
@@ -90,13 +105,19 @@ public class Updater {
             }
         }
     }
-    public void updateCollisionAndImpact() {
+    private void updateCollisionAndImpact() {
         for (int i = 0; i < Collidable.collidables.size(); i++) {
             Collidable first = Collidable.collidables.get(i);
             for (int j = 0; j < Collidable.collidables.size(); j++) {
+                if (i == j) continue;
                 Collidable second = Collidable.collidables.get(j);
-                Point2D point = first.collides(second).getCollisionPoint();
+                CollisionPoint tmp = first.collides(second);
+                Point2D point = null;
+                if (tmp != null) point = tmp.getCollisionPoint();
+
                 if (point != null) {
+                    if ((first instanceof EpsilonModel && second instanceof BulletModel) || first instanceof BulletModel && second instanceof EpsilonModel) continue;
+                    double impactLevel = 0;
                     if (first instanceof EpsilonModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
                         boolean firstVer = false;
                         boolean secondVer = false;
@@ -108,7 +129,7 @@ public class Updater {
                                 if (((TriangleEnemy) second).getHp() <= 0) {
                                     Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
                                             , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
-                                    TriangleEnemy.triangleEnemyList.remove(second);
+//                                    TriangleEnemy.triangleEnemyList.remove(second);
                                 }
                             }
                             else {
@@ -116,7 +137,7 @@ public class Updater {
                                 if (((SquareEnemy) second).getHp() <= 0) {
                                     Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
                                             , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
-                                    SquareEnemy.squareEnemyList.remove(second);
+//                                    SquareEnemy.squareEnemyList.remove(second);
                                 }
                             }
                         }
@@ -126,16 +147,21 @@ public class Updater {
                             }
                             else epsilon.setHp(epsilon.getHp() - ((SquareEnemy) second).getReducerHp());
                         }
+                        impactLevel = 5;
                     }
-                    ImpactMechanism.applyImpact(point);
+                    else if (first instanceof BulletModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
+                        impactLevel = 5;
+                    }
+                    else impactLevel = 2;
+                    ImpactMechanism.applyImpact(point, impactLevel);
                 }
             }
         }
     }
-    public void checkCollisionBulletAndPanel() {
+    private void checkCollisionBulletAndPanel() {
 
     }
-    public void moveAllModels() {
+    private void moveAllModels() {
         for (Movable ptr : Movable.movable) {
             ptr.move();
         }
@@ -148,5 +174,33 @@ public class Updater {
         Controller.getINSTANCE().logic.epsilonView.setCurrentXp(epsilon.getXp());
         Controller.getINSTANCE().logic.epsilonView.setCurrentVertices(epsilon.getVertices());
         Controller.getINSTANCE().logic.epsilonView.setCurrentRadius(epsilon.getRadius());
+    }
+    private void updateTriangleEnemyView() {
+        for (TriangleEnemyView ptr : TriangleEnemyView.triangleEnemyViewList) {
+            TriangleEnemy tmp = Controller.getINSTANCE().logic.findTriangleEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateSquareEnemyView() {
+        for (SquareEnemyView ptr : SquareEnemyView.squareEnemyViewList) {
+            SquareEnemy tmp = Controller.getINSTANCE().logic.findSquareEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateCollectibleView() {
+        for (CollectibleView ptr : CollectibleView.collectibleViewList) {
+            Collectible tmp = Controller.getINSTANCE().logic.findCollectibleModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateBulletView() {
+        for (BulletView ptr : BulletView.bulletViewList) {
+            BulletModel tmp = Controller.getINSTANCE().logic.findBulletModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentRadius(tmp.getRadius());
+        }
     }
 }

@@ -26,12 +26,12 @@ public class RandomHelper {
     }
     public static double randomWaveEnemySpeed() {
         if (GameValues.level.equals(Level.EASY)) {
-            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL, ENEMY_SPEED_EASY_LEVEL + 3);
+            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL, ENEMY_SPEED_EASY_LEVEL + 1);
         }
         else if (GameValues.level.equals(Level.MEDIUM)) {
-            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 1, ENEMY_SPEED_EASY_LEVEL + 4);
+            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 1, ENEMY_SPEED_EASY_LEVEL + 2);
         }
-        else return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 2, ENEMY_SPEED_EASY_LEVEL + 5);
+        else return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 2, ENEMY_SPEED_EASY_LEVEL + 3);
     }
     public static double randomWaveEnemySize() {
         if (GameValues.level.equals(Level.EASY)) {

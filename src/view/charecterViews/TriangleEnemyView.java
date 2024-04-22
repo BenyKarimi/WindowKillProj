@@ -10,6 +10,7 @@ public class TriangleEnemyView {
     public static ArrayList<TriangleEnemyView> triangleEnemyViewList = new ArrayList<>();
     public TriangleEnemyView(String id) {
         this.id = id;
+        currentCenter = new Point2D.Double(0, 0);
         triangleEnemyViewList.add(this);
     }
 

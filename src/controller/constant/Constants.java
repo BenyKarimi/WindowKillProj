@@ -25,6 +25,6 @@ public class Constants {
     public static final int COLLECTIBLE_EXISTENCE = 4;
     public static final int COLLECTIBLE_SIZE = 4;
     public static final int IMPACT_RADIUS = 250;
-    public static final double ENEMY_SPEED_EASY_LEVEL = 2;
+    public static final double ENEMY_SPEED_EASY_LEVEL = 1;
     public static final double ENEMY_SIZE_EASY_LEVEL = 60;
 }

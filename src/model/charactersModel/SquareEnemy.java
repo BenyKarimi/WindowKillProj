@@ -16,8 +16,8 @@ import java.util.UUID;
 public class SquareEnemy implements Collidable, Movable {
     private final String id;
     double size;
-    double speed;
-    boolean isDash;
+    double speed, initialSpeed;
+    boolean isDash, isImpact;
     int hp;
     private final int reducerHp, collectibleNumber, collectibleXp;
     Point2D center;
@@ -29,6 +29,7 @@ public class SquareEnemy implements Collidable, Movable {
         this.center = center;
         this.size = size;
         this.speed = speed;
+        this.initialSpeed = speed;
         isDash = false;
         this.id = UUID.randomUUID().toString();
         this.direction = new Direction(new Point2D.Double(0, 0));
@@ -45,6 +46,7 @@ public class SquareEnemy implements Collidable, Movable {
     }
 
     public void calculateVertices() {
+        vertices.clear();
         Point2D leftUp = new Point2D.Double(center.getX() - (size / 2), center.getY() - (size / 2));
         Point2D rightUp = new Point2D.Double(center.getX() + (size / 2), center.getY() - (size / 2));
         Point2D rightDown = new Point2D.Double(center.getX() + (size / 2), center.getY() + (size / 2));
@@ -58,12 +60,25 @@ public class SquareEnemy implements Collidable, Movable {
     public void updateDirection(Point2D point) {
         Point2D delta = new Point2D.Double(point.getX() - center.getX(), point.getY() - center.getY());
         Direction toPoint = new Direction(delta);
-        direction = new Direction(Utils.addVectors(direction.getDirectionVector(), toPoint.getDirectionVector()));
+        if (isImpact && speed > 0.25) {
+            speed -= (speed / 10);
+            return;
+        }
+        if (isImpact) isImpact = false;
+        direction = new Direction(toPoint.getDirectionVector());
+        speed = Math.min(speed + (speed / 10), initialSpeed);
     }
 
     public void updateSpeed() {
         isDash = RandomHelper.squareEnemyDash();
         if (isDash) speed = RandomHelper.squareEnemySpeed(speed);
+    }
+    public void setImpact(boolean impact) {
+        isImpact = impact;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public String getId() {

@@ -26,7 +26,7 @@ public class EpsilonModel implements Collidable, Movable {
         hp = INITIAL_HP;
         xVelocity = 0;
         yVelocity = 0;
-        speed = 5;
+        speed = 2;
         direction = new Direction(new Point2D.Double(0, 0));
         radius = EPSILON_RADIUS;
         vertices = new ArrayList<>();
@@ -77,6 +77,9 @@ public class EpsilonModel implements Collidable, Movable {
     @Override
     public double getSpeed() {
         return speed;
+    }
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public int getXp() {

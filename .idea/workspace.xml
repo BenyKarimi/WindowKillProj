@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Starting making glassy frame and motion panel and Adding Epsilon and keylisteners for epsilon movement">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/Utils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/constant/GameValues.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/constant/Level.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/bulletModel/BulletModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/collectibleModel/Collectible.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/movement/Movable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/bulletView/BulletView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/collectibleView/CollectibleView.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
+      <change afterPath="$PROJECT_DIR$/src/controller/MouseClickedActionHandled.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/GameValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/GameValues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/bulletModel/BulletModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/bulletModel/BulletModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/collision/CollisionPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/collision/CollisionPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collision/Collidable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/collision/Collidable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/Direction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/Direction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/bulletView/BulletView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/bulletView/BulletView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/SquareEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/charecterViews/SquareEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/TriangleEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/charecterViews/TriangleEnemyView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/GlassFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GlassFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +55,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/benya/Desktop/BrickBreaker_Project"
+    "last_opened_file_path": "C:/Users/benya/Documents/GitHub/Workshop-Simulation",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -93,7 +94,16 @@
       <workItem from="1713512601877" duration="9087000" />
       <workItem from="1713535919677" duration="8667000" />
       <workItem from="1713546819728" duration="1269000" />
+      <workItem from="1713796881208" duration="21299000" />
     </task>
+    <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
+      <created>1713729996536</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713729996536</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,5 +119,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number" />
   </component>
 </project>

@@ -15,7 +15,8 @@ import java.util.UUID;
 public class TriangleEnemy implements Collidable, Movable {
     private final String id;
     double size;
-    double speed;
+    boolean isImpact;
+    double speed, initialSpeed;
     int hp;
     private final int reducerHp, collectibleNumber, collectibleXp;
     Point2D center;
@@ -27,6 +28,7 @@ public class TriangleEnemy implements Collidable, Movable {
         this.center = center;
         this.size = size;
         this.speed = speed;
+        this.initialSpeed = speed;
         this.id = UUID.randomUUID().toString();
         this.direction = new Direction(new Point2D.Double(0, 0));
         this.hp = Constants.TRIANGLE_ENEMY_HP;
@@ -40,7 +42,8 @@ public class TriangleEnemy implements Collidable, Movable {
         triangleEnemyList.add(this);
         Movable.movable.add(this);
     }
-    private void calculateVertices() {
+    public void calculateVertices() {
+        vertices.clear();
         Point2D upVer = new Point2D.Double(center.getX(), center.getY() - ((Math.sqrt(3) / 3.0) * size));
         Point2D leftVer = new Point2D.Double(center.getX() - (size / 2), center.getY() + ((Math.sqrt(3) / 6.0) * size));
         Point2D rightVer = new Point2D.Double(center.getX() + (size / 2), center.getY() + ((Math.sqrt(3) / 6.0) * size));
@@ -52,10 +55,17 @@ public class TriangleEnemy implements Collidable, Movable {
     public void updateDirection(Point2D point) {
         Point2D delta = new Point2D.Double(point.getX() - center.getX(), point.getY() - center.getY());
         Direction toPoint = new Direction(delta);
-        direction = new Direction(Utils.addVectors(direction.getDirectionVector(), toPoint.getDirectionVector()));
+        if (isImpact && speed > 0.25) {
+            speed -= (speed / 10);
+            return;
+        }
+        if (isImpact) isImpact = false;
+        direction = new Direction(toPoint.getDirectionVector());
+        speed = Math.min(speed + (speed / 10), initialSpeed);
     }
     public void updateSpeed(Point2D point) {
         double distance = center.distance(point);
+        if (speed > initialSpeed) speed = initialSpeed;
         if (distance >= 200.0) speed *= 2;
     }
     @Override
@@ -67,6 +77,13 @@ public class TriangleEnemy implements Collidable, Movable {
         return 0;
     }
 
+    public void setImpact(boolean impact) {
+        isImpact = impact;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
 
     @Override
     public void setCenter(Point2D center) {

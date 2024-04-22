@@ -29,6 +29,13 @@ public class Direction {
         if (state == DirectionState.negative) normalVector = new Point2D.Double(-normalVector.getX(),-normalVector.getY());
         return normalVector;
     }
+
+    public int getState() {
+        if (state.equals(DirectionState.positive)) return 1;
+        else if (state.equals(DirectionState.negative)) return -1;
+        return 0;
+    }
+
     public enum DirectionState{
         negative,positive,neutral
     }
