@@ -21,7 +21,6 @@ public final class GlassFrame extends JFrame {
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-
             }
 
             @Override

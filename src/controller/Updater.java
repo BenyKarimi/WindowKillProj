@@ -1,6 +1,7 @@
 package controller;
 
 import controller.constant.Constants;
+import controller.constant.GameValues;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareEnemy;
@@ -30,6 +31,7 @@ public class Updater {
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
+    long startTime, startWave;
     public Updater() {
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
         viewUpdater.start();
@@ -42,10 +44,24 @@ public class Updater {
 
         if (!startGame) {
             if (tmp.width > GAME_PANEL_START_DIMENSION.width && tmp.height > GAME_PANEL_START_DIMENSION.height)
-                GamePanel.getINSTANCE().setBounds(tmp.x + 2, tmp.y + 2, tmp.width - 4, tmp.height - 4);
-            else startGame = true;
+                GamePanel.getINSTANCE().setBounds(tmp.x + 3, tmp.y + 3, tmp.width - 6, tmp.height - 6);
+            else {
+                startGame = true;
+                GameValues.panelUpLeft = new Point2D.Double(tmp.x, tmp.y);
+                GameValues.panelSize = new Point2D.Double(tmp.width, tmp.height);
+                startTime = System.currentTimeMillis();
+            }
         }
         else {
+            GamePanel.getINSTANCE().setBounds((int) GameValues.panelUpLeft.getX(), (int) GameValues.panelUpLeft.getY(), (int) GameValues.panelSize.getX(), (int) (GameValues.panelSize.getY()));
+            if (System.currentTimeMillis() - startTime >= 10000 && System.currentTimeMillis() - startWave >= 3000) {
+                int f = (GameValues.panelSize.getX() > 300 ? 1 : 0);
+                int s = (GameValues.panelSize.getY() > 300 ? 1 : 0);
+                if (f == 1 || s == 1) {
+                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 0.125 * f, GameValues.panelUpLeft.getY() + 0.125 * s);
+                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 0.25 * f, GameValues.panelSize.getY() - 0.25 * s);
+                }
+            }
             // update enemies and add boolean for is wave or not
             updateTriangleEnemyView();
             updateSquareEnemyView();
@@ -59,10 +75,14 @@ public class Updater {
         updateEnemiesModel();
         updateCollectibleModel();
         updateCollisionAndImpact();
-        checkCollisionBulletAndPanel(); // should be finished
+        checkCollisionBulletAndPanel();
         moveAllModels();
         Controller.getINSTANCE().logic.checkGameOver();
-        if (startGame) isWave = Controller.getINSTANCE().logic.makeWave();
+        if (startGame) {
+            isWave = Controller.getINSTANCE().logic.makeWave();
+            if (isWave) startWave = System.currentTimeMillis();
+            isWave = false;
+        }
     }
     /// model functions
     private void updateEpsilonModel() {
@@ -76,12 +96,12 @@ public class Updater {
         for (SquareEnemy ptr : SquareEnemy.squareEnemyList) {
             ptr.updateDirection(epsilon.getCenter());
             ptr.calculateVertices();
-//            ptr.updateSpeed();
+            ptr.updateSpeed();
         }
         for (TriangleEnemy ptr : TriangleEnemy.triangleEnemyList) {
             ptr.updateDirection(epsilon.getCenter());
             ptr.calculateVertices();
-//            ptr.updateSpeed(epsilon.getCenter());
+            ptr.updateSpeed(epsilon.getCenter());
         }
     }
     private void updateCollectibleModel() {
@@ -97,10 +117,12 @@ public class Updater {
             now.setExistence(now.getExistence() - modelUpdater.getDelay());
             if (hasIntersect) {
                 epsilon.setXp(epsilon.getXp() + now.getAddedXp());
-                Collectible.collectibleList.remove(ptr);
+                Collectible.removeFromAllList(Collectible.collectibleList.get(ptr).getId());
             }
             else {
-                if (now.getExistence() <= 0) Collectible.collectibleList.remove(ptr);
+                if (now.getExistence() <= 0) {
+                    Collectible.removeFromAllList(Collectible.collectibleList.get(ptr).getId());
+                }
                 else ptr++;
             }
         }
@@ -129,7 +151,7 @@ public class Updater {
                                 if (((TriangleEnemy) second).getHp() <= 0) {
                                     Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
                                             , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
-//                                    TriangleEnemy.triangleEnemyList.remove(second);
+                                    TriangleEnemy.removeFromAllList(second.getId());
                                 }
                             }
                             else {
@@ -137,7 +159,7 @@ public class Updater {
                                 if (((SquareEnemy) second).getHp() <= 0) {
                                     Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
                                             , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
-//                                    SquareEnemy.squareEnemyList.remove(second);
+                                    SquareEnemy.removeFromAllList(second.getId());
                                 }
                             }
                         }
@@ -150,6 +172,23 @@ public class Updater {
                         impactLevel = 5;
                     }
                     else if (first instanceof BulletModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
+                        if (second instanceof TriangleEnemy) {
+                            ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - 5);
+                            if (((TriangleEnemy) second).getHp() <= 0) {
+                                Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
+                                        , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
+                                TriangleEnemy.removeFromAllList(second.getId());
+                            }
+                        }
+                        else {
+                            ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - 5);
+                            if (((SquareEnemy) second).getHp() <= 0) {
+                                Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
+                                        , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
+                                SquareEnemy.removeFromAllList(second.getId());
+                            }
+                        }
+                        BulletModel.removeFromAllList(first.getId());
                         impactLevel = 5;
                     }
                     else impactLevel = 2;
@@ -159,7 +198,33 @@ public class Updater {
         }
     }
     private void checkCollisionBulletAndPanel() {
-
+        for (int i = 0; i < BulletModel.bulletModelList.size(); i++) {
+            BulletModel ptr = BulletModel.bulletModelList.get(i);
+            if (ptr.getCenter().getX() + ptr.getRadius() > GameValues.panelSize.getX()) {
+                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 4, GameValues.panelUpLeft.getY());
+                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() + 4, GameValues.panelSize.getY());
+                BulletModel.removeFromAllList(ptr.getId());
+                i--;
+            }
+            else if (ptr.getCenter().getX() - ptr.getRadius() < 0) {
+                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() - 8, GameValues.panelUpLeft.getY());
+                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() + 4, GameValues.panelSize.getY());
+                BulletModel.removeFromAllList(ptr.getId());
+                i--;
+            }
+            else if (ptr.getCenter().getY() + ptr.getRadius() > GameValues.panelSize.getY()) {
+                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX(), GameValues.panelUpLeft.getY() + 4);
+                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX(), GameValues.panelSize.getY() + 4);
+                BulletModel.removeFromAllList(ptr.getId());
+                i--;
+            }
+            else if (ptr.getCenter().getY() - ptr.getRadius() < 0) {
+                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX(), GameValues.panelUpLeft.getY() - 8);
+                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX(), GameValues.panelSize.getY() + 4);
+                BulletModel.removeFromAllList(ptr.getId());
+                i--;
+            }
+        }
     }
     private void moveAllModels() {
         for (Movable ptr : Movable.movable) {

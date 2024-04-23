@@ -2,6 +2,7 @@ package model.collectibleModel;
 
 import controller.Controller;
 import controller.constant.Constants;
+import view.collectibleView.CollectibleView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -45,6 +46,20 @@ public class Collectible {
         return center;
     }
 
+    public static void removeFromAllList(String id) {
+        for (int i = 0; i < collectibleList.size(); i++) {
+            if (collectibleList.get(i).getId().equals(id)) {
+                collectibleList.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < CollectibleView.collectibleViewList.size(); i++) {
+            if (CollectibleView.collectibleViewList.get(i).getId().equals(id)) {
+                CollectibleView.collectibleViewList.remove(i);
+                break;
+            }
+        }
+    }
     public void setExistence(double existence) {
         this.existence = existence;
     }

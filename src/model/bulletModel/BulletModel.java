@@ -4,6 +4,8 @@ import controller.Controller;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import view.bulletView.BulletView;
+import view.charecterViews.SquareEnemyView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -60,7 +62,32 @@ public class BulletModel implements Collidable, Movable {
     public ArrayList<Point2D> getVertices() {
         return null;
     }
-
+    public static void removeFromAllList(String id) {
+        for (int i = 0; i < bulletModelList.size(); i++) {
+            if (bulletModelList.get(i).getId().equals(id)) {
+                bulletModelList.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Collidable.collidables.size(); i++) {
+            if (Collidable.collidables.get(i).getId() != null && Collidable.collidables.get(i).getId().equals(id)) {
+                Collidable.collidables.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Movable.movable.size(); i++) {
+            if (Movable.movable.get(i).getId() != null && Movable.movable.get(i).getId().equals(id)) {
+                Movable.movable.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < BulletView.bulletViewList.size(); i++) {
+            if (BulletView.bulletViewList.get(i).getId().equals(id)) {
+                BulletView.bulletViewList.remove(i);
+                break;
+            }
+        }
+    }
     public Direction getDirection() {
         return direction;
     }

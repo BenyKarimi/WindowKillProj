@@ -11,6 +11,7 @@ public interface Collidable {
     boolean isCircular();
     double getRadius();
     Point2D getCenter();
+    String getId();
     ArrayList<Point2D> getVertices();
 
     ArrayList<Collidable> collidables = new ArrayList<>();

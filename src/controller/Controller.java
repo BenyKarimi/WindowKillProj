@@ -6,11 +6,12 @@ import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 import view.collectibleView.CollectibleView;
 
-public final class Controller {
+public class Controller {
     private static Controller INSTANCE;
     public Updater updater;
     public Logic logic;
     public Controller() {
+        INSTANCE = this;
         logic = new Logic();
         updater = new Updater();
         updater.epsilon = logic.epsilon;
@@ -28,7 +29,7 @@ public final class Controller {
         new CollectibleView(id);
     }
     public static Controller getINSTANCE() {
-        if (INSTANCE == null) INSTANCE = new Controller();
+//        if (INSTANCE == null) INSTANCE = new Controller();
         return INSTANCE;
     }
 }

@@ -7,6 +7,7 @@ import controller.random.RandomHelper;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import view.charecterViews.SquareEnemyView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -70,8 +71,14 @@ public class SquareEnemy implements Collidable, Movable {
     }
 
     public void updateSpeed() {
-        isDash = RandomHelper.squareEnemyDash();
-        if (isDash) speed = RandomHelper.squareEnemySpeed(speed);
+        if (!isImpact) {
+            isDash = RandomHelper.squareEnemyDash();
+            if (isDash) speed = RandomHelper.squareEnemySpeed(speed);
+            else {
+                isDash = RandomHelper.squareEnemyDash();
+                if (!isDash) speed = initialSpeed;
+            }
+        }
     }
     public void setImpact(boolean impact) {
         isImpact = impact;
@@ -147,6 +154,32 @@ public class SquareEnemy implements Collidable, Movable {
         return vertices;
     }
 
+    public static void removeFromAllList(String id) {
+        for (int i = 0; i < squareEnemyList.size(); i++) {
+            if (squareEnemyList.get(i).getId().equals(id)) {
+                squareEnemyList.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Collidable.collidables.size(); i++) {
+            if (Collidable.collidables.get(i).getId() != null && Collidable.collidables.get(i).getId().equals(id)) {
+                Collidable.collidables.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Movable.movable.size(); i++) {
+            if (Movable.movable.get(i).getId() != null && Movable.movable.get(i).getId().equals(id)) {
+                Movable.movable.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < SquareEnemyView.squareEnemyViewList.size(); i++) {
+            if (SquareEnemyView.squareEnemyViewList.get(i).getId().equals(id)) {
+                SquareEnemyView.squareEnemyViewList.remove(i);
+                break;
+            }
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -11,6 +11,7 @@ public interface Movable {
     void setCenter(Point2D center);
     Point2D getCenter();
     double getSpeed();
+    String getId();
     Direction getDirection();
 
     default void move() {

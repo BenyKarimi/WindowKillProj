@@ -6,6 +6,8 @@ import controller.constant.Constants;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import view.charecterViews.SquareEnemyView;
+import view.charecterViews.TriangleEnemyView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -64,9 +66,11 @@ public class TriangleEnemy implements Collidable, Movable {
         speed = Math.min(speed + (speed / 10), initialSpeed);
     }
     public void updateSpeed(Point2D point) {
-        double distance = center.distance(point);
-        if (speed > initialSpeed) speed = initialSpeed;
-        if (distance >= 200.0) speed *= 2;
+        if (!isImpact) {
+            double distance = center.distance(point);
+            if (distance >= 200.0) speed *= 2;
+            else speed = initialSpeed;
+        }
     }
     @Override
     public boolean isCircular() {
@@ -140,6 +144,32 @@ public class TriangleEnemy implements Collidable, Movable {
         this.direction = direction;
     }
 
+    public static void removeFromAllList(String id) {
+        for (int i = 0; i < triangleEnemyList.size(); i++) {
+            if (triangleEnemyList.get(i).getId().equals(id)) {
+                triangleEnemyList.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Collidable.collidables.size(); i++) {
+            if (Collidable.collidables.get(i).getId() != null && Collidable.collidables.get(i).getId().equals(id)) {
+                Collidable.collidables.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Movable.movable.size(); i++) {
+            if (Movable.movable.get(i).getId() != null && Movable.movable.get(i).getId().equals(id)) {
+                Movable.movable.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < TriangleEnemyView.triangleEnemyViewList.size(); i++) {
+            if (TriangleEnemyView.triangleEnemyViewList.get(i).getId().equals(id)) {
+                TriangleEnemyView.triangleEnemyViewList.remove(i);
+                break;
+            }
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

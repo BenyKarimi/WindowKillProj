@@ -7,8 +7,14 @@ import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareEnemy;
 import model.charactersModel.TriangleEnemy;
 import model.collectibleModel.Collectible;
+import model.collision.Collidable;
+import model.movement.Movable;
 import view.bulletView.BulletView;
 import view.charecterViews.EpsilonView;
+import view.charecterViews.SquareEnemyView;
+import view.charecterViews.TriangleEnemyView;
+import view.collectibleView.CollectibleView;
+import view.container.GamePanel;
 import view.container.GlassFrame;
 
 import java.awt.geom.Point2D;
@@ -25,15 +31,16 @@ public class Logic {
     }
     public void createEpsilon() {
         epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS, EPSILON_RADIUS));
-        epsilonView = EpsilonView.getINSTANCE();
+//        epsilonView = EpsilonView.getINSTANCE();
+        epsilonView = new EpsilonView();
     }
     public void createCollectible(int collectibleNumber, int collectibleXp, Point2D enemyCenter) {
         if (collectibleNumber == 1) {
             new Collectible(enemyCenter, collectibleXp);
         }
         if (collectibleNumber == 2) {
-            new Collectible(new Point2D.Double(enemyCenter.getX() + COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
-            new Collectible(new Point2D.Double(enemyCenter.getX() - COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
+            new Collectible(new Point2D.Double(enemyCenter.getX() + 1.5 * COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
+            new Collectible(new Point2D.Double(enemyCenter.getX() - 1.5 * COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
         }
     }
     public boolean makeWave() {
@@ -53,6 +60,23 @@ public class Logic {
     }
     public void checkGameOver() {
         if (epsilon.getHp() <= 0) {
+            System.out.println("go");
+            Controller.getINSTANCE().updater.viewUpdater.stop();
+            Controller.getINSTANCE().updater.modelUpdater.stop();
+            GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
+            BulletModel.bulletModelList.clear();
+            SquareEnemy.squareEnemyList.clear();
+            TriangleEnemy.triangleEnemyList.clear();
+            Collectible.collectibleList.clear();
+            BulletView.bulletViewList.clear();
+            SquareEnemyView.squareEnemyViewList.clear();
+            TriangleEnemyView.triangleEnemyViewList.clear();
+            CollectibleView.collectibleViewList.clear();
+            Collidable.collidables.clear();
+            Movable.movable.clear();
+            GameValues.waveNumber = 0;
+            GamePanel gamePanel = new GamePanel();
+            Controller controller = new Controller();
             /// has to change and go to game over panel
         }
     }

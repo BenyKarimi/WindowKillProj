@@ -11,6 +11,7 @@ public class CollectibleView {
 
     public CollectibleView(String id) {
         this.id = id;
+        this.currentCenter = new Point2D.Double(0, 0);
         collectibleViewList.add(this);
     }
 

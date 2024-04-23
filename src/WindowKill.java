@@ -6,8 +6,8 @@ import view.container.GlassFrame;
 public class WindowKill implements Runnable{
     @Override
     public void run() {
-        GamePanel gamePanel = GamePanel.getINSTANCE();
-        Controller controller = Controller.getINSTANCE();
+        GamePanel gamePanel = new GamePanel();
+        Controller controller = new Controller();
     }
 
     public static void main(String[] args) {
