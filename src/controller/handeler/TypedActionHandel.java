@@ -73,4 +73,20 @@ public class TypedActionHandel {
             else if (left && !right) model.moveWithKeys(-1, 0, panelSize);
         }
     }
+
+    public static void setUp(boolean up) {
+        TypedActionHandel.up = up;
+    }
+
+    public static void setDown(boolean down) {
+        TypedActionHandel.down = down;
+    }
+
+    public static void setLeft(boolean left) {
+        TypedActionHandel.left = left;
+    }
+
+    public static void setRight(boolean right) {
+        TypedActionHandel.right = right;
+    }
 }

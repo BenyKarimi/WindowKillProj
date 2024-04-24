@@ -78,6 +78,7 @@ public class Updater {
         moveAllModels();
         Controller.getINSTANCE().logic.checkGameOver();
         if (startGame) {
+            if (Controller.getINSTANCE() == null) return;
             isWave = Controller.getINSTANCE().logic.makeWave();
             if (isWave) startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
             isWave = false;

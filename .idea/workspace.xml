@@ -1,35 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Add update speed and removes and bullet &#10;All logic is finished">
-      <change afterPath="$PROJECT_DIR$/resources/AppImage.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/Background3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/Epsilon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/SquareEnemy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/TriangeEnemy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/background_sound.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/handeler/StoreActionHandel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/container/CustomButton.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/container/MainMenuPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/container/SettingPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/container/StorePanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/container/TutorialPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/soundManager/GameBackgroundSong.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding store and menu with tutorial and setting panels">
+      <change afterPath="$PROJECT_DIR$/src/view/container/FinishPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/Background.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/SquareEnemy.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/TriangeEnemy.jpeg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/WindowKill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/windowKill/WindowKill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/TypedActionHandel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/TypedActionHandel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/constant/KeyActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/KeyActions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/container/GlassFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GlassFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/TypedActionHandel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/TypedActionHandel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +92,7 @@
       <workItem from="1713939140523" duration="1745000" />
       <workItem from="1713952313585" duration="549000" />
       <workItem from="1713952870136" duration="4506000" />
-      <workItem from="1713958716918" duration="20052000" />
+      <workItem from="1713958716918" duration="23026000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -137,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1713892580714</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Adding store and menu with tutorial and setting panels">
+      <created>1713983549216</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713983549216</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,7 +144,8 @@
     <MESSAGE value="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number" />
     <MESSAGE value="Finishing View update&#10;Edit impact and collision  &#10;Adding aim and bullet" />
     <MESSAGE value="Add update speed and removes and bullet &#10;All logic is finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add update speed and removes and bullet &#10;All logic is finished" />
+    <MESSAGE value="Adding store and menu with tutorial and setting panels" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding store and menu with tutorial and setting panels" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

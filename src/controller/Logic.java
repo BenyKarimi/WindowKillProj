@@ -2,6 +2,8 @@ package controller;
 
 import controller.constant.Constants;
 import controller.constant.GameValues;
+import controller.handeler.StoreActionHandel;
+import controller.handeler.TypedActionHandel;
 import controller.random.RandomHelper;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
@@ -15,6 +17,7 @@ import view.charecterViews.EpsilonView;
 import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 import view.collectibleView.CollectibleView;
+import view.container.FinishPanel;
 import view.container.GamePanel;
 import view.container.GlassFrame;
 
@@ -61,28 +64,34 @@ public class Logic {
     }
     public void checkGameOver() {
         if (epsilon.getHp() <= 0) {
-            System.out.println("go");
-            Controller.getINSTANCE().updater.viewUpdater.stop();
-            Controller.getINSTANCE().updater.modelUpdater.stop();
-            GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
-            GamePanel.setINSTANCE(null);
-            Controller.setINSTANCE(null);
-            BulletModel.bulletModelList.clear();
-            SquareEnemy.squareEnemyList.clear();
-            TriangleEnemy.triangleEnemyList.clear();
-            Collectible.collectibleList.clear();
-            BulletView.bulletViewList.clear();
-            SquareEnemyView.squareEnemyViewList.clear();
-            TriangleEnemyView.triangleEnemyViewList.clear();
-            CollectibleView.collectibleViewList.clear();
-            Collidable.collidables.clear();
-            Movable.movable.clear();
-            GameValues.waveNumber = 0;
-            Constants.INITIAL_XP = epsilon.getXp();
-            GamePanel gamePanel = new GamePanel();
-            Controller controller = new Controller();
-            /// has to change and go to game over panel
+            int finishXP = epsilon.getXp();
+            deleteAllInfo();
+            new FinishPanel(finishXP);
         }
+    }
+    private void deleteAllInfo() {
+        Controller.getINSTANCE().updater.modelUpdater.stop();
+        Controller.getINSTANCE().updater.viewUpdater.stop();
+        Constants.INITIAL_XP = epsilon.getXp();
+        GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
+        GamePanel.setINSTANCE(null);
+        Controller.setINSTANCE(null);
+        BulletModel.bulletModelList.clear();
+        SquareEnemy.squareEnemyList.clear();
+        TriangleEnemy.triangleEnemyList.clear();
+        Collectible.collectibleList.clear();
+        BulletView.bulletViewList.clear();
+        SquareEnemyView.squareEnemyViewList.clear();
+        TriangleEnemyView.triangleEnemyViewList.clear();
+        CollectibleView.collectibleViewList.clear();
+        Collidable.collidables.clear();
+        Movable.movable.clear();
+        GameValues.waveNumber = 0;
+        TypedActionHandel.setDown(false);
+        TypedActionHandel.setLeft(false);
+        TypedActionHandel.setUp(false);
+        TypedActionHandel.setRight(false);
+        StoreActionHandel.setThreeBullet(false);
     }
     public TriangleEnemy findTriangleEnemyModel(String id) {
         for (TriangleEnemy ptr : TriangleEnemy.triangleEnemyList) {
