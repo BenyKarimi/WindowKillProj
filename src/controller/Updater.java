@@ -27,6 +27,8 @@ import static controller.constant.Constants.*;
 public class Updater {
     boolean startGame = false;
     boolean isWave = false;
+    boolean wonGame = false;
+    boolean epsilonGoesBigger = false;
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
@@ -56,7 +58,14 @@ public class Updater {
             if (GamePanel.getINSTANCE().getTimer().getSeconds() - startTime >= 10 && GamePanel.getINSTANCE().getTimer().getSeconds() - startWave >= 3) {
                 int f = (GameValues.panelSize.getX() > 300 ? 1 : 0);
                 int s = (GameValues.panelSize.getY() > 300 ? 1 : 0);
-                if (f == 1 || s == 1) {
+                if (wonGame) {
+                    f = (GameValues.panelSize.getX() > 0 ? 1 : 0);
+                    s = (GameValues.panelSize.getY() > 0 ? 1 : 0);
+                    if (f == 0 && s == 0) Controller.getINSTANCE().logic.showFinishGame();
+                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 3 * f, GameValues.panelUpLeft.getY() + 3 * s);
+                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 6 * f, GameValues.panelSize.getY() - 6 * s);
+                }
+                else if (f == 1 || s == 1) {
                     GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 0.125 * f, GameValues.panelUpLeft.getY() + 0.125 * s);
                     GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 0.25 * f, GameValues.panelSize.getY() - 0.25 * s);
                 }
@@ -77,15 +86,26 @@ public class Updater {
         checkCollisionBulletAndPanel();
         moveAllModels();
         Controller.getINSTANCE().logic.checkGameOver();
-        if (startGame) {
+        if (startGame && !epsilonGoesBigger) {
             if (Controller.getINSTANCE() == null) return;
             isWave = Controller.getINSTANCE().logic.makeWave();
+            if (!isWave && GameValues.waveNumber == 4) {
+                epsilonGoesBigger = true;
+                return;
+            }
             if (isWave) startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
             isWave = false;
         }
     }
     /// model functions
     private void updateEpsilonModel() {
+        if (epsilonGoesBigger) {
+            epsilon.setRadius(epsilon.getRadius() + 10);
+            if (epsilon.getRadius() > Math.max(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight())) {
+                wonGame = true;
+            }
+            return;
+        }
         TypedActionHandel.doMove();
         epsilon.adjustLocation(new Dimension(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight()));
         if (epsilon.getSpeed() > 0) {

@@ -113,4 +113,8 @@ public class EpsilonModel implements Collidable, Movable {
     public ArrayList<Point2D> getVertices() {
         return vertices;
     }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
 }

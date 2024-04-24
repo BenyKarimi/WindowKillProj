@@ -51,6 +51,7 @@ public class Logic {
         if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
 
         GameValues.waveNumber++;
+        if (GameValues.waveNumber == 4) return false;
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters();
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomWaveEnemyType() == 0) {
@@ -64,10 +65,13 @@ public class Logic {
     }
     public void checkGameOver() {
         if (epsilon.getHp() <= 0) {
-            int finishXP = epsilon.getXp();
-            deleteAllInfo();
-            new FinishPanel(finishXP);
+            showFinishGame();
         }
+    }
+    public void showFinishGame() {
+        int finishXP = epsilon.getXp();
+        deleteAllInfo();
+        new FinishPanel(finishXP);
     }
     private void deleteAllInfo() {
         Controller.getINSTANCE().updater.modelUpdater.stop();
