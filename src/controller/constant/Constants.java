@@ -1,5 +1,6 @@
 package controller.constant;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -11,7 +12,8 @@ public class Constants {
     public static final int UPS = 100;
     public static final double MODEL_UPDATE_TIME=(double) 1000/UPS;
     public static final double EPSILON_RADIUS = 25;
-    public static final int INITIAL_XP = 1000;
+    public static final Dimension SIDE_PANELS_DIMENSION = new Dimension(850, 850);
+    public static int INITIAL_XP = 1000;
     public static final int INITIAL_HP = 100;
     public static final Dimension GAME_PANEL_START_DIMENSION = new Dimension(400, 400);
     public static final int TRIANGLE_ENEMY_HP = 15;
@@ -27,4 +29,7 @@ public class Constants {
     public static final int IMPACT_RADIUS = 250;
     public static final double ENEMY_SPEED_EASY_LEVEL = 1;
     public static final double ENEMY_SIZE_EASY_LEVEL = 60;
+    public static final Color SHOW_COLOR = new Color(28, 112, 49);
+    public static final Image BACKGROUND_IMAGE = new ImageIcon("resources/Background3.jpg").getImage();
+    public static double EPSILON_SPEED = 5.5;
 }

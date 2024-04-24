@@ -1,7 +1,7 @@
 package controller;
 
-import controller.constant.Constants;
 import controller.constant.GameValues;
+import controller.handeler.TypedActionHandel;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareEnemy;
@@ -9,7 +9,6 @@ import model.charactersModel.TriangleEnemy;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
-import model.movement.Direction;
 import model.movement.ImpactMechanism;
 import model.movement.Movable;
 import view.bulletView.BulletView;
@@ -31,7 +30,7 @@ public class Updater {
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
-    long startTime, startWave;
+    int startTime, startWave;
     public Updater() {
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
         viewUpdater.start();
@@ -49,12 +48,12 @@ public class Updater {
                 startGame = true;
                 GameValues.panelUpLeft = new Point2D.Double(tmp.x, tmp.y);
                 GameValues.panelSize = new Point2D.Double(tmp.width, tmp.height);
-                startTime = System.currentTimeMillis();
+                startTime = GamePanel.getINSTANCE().getTimer().getSeconds();
             }
         }
         else {
             GamePanel.getINSTANCE().setBounds((int) GameValues.panelUpLeft.getX(), (int) GameValues.panelUpLeft.getY(), (int) GameValues.panelSize.getX(), (int) (GameValues.panelSize.getY()));
-            if (System.currentTimeMillis() - startTime >= 10000 && System.currentTimeMillis() - startWave >= 3000) {
+            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startTime >= 10 && GamePanel.getINSTANCE().getTimer().getSeconds() - startWave >= 3) {
                 int f = (GameValues.panelSize.getX() > 300 ? 1 : 0);
                 int s = (GameValues.panelSize.getY() > 300 ? 1 : 0);
                 if (f == 1 || s == 1) {
@@ -80,7 +79,7 @@ public class Updater {
         Controller.getINSTANCE().logic.checkGameOver();
         if (startGame) {
             isWave = Controller.getINSTANCE().logic.makeWave();
-            if (isWave) startWave = System.currentTimeMillis();
+            if (isWave) startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
             isWave = false;
         }
     }
@@ -267,5 +266,13 @@ public class Updater {
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentRadius(tmp.getRadius());
         }
+    }
+
+    public Timer getViewUpdater() {
+        return viewUpdater;
+    }
+
+    public Timer getModelUpdater() {
+        return modelUpdater;
     }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.random.RandomHelper;
 import model.bulletModel.BulletModel;
@@ -64,6 +65,8 @@ public class Logic {
             Controller.getINSTANCE().updater.viewUpdater.stop();
             Controller.getINSTANCE().updater.modelUpdater.stop();
             GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
+            GamePanel.setINSTANCE(null);
+            Controller.setINSTANCE(null);
             BulletModel.bulletModelList.clear();
             SquareEnemy.squareEnemyList.clear();
             TriangleEnemy.triangleEnemyList.clear();
@@ -75,6 +78,7 @@ public class Logic {
             Collidable.collidables.clear();
             Movable.movable.clear();
             GameValues.waveNumber = 0;
+            Constants.INITIAL_XP = epsilon.getXp();
             GamePanel gamePanel = new GamePanel();
             Controller controller = new Controller();
             /// has to change and go to game over panel

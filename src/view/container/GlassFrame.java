@@ -1,6 +1,6 @@
 package view.container;
 
-import controller.TypedActionHandel;
+import controller.handeler.TypedActionHandel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,16 @@ public final class GlassFrame extends JFrame {
         this.setSize(GLASS_FRAME_DIMENSION);
         this.setLocationRelativeTo(null);
         this.setLayout(null);
+        this.setTitle("windowKill.WindowKill");
 
+        ImageIcon image = new ImageIcon("resources/AppImage.jpg");
+        this.setIconImage(image.getImage());
+
+        addKeyListener();
+
+        this.setVisible(true);
+    }
+    public void addKeyListener() {
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -25,16 +34,16 @@ public final class GlassFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                if (GamePanel.getINSTANCE() == null) return;
                 TypedActionHandel.handlePressedKey(e.getKeyCode());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
+                if (GamePanel.getINSTANCE() == null) return;
                 TypedActionHandel.handleReleasedKey(e.getKeyCode());
             }
         });
-
-        this.setVisible(true);
     }
 
     public static GlassFrame getINSTANCE() {

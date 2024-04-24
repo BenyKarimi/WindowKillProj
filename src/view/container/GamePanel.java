@@ -1,6 +1,7 @@
 package view.container;
 
-import controller.MouseClickedActionHandled;
+import controller.constant.Constants;
+import controller.handeler.MouseClickedActionHandled;
 import controller.constant.GameValues;
 import view.bulletView.BulletView;
 import view.charecterViews.EpsilonView;
@@ -61,6 +62,9 @@ public class GamePanel extends JPanel {
     public void setLocationToCenter(GlassFrame glassFrame){
         setLocation(glassFrame.getWidth()/2-getWidth()/2,glassFrame.getHeight()/2-getHeight()/2);
     }
+    public static void setINSTANCE(GamePanel INSTANCE) {
+        GamePanel.INSTANCE = INSTANCE;
+    }
     public static GamePanel getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new GamePanel();
         return INSTANCE;
@@ -82,25 +86,25 @@ public class GamePanel extends JPanel {
     }
     private void drawEpsilon(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();
-//        Image epsilonImage = new ImageIcon("resources/Epsilon.jpeg").getImage();
-//        g.drawImage(epsilonImage
-//                , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
-//                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
-//                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius(), null);
-
-        g.setColor(Color.GREEN);
-        g.fillOval((int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
+        Image epsilonImage = new ImageIcon("resources/Epsilon.png").getImage();
+        g.drawImage(epsilonImage
+                , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
                 , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
-                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius());
+                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius(), null);
+
+//        g.setColor(Color.GREEN);
+//        g.fillOval((int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
+//                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
+//                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius());
     }
     private void drawAim(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();
         Point2D center = aimAndBulletDrawerCalculator(mousePoint, epsilonView.getCurrentCenter(), epsilonView.getCurrentRadius());
-        g.setColor(new Color(79, 28, 155));
+        g.setColor(new Color(15, 58, 192));
         g.fillOval((int)(center.getX() - 5), (int)(center.getY() - 4), 10, 10);
     }
     private void drawTriangleEnemy(Graphics2D g) {
-        Image TriangleEnemyImage = new ImageIcon("resources/TriangeEnemy.jpeg").getImage();
+        Image TriangleEnemyImage = new ImageIcon("resources/TriangeEnemy.png").getImage();
         for (TriangleEnemyView ptr : TriangleEnemyView.triangleEnemyViewList) {
             g.drawImage(TriangleEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2))
             , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2))
@@ -108,7 +112,7 @@ public class GamePanel extends JPanel {
         }
     }
     private void drawSquareEnemy(Graphics2D g) {
-        Image SquareEnemyImage = new ImageIcon("resources/SquareEnemy.jpeg").getImage();
+        Image SquareEnemyImage = new ImageIcon("resources/SquareEnemy.png").getImage();
         for (SquareEnemyView ptr : SquareEnemyView.squareEnemyViewList) {
             g.drawImage(SquareEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2))
                     , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2))
@@ -134,11 +138,11 @@ public class GamePanel extends JPanel {
     private void drawInformation(Graphics2D g) {
         int width = this.getWidth() / 4;
         int height = this.getHeight() / 15;
-        g.setColor(new Color(28, 112, 49));
+        g.setColor(Constants.SHOW_COLOR);
         g.setFont(new Font("akashi", Font.BOLD, 15));
-        g.drawString("XP: " + EpsilonView.getINSTANCE().getCurrentXp(), 0, height);
-        g.drawString("HP: " + EpsilonView.getINSTANCE().getCurrentHp(), width, height);
-        g.drawString(timer.toString(), 2 * width, height);
-        g.drawString("Wave: " + GameValues.waveNumber, 3 * width, height);
+        g.drawString("XP: " + EpsilonView.getINSTANCE().getCurrentXp(), 20, height);
+        g.drawString("HP: " + EpsilonView.getINSTANCE().getCurrentHp(), width + 20, height);
+        g.drawString(timer.toString(), 2 * width + 20, height);
+        g.drawString("Wave: " + GameValues.waveNumber, 3 * width + 20, height);
     }
 }

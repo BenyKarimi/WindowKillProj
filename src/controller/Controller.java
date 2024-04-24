@@ -32,4 +32,7 @@ public class Controller {
 //        if (INSTANCE == null) INSTANCE = new Controller();
         return INSTANCE;
     }
+    public static void setINSTANCE(Controller INSTANCE) {
+        Controller.INSTANCE = INSTANCE;
+    }
 }

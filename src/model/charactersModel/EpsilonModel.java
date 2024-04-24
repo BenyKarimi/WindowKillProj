@@ -34,13 +34,13 @@ public class EpsilonModel implements Collidable, Movable {
         Movable.movable.add(this);
     }
     public void moveWithKeys(double xFactor, double yFactor, Dimension panelSize) {
-        xVelocity = xVelocity + (xFactor * 0.5);
-        yVelocity = yVelocity + (yFactor * 0.5);
+        xVelocity = xVelocity + (xFactor * (EPSILON_SPEED / 10));
+        yVelocity = yVelocity + (yFactor * (EPSILON_SPEED / 10));
 
-        if (xVelocity > 0) xVelocity = Math.min(xVelocity, 5);
-        else if (xVelocity < 0) xVelocity = Math.max(xVelocity, -5);
-        if (yVelocity > 0) yVelocity = Math.min(yVelocity, 5);
-        else if (yVelocity < 0) yVelocity = Math.max(yVelocity, -5);
+        if (xVelocity > 0) xVelocity = Math.min(xVelocity, EPSILON_SPEED);
+        else if (xVelocity < 0) xVelocity = Math.max(xVelocity, -EPSILON_SPEED);
+        if (yVelocity > 0) yVelocity = Math.min(yVelocity, EPSILON_SPEED);
+        else if (yVelocity < 0) yVelocity = Math.max(yVelocity, -EPSILON_SPEED);
 
         center.setLocation(center.getX() + xVelocity, center.getY() + yVelocity);
         adjustLocation(panelSize);
