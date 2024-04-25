@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finishing won game logic">
-      <change afterPath="$PROJECT_DIR$/resources/songs/BulletSound.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/GameOver.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/WinGame.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/enemyDeath.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/injured.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/songs/statrtWave.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/soundManager/SoundPlayer.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding audios to game&#10;Adding minimize logic to game">
+      <change afterPath="$PROJECT_DIR$/resources/songs/addCollectible.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/container/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/MainMenuPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +91,7 @@
       <workItem from="1713952313585" duration="549000" />
       <workItem from="1713952870136" duration="4506000" />
       <workItem from="1713958716918" duration="24756000" />
-      <workItem from="1714025920922" duration="7393000" />
+      <workItem from="1714025920922" duration="8068000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -145,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1713988594980</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Adding audios to game&#10;Adding minimize logic to game">
+      <created>1714044908532</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1714044908532</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,7 +167,8 @@
     <MESSAGE value="Adding store and menu with tutorial and setting panels" />
     <MESSAGE value="Finishing game over logic and Adding Finishing Panel" />
     <MESSAGE value="Finishing won game logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finishing won game logic" />
+    <MESSAGE value="Adding audios to game&#10;Adding minimize logic to game" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding audios to game&#10;Adding minimize logic to game" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

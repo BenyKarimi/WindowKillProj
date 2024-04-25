@@ -40,4 +40,5 @@ public class Constants {
     public static SoundPlayer winGame = new SoundPlayer("resources/songs/WinGame.wav");
     public static SoundPlayer injured = new SoundPlayer("resources/songs/injured.wav");
     public static SoundPlayer enemyDeath = new SoundPlayer("resources/songs/enemyDeath.wav");
+    public static SoundPlayer addCollectible = new SoundPlayer("resources/songs/addCollectible.wav");
 }

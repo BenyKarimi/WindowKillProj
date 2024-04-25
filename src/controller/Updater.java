@@ -141,6 +141,7 @@ public class Updater {
                     (int)(now.getCenter().getY() - (now.getSize()) / 2), (int)now.getSize(), (int)now.getSize()));
             now.setExistence(now.getExistence() - modelUpdater.getDelay());
             if (hasIntersect) {
+                addCollectible.play();
                 epsilon.setXp(epsilon.getXp() + now.getAddedXp());
                 Collectible.removeFromAllList(Collectible.collectibleList.get(ptr).getId());
             }
