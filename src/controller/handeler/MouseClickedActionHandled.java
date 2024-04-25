@@ -2,6 +2,7 @@ package controller.handeler;
 
 import controller.Controller;
 import controller.Utils;
+import controller.constant.Constants;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
 import model.movement.Direction;
@@ -31,5 +32,6 @@ public class MouseClickedActionHandled {
             Direction direction = new Direction(new Point2D.Double(clickedPoint.getX() - epsilon.getCenter().getX(), clickedPoint.getY() - epsilon.getCenter().getY()));
             new BulletModel(center, direction);
         }
+        Constants.bulletSound.play();
     }
 }

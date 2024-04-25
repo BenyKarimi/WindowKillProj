@@ -48,9 +48,19 @@ public class MainMenuPanel extends JPanel {
         startGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                try {
+                    Robot robot = new Robot();
+                    robot.keyPress(KeyEvent.VK_WINDOWS);
+                    robot.keyPress(KeyEvent.VK_D);
+                    robot.keyRelease(KeyEvent.VK_WINDOWS);
+                    robot.keyRelease(KeyEvent.VK_D);
+                } catch (AWTException ex) {
+                    throw new RuntimeException(ex);
+                }
                 GlassFrame.getINSTANCE().remove(INSTANCE);
                 GamePanel gamePanel = new GamePanel();
                 Controller controller = new Controller();
+                GlassFrame.getINSTANCE().setExtendedState(JFrame.MAXIMIZED_BOTH);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
                 startGame.setFont(new Font(startGame.getFont().getFontName(), Font.BOLD, 40));

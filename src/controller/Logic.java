@@ -69,6 +69,9 @@ public class Logic {
         }
     }
     public void showFinishGame() {
+        if (epsilon.getHp() <= 0) Constants.gameOver.play();
+        else Constants.winGame.play();
+
         int finishXP = epsilon.getXp();
         deleteAllInfo();
         new FinishPanel(finishXP);

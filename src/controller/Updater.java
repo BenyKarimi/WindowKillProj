@@ -1,5 +1,6 @@
 package controller;
 
+import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.TypedActionHandel;
 import model.bulletModel.BulletModel;
@@ -62,8 +63,8 @@ public class Updater {
                     f = (GameValues.panelSize.getX() > 0 ? 1 : 0);
                     s = (GameValues.panelSize.getY() > 0 ? 1 : 0);
                     if (f == 0 && s == 0) Controller.getINSTANCE().logic.showFinishGame();
-                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 3 * f, GameValues.panelUpLeft.getY() + 3 * s);
-                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 6 * f, GameValues.panelSize.getY() - 6 * s);
+                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 1.5 * f, GameValues.panelUpLeft.getY() + 1.5 * s);
+                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 3 * f, GameValues.panelSize.getY() - 3 * s);
                 }
                 else if (f == 1 || s == 1) {
                     GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 0.125 * f, GameValues.panelUpLeft.getY() + 0.125 * s);
@@ -93,15 +94,19 @@ public class Updater {
                 epsilonGoesBigger = true;
                 return;
             }
-            if (isWave) startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
+            if (isWave) {
+                Constants.startWave.play();
+                startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
+            }
             isWave = false;
         }
     }
     /// model functions
     private void updateEpsilonModel() {
         if (epsilonGoesBigger) {
-            epsilon.setRadius(epsilon.getRadius() + 10);
-            if (epsilon.getRadius() > Math.max(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight())) {
+            epsilon.setRadius(epsilon.getRadius() + 5);
+            if (epsilon.getCenter().getX() + epsilon.getRadius() > GamePanel.getINSTANCE().getWidth() && epsilon.getCenter().getX() - epsilon.getRadius() < 0
+            && epsilon.getCenter().getY() + epsilon.getRadius() > GamePanel.getINSTANCE().getHeight() && epsilon.getCenter().getY() - epsilon.getRadius() < 0) {
                 wonGame = true;
             }
             return;
@@ -169,6 +174,7 @@ public class Updater {
                             if (second instanceof TriangleEnemy) {
                                 ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - 10);
                                 if (((TriangleEnemy) second).getHp() <= 0) {
+                                    enemyDeath.play();
                                     Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
                                             , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
                                     TriangleEnemy.removeFromAllList(second.getId());
@@ -177,6 +183,7 @@ public class Updater {
                             else {
                                 ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - 10);
                                 if (((SquareEnemy) second).getHp() <= 0) {
+                                    enemyDeath.play();
                                     Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
                                             , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
                                     SquareEnemy.removeFromAllList(second.getId());
@@ -184,6 +191,7 @@ public class Updater {
                             }
                         }
                         else if (secondVer && !firstVer) {
+                            injured.play();
                             if (second instanceof TriangleEnemy) {
                                 epsilon.setHp(epsilon.getHp() - ((TriangleEnemy) second).getReducerHp());
                             }
@@ -195,6 +203,7 @@ public class Updater {
                         if (second instanceof TriangleEnemy) {
                             ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - 5);
                             if (((TriangleEnemy) second).getHp() <= 0) {
+                                enemyDeath.play();
                                 Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
                                         , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
                                 TriangleEnemy.removeFromAllList(second.getId());
@@ -203,6 +212,7 @@ public class Updater {
                         else {
                             ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - 5);
                             if (((SquareEnemy) second).getHp() <= 0) {
+                                enemyDeath.play();
                                 Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
                                         , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
                                 SquareEnemy.removeFromAllList(second.getId());

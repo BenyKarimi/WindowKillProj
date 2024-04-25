@@ -1,5 +1,7 @@
 package controller.constant;
 
+import view.soundManager.SoundPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -32,4 +34,10 @@ public class Constants {
     public static final Color SHOW_COLOR = new Color(28, 112, 49);
     public static final Image BACKGROUND_IMAGE = new ImageIcon("resources/Background3.jpg").getImage();
     public static double EPSILON_SPEED = 5.5;
+    public static SoundPlayer bulletSound = new SoundPlayer("resources/songs/BulletSound.wav");
+    public static SoundPlayer startWave = new SoundPlayer("resources/songs/statrtWave.wav");
+    public static SoundPlayer gameOver = new SoundPlayer("resources/songs/GameOver.wav");
+    public static SoundPlayer winGame = new SoundPlayer("resources/songs/WinGame.wav");
+    public static SoundPlayer injured = new SoundPlayer("resources/songs/injured.wav");
+    public static SoundPlayer enemyDeath = new SoundPlayer("resources/songs/enemyDeath.wav");
 }
