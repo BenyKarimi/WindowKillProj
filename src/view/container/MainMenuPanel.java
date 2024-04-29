@@ -2,6 +2,7 @@ package view.container;
 
 import controller.Controller;
 import controller.constant.Constants;
+import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandel;
 import controller.handeler.TypedActionHandel;
 
@@ -60,6 +61,7 @@ public class MainMenuPanel extends JPanel {
                 GlassFrame.getINSTANCE().remove(INSTANCE);
                 GamePanel gamePanel = new GamePanel();
                 Controller controller = new Controller();
+                new SkillTreeHandled();
                 GlassFrame.getINSTANCE().setExtendedState(JFrame.MAXIMIZED_BOTH);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
@@ -84,8 +86,11 @@ public class MainMenuPanel extends JPanel {
         skillTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                /// should be done with logic
-            }
+                GlassFrame.getINSTANCE().remove(INSTANCE);
+                GlassFrame.getINSTANCE().add(SkillTreePanel.getINSTANCE());
+                GlassFrame.getINSTANCE().revalidate();
+                GlassFrame.getINSTANCE().repaint();
+                skillTree.setFont(new Font(skillTree.getFont().getFontName(), Font.BOLD, 40));            }
 
             @Override
             public void mouseEntered(MouseEvent e) {

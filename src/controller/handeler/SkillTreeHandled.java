@@ -19,10 +19,12 @@ public class SkillTreeHandled {
 
     private static int lastAddedHP = 0;
     private static int addingHpNumber = 0;
-
-    private static GameTimer timer = GamePanel.getINSTANCE().getTimer();
-    private static EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;
-
+    private static GameTimer timer;
+    private static EpsilonModel epsilon;
+    public SkillTreeHandled() {
+        timer = GamePanel.getINSTANCE().getTimer();
+        epsilon = Controller.getINSTANCE().logic.epsilon;
+    }
     public static void handlePressedKeys(int keyKode) {
         if (epsilon.getXp() < 100) return;
         if (keyKode == KeyActions.skillTreeAttack && canAttack) {
