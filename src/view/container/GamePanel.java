@@ -92,10 +92,10 @@ public class GamePanel extends JPanel {
                 , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
                 , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius(), null);
 
-//        g.setColor(Color.GREEN);
-//        g.fillOval((int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
-//                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
-//                , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius());
+        g.setColor(new Color(255, 133, 0));
+        for (Point2D ptr : epsilonView.getCurrentVertices()) {
+            g.fillOval((int) ptr.getX(), (int) ptr.getY(), 10, 10);
+        }
     }
     private void drawAim(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();

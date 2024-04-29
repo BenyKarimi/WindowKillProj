@@ -15,6 +15,8 @@ public class Constants {
     public static final double MODEL_UPDATE_TIME=(double) 1000/UPS;
     public static final double EPSILON_RADIUS = 25;
     public static final Dimension SIDE_PANELS_DIMENSION = new Dimension(850, 850);
+    public static int BULLET_REDUCE_HP = 5;
+    public static int EPSILON_REDUCE_HP = 10;
     public static int INITIAL_XP = 1000;
     public static final int INITIAL_HP = 100;
     public static final Dimension GAME_PANEL_START_DIMENSION = new Dimension(400, 400);

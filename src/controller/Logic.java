@@ -2,6 +2,7 @@ package controller;
 
 import controller.constant.Constants;
 import controller.constant.GameValues;
+import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandel;
 import controller.handeler.TypedActionHandel;
 import controller.random.RandomHelper;
@@ -80,6 +81,9 @@ public class Logic {
         Controller.getINSTANCE().updater.modelUpdater.stop();
         Controller.getINSTANCE().updater.viewUpdater.stop();
         Constants.INITIAL_XP = epsilon.getXp();
+        epsilon.setVerticesNumber(0);
+        Constants.EPSILON_REDUCE_HP = 10;
+        Constants.BULLET_REDUCE_HP = 5;
         GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
         GamePanel.setINSTANCE(null);
         Controller.setINSTANCE(null);
@@ -99,6 +103,7 @@ public class Logic {
         TypedActionHandel.setUp(false);
         TypedActionHandel.setRight(false);
         StoreActionHandel.setThreeBullet(false);
+        SkillTreeHandled.makeAllRestart();
     }
     public TriangleEnemy findTriangleEnemyModel(String id) {
         for (TriangleEnemy ptr : TriangleEnemy.triangleEnemyList) {

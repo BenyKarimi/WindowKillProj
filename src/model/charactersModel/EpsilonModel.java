@@ -14,6 +14,7 @@ import static controller.constant.Constants.*;
 public class EpsilonModel implements Collidable, Movable {
     Point2D center;
     int xp, hp;
+    int verticesNumber;
     double radius;
     double speed;
     public double xVelocity, yVelocity;
@@ -26,6 +27,7 @@ public class EpsilonModel implements Collidable, Movable {
         hp = INITIAL_HP;
         xVelocity = 0;
         yVelocity = 0;
+        verticesNumber = 0;
         speed = 2;
         direction = new Direction(new Point2D.Double(0, 0));
         radius = EPSILON_RADIUS;
@@ -56,6 +58,15 @@ public class EpsilonModel implements Collidable, Movable {
 
         center.setLocation(x, y);
     }
+    public void updateVertices() {
+        vertices.clear();
+        if (verticesNumber == 0) return;
+        for (int i = 1; i <= verticesNumber; i++) {
+            double x = radius * Math.cos(Math.toRadians(1.0 * i * 360 / verticesNumber));
+            double y = radius * Math.sin(Math.toRadians(1.0 * i * 360 / verticesNumber));
+            vertices.add(new Point2D.Double(center.getX() + x, center.getY() + y));
+        }
+    }
     @Override
     public boolean isCircular() {
         return true;
@@ -84,6 +95,14 @@ public class EpsilonModel implements Collidable, Movable {
     }
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public int getVerticesNumber() {
+        return verticesNumber;
+    }
+
+    public void setVerticesNumber(int verticesNumber) {
+        this.verticesNumber = verticesNumber;
     }
 
     public int getXp() {

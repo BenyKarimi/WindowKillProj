@@ -15,6 +15,9 @@ public class TypedActionHandel {
     static boolean right = false;
 
     public static void handlePressedKey(int keyCode) {
+        if (keyCode == KeyActions.skillTreeAttack || keyCode == KeyActions.skillTreeDefence || keyCode == KeyActions.skillTreeProteus) {
+            SkillTreeHandled.handlePressedKeys(keyCode);
+        }
         if (keyCode == KeyActions.UP) {
             up = true;
         }

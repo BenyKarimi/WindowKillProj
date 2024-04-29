@@ -2,6 +2,7 @@ package controller;
 
 import controller.constant.Constants;
 import controller.constant.GameValues;
+import controller.handeler.SkillTreeHandled;
 import controller.handeler.TypedActionHandel;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
@@ -33,7 +34,7 @@ public class Updater {
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
-    int startTime, startWave;
+    int startTime, startWave, startGoingBigger;
     public Updater() {
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
         viewUpdater.start();
@@ -56,7 +57,7 @@ public class Updater {
         }
         else {
             GamePanel.getINSTANCE().setBounds((int) GameValues.panelUpLeft.getX(), (int) GameValues.panelUpLeft.getY(), (int) GameValues.panelSize.getX(), (int) (GameValues.panelSize.getY()));
-            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startTime >= 10 && GamePanel.getINSTANCE().getTimer().getSeconds() - startWave >= 3) {
+            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startTime >= EPSILON_REDUCE_HP && GamePanel.getINSTANCE().getTimer().getSeconds() - startWave >= 3) {
                 int f = (GameValues.panelSize.getX() > 300 ? 1 : 0);
                 int s = (GameValues.panelSize.getY() > 300 ? 1 : 0);
                 if (wonGame) {
@@ -81,6 +82,7 @@ public class Updater {
     }
     public void updateModel() {
         updateEpsilonModel();
+        SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
         updateCollectibleModel();
         updateCollisionAndImpact();
@@ -92,6 +94,7 @@ public class Updater {
             isWave = Controller.getINSTANCE().logic.makeWave();
             if (!isWave && GameValues.waveNumber == 4) {
                 epsilonGoesBigger = true;
+                startGoingBigger = GamePanel.getINSTANCE().getTimer().getSeconds();
                 return;
             }
             if (isWave) {
@@ -103,18 +106,20 @@ public class Updater {
     }
     /// model functions
     private void updateEpsilonModel() {
+        epsilon.updateVertices();
         if (epsilonGoesBigger) {
-            epsilon.setRadius(epsilon.getRadius() + 5);
+            epsilon.setRadius(epsilon.getRadius() + BULLET_REDUCE_HP);
             if (epsilon.getCenter().getX() + epsilon.getRadius() > GamePanel.getINSTANCE().getWidth() && epsilon.getCenter().getX() - epsilon.getRadius() < 0
             && epsilon.getCenter().getY() + epsilon.getRadius() > GamePanel.getINSTANCE().getHeight() && epsilon.getCenter().getY() - epsilon.getRadius() < 0) {
                 wonGame = true;
             }
+            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startGoingBigger >= 10) wonGame = true;
             return;
         }
         TypedActionHandel.doMove();
         epsilon.adjustLocation(new Dimension(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight()));
         if (epsilon.getSpeed() > 0) {
-            epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / 10));
+            epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / EPSILON_REDUCE_HP));
         }
     }
     private void updateEnemiesModel() {
@@ -169,11 +174,13 @@ public class Updater {
                     if (first instanceof EpsilonModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
                         boolean firstVer = false;
                         boolean secondVer = false;
-                        for (Point2D ptr : first.getVertices()) if (ptr.equals(point)) firstVer = true;
+                        for (Point2D ptr : first.getVertices()) {
+                            if ((int)ptr.getX() == (int)point.getX() && (int)ptr.getY() == (int) point.getY()) firstVer = true;
+                        }
                         for (Point2D ptr : second.getVertices()) if (ptr.equals(point)) secondVer = true;
                         if (firstVer && !secondVer) {
                             if (second instanceof TriangleEnemy) {
-                                ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - 10);
+                                ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - EPSILON_REDUCE_HP);
                                 if (((TriangleEnemy) second).getHp() <= 0) {
                                     enemyDeath.play();
                                     Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
@@ -182,7 +189,7 @@ public class Updater {
                                 }
                             }
                             else {
-                                ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - 10);
+                                ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - EPSILON_REDUCE_HP);
                                 if (((SquareEnemy) second).getHp() <= 0) {
                                     enemyDeath.play();
                                     Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
@@ -198,11 +205,11 @@ public class Updater {
                             }
                             else epsilon.setHp(epsilon.getHp() - ((SquareEnemy) second).getReducerHp());
                         }
-                        impactLevel = 5;
+                        impactLevel = BULLET_REDUCE_HP;
                     }
                     else if (first instanceof BulletModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
                         if (second instanceof TriangleEnemy) {
-                            ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - 5);
+                            ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - BULLET_REDUCE_HP);
                             if (((TriangleEnemy) second).getHp() <= 0) {
                                 enemyDeath.play();
                                 Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
@@ -211,7 +218,7 @@ public class Updater {
                             }
                         }
                         else {
-                            ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - 5);
+                            ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - BULLET_REDUCE_HP);
                             if (((SquareEnemy) second).getHp() <= 0) {
                                 enemyDeath.play();
                                 Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
@@ -220,7 +227,7 @@ public class Updater {
                             }
                         }
                         BulletModel.removeFromAllList(first.getId());
-                        impactLevel = 5;
+                        impactLevel = BULLET_REDUCE_HP;
                     }
                     else impactLevel = 2;
                     ImpactMechanism.applyImpact(point, impactLevel);
