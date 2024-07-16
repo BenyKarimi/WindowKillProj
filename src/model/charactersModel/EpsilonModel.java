@@ -1,0 +1,139 @@
+package model.charactersModel;
+
+import controller.constant.Constants;
+import model.collision.Collidable;
+import model.movement.Direction;
+import model.movement.Movable;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+
+import static controller.constant.Constants.*;
+
+public class EpsilonModel implements Collidable, Movable {
+    Point2D center;
+    int xp, hp;
+    int verticesNumber;
+    double radius;
+    double speed;
+    public double xVelocity, yVelocity;
+    Direction direction;
+    ArrayList<Point2D> vertices;
+
+    public EpsilonModel(Point2D center) {
+        this.center = center;
+        xp = INITIAL_XP;
+        hp = INITIAL_HP;
+        xVelocity = 0;
+        yVelocity = 0;
+        verticesNumber = 0;
+        speed = 2;
+        direction = new Direction(new Point2D.Double(0, 0));
+        radius = EPSILON_RADIUS;
+        vertices = new ArrayList<>();
+        Collidable.collidables.add(this);
+        Movable.movable.add(this);
+    }
+    public void moveWithKeys(double xFactor, double yFactor, Dimension panelSize) {
+        xVelocity = xVelocity + (xFactor * (EPSILON_SPEED / 10));
+        yVelocity = yVelocity + (yFactor * (EPSILON_SPEED / 10));
+
+        if (xVelocity > 0) xVelocity = Math.min(xVelocity, EPSILON_SPEED);
+        else if (xVelocity < 0) xVelocity = Math.max(xVelocity, -EPSILON_SPEED);
+        if (yVelocity > 0) yVelocity = Math.min(yVelocity, EPSILON_SPEED);
+        else if (yVelocity < 0) yVelocity = Math.max(yVelocity, -EPSILON_SPEED);
+
+        center.setLocation(center.getX() + xVelocity, center.getY() + yVelocity);
+        adjustLocation(panelSize);
+    }
+    public void adjustLocation(Dimension panelSize) {
+        double x = center.getX();
+        x = Math.max(x, radius);
+        x = Math.min(x, panelSize.width - radius);
+
+        double y = center.getY();
+        y = Math.max(y, radius);
+        y = Math.min(y, panelSize.height - radius);
+
+        center.setLocation(x, y);
+    }
+    public void updateVertices() {
+        vertices.clear();
+        if (verticesNumber == 0) return;
+        for (int i = 1; i <= verticesNumber; i++) {
+            double x = radius * Math.cos(Math.toRadians(1.0 * i * 360 / verticesNumber));
+            double y = radius * Math.sin(Math.toRadians(1.0 * i * 360 / verticesNumber));
+            vertices.add(new Point2D.Double(center.getX() + x, center.getY() + y));
+        }
+    }
+    @Override
+    public boolean isCircular() {
+        return true;
+    }
+    @Override
+    public double getRadius() {
+        return radius;
+    }
+
+    @Override
+    public void setCenter(Point2D center) {
+        this.center = center;
+    }
+
+    public Point2D getCenter() {
+        return center;
+    }
+
+    @Override
+    public String getId() {
+        return null;
+    }
+    @Override
+    public double getSpeed() {
+        return speed;
+    }
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public int getVerticesNumber() {
+        return verticesNumber;
+    }
+
+    public void setVerticesNumber(int verticesNumber) {
+        this.verticesNumber = verticesNumber;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public ArrayList<Point2D> getVertices() {
+        return vertices;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+}
