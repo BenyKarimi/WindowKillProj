@@ -36,6 +36,7 @@ public class Updater {
     private boolean isWave = false;
     private boolean wonGame = false;
     private boolean epsilonGoesBigger = false;
+    private int epsilonGoesBiggerTime;
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
@@ -80,6 +81,7 @@ public class Updater {
             isWave = Controller.getINSTANCE().logic.makeWave(pm.getX(), pm.getY(), pm.getWidth(), pm.getHeight());
             if (GameValues.waveNumber == 4 && !isWave) {
                 epsilonGoesBigger = true;
+                epsilonGoesBiggerTime = gameTimer.getSeconds();
                 return;
             }
             if (isWave) {
@@ -129,7 +131,7 @@ public class Updater {
             }
             else if (wonGame) {
                 panel.endGameShrinkValue();
-                if (panel.getWidth() <= GAME_PANEL_END_SIZE.width && panel.getHeight() <= GAME_PANEL_END_SIZE.height) {
+                if ((panel.getWidth() <= GAME_PANEL_END_SIZE.width && panel.getHeight() <= GAME_PANEL_END_SIZE.height) || gameTimer.getSeconds() - epsilonGoesBiggerTime >= 10) {
                     Controller.getINSTANCE().logic.showFinishGame();
                     return;
                 }
@@ -138,7 +140,7 @@ public class Updater {
             else if (gameTimer.getSeconds() - startTime >= 10 && gameTimer.getSeconds() - startWave >= 3) {
                 panel.inGameShrinkValue();
             }
-            panel.shrink();
+            panel.shrink(wonGame);
 
         }
     }

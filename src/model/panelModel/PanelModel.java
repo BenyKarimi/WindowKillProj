@@ -76,6 +76,12 @@ public class PanelModel {
             }
         }
     }
+    private boolean haveMinimumSize(boolean wonGame) {
+        if (wonGame) {
+            return true;
+        }
+        return !(height < Constants.GAME_PANEL_MIN_DIMENSION.height) && !(width < Constants.GAME_PANEL_MIN_DIMENSION.width);
+    }
     public void startShrinkValue() {
         leftSpeed = (width - Constants.GAME_PANEL_START_DIMENSION.width) / Constants.SHRINK_DECELERATION;
         rightSpeed = (width - Constants.GAME_PANEL_START_DIMENSION.width) / Constants.SHRINK_DECELERATION;
@@ -113,7 +119,7 @@ public class PanelModel {
 
         return false;
     }
-    public void shrink() {
+    public void shrink(boolean wonGame) {
         if (!leftAccel.isEmpty()) {
             for(int i = 0; i < leftAccel.size(); i++) {
                 bulletRelatedLeftSpeed += leftAccel.get(i);
@@ -158,25 +164,25 @@ public class PanelModel {
         }
 
         width -= (rightSpeed + bulletRelatedRightSpeed);
-        if (collidesWithOtherPanel()) {
+        if (collidesWithOtherPanel() || !haveMinimumSize(wonGame)) {
             width += (rightSpeed + bulletRelatedRightSpeed);
         }
 
         x += leftSpeed + bulletRelatedLeftSpeed;
         width -= (leftSpeed + bulletRelatedLeftSpeed);
-        if (collidesWithOtherPanel()) {
+        if (collidesWithOtherPanel() || !haveMinimumSize(wonGame)) {
             x -= leftSpeed + bulletRelatedLeftSpeed;
             width += (leftSpeed + bulletRelatedLeftSpeed);
         }
 
         height -= downSpeed + bulletRelatedDownSpeed;
-        if (collidesWithOtherPanel()) {
+        if (collidesWithOtherPanel() || !haveMinimumSize(wonGame)) {
             height += downSpeed + bulletRelatedDownSpeed;
         }
 
         y += upSpeed + bulletRelatedUpSpeed;
         height -= upSpeed + bulletRelatedUpSpeed;
-        if (collidesWithOtherPanel()) {
+        if (collidesWithOtherPanel() || !haveMinimumSize(wonGame)) {
             y -= upSpeed + bulletRelatedUpSpeed;
             height += upSpeed + bulletRelatedUpSpeed;
         }
