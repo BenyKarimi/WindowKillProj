@@ -4,10 +4,10 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class Direction {
-    boolean isUpward = false;
-    boolean isDownward = false;
-    double slope;
-    DirectionState state = DirectionState.neutral;
+    private boolean isUpward = false;
+    private boolean isDownward = false;
+    private double slope;
+    private DirectionState state = DirectionState.neutral;
 
     public Direction(Point2D deltaPos) {
         if (deltaPos.getX() == 0 && deltaPos.getY() < 0) isUpward = true;

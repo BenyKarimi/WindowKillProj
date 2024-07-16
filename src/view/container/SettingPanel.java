@@ -3,11 +3,9 @@ package view.container;
 import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.constant.Level;
-import controller.handeler.TypedActionHandel;
 import windowKill.WindowKill;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.*;
 

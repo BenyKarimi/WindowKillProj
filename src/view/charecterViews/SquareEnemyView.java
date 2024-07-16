@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class SquareEnemyView {
     private final String id;
-    Point2D currentCenter;
-    double currentSize;
+    private Point2D currentCenter;
+    private double currentSize;
     public static ArrayList<SquareEnemyView> squareEnemyViewList = new ArrayList<>();
 
     public SquareEnemyView(String id) {

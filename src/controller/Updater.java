@@ -3,7 +3,7 @@ package controller;
 import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
-import controller.handeler.TypedActionHandel;
+import controller.handeler.TypedActionHandle;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
 import model.charactersModel.SquareEnemy;
@@ -13,93 +13,78 @@ import model.collision.Collidable;
 import model.collision.CollisionPoint;
 import model.movement.ImpactMechanism;
 import model.movement.Movable;
+import model.panelModel.PanelModel;
+import org.w3c.dom.css.CSSImportRule;
 import view.bulletView.BulletView;
 import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 import view.container.GlassFrame;
+import view.container.InformationPanel;
+import view.gameTimerView.GameTimer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import static controller.constant.Constants.*;
 
 public class Updater {
-    boolean startGame = false;
-    boolean isWave = false;
-    boolean wonGame = false;
-    boolean epsilonGoesBigger = false;
+    private boolean startGame = false;
+    private boolean isWave = false;
+    private boolean wonGame = false;
+    private boolean epsilonGoesBigger = false;
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
+    GameTimer gameTimer;
     int startTime, startWave, startGoingBigger;
     public Updater() {
+        gameTimer = GlassFrame.getINSTANCE().getTimer();
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
         viewUpdater.start();
         modelUpdater = new Timer((int) MODEL_UPDATE_TIME, e -> updateModel()){{setCoalesce(true);}};
         modelUpdater.start();
     }
     public void updateView() {
-        Rectangle tmp = GamePanel.getINSTANCE().getBounds();
+        // update enemies and add boolean for is wave or not
         updateEpsilonView();
-
-        if (!startGame) {
-            if (tmp.width > GAME_PANEL_START_DIMENSION.width && tmp.height > GAME_PANEL_START_DIMENSION.height)
-                GamePanel.getINSTANCE().setBounds(tmp.x + 3, tmp.y + 3, tmp.width - 6, tmp.height - 6);
-            else {
-                startGame = true;
-                GameValues.panelUpLeft = new Point2D.Double(tmp.x, tmp.y);
-                GameValues.panelSize = new Point2D.Double(tmp.width, tmp.height);
-                startTime = GamePanel.getINSTANCE().getTimer().getSeconds();
-            }
-        }
-        else {
-            GamePanel.getINSTANCE().setBounds((int) GameValues.panelUpLeft.getX(), (int) GameValues.panelUpLeft.getY(), (int) GameValues.panelSize.getX(), (int) (GameValues.panelSize.getY()));
-            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startTime >= EPSILON_REDUCE_HP && GamePanel.getINSTANCE().getTimer().getSeconds() - startWave >= 3) {
-                int f = (GameValues.panelSize.getX() > 300 ? 1 : 0);
-                int s = (GameValues.panelSize.getY() > 300 ? 1 : 0);
-                if (wonGame) {
-                    f = (GameValues.panelSize.getX() > 0 ? 1 : 0);
-                    s = (GameValues.panelSize.getY() > 0 ? 1 : 0);
-                    if (f == 0 && s == 0) Controller.getINSTANCE().logic.showFinishGame();
-                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 1.5 * f, GameValues.panelUpLeft.getY() + 1.5 * s);
-                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 3 * f, GameValues.panelSize.getY() - 3 * s);
-                }
-                else if (f == 1 || s == 1) {
-                    GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 0.125 * f, GameValues.panelUpLeft.getY() + 0.125 * s);
-                    GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() - 0.25 * f, GameValues.panelSize.getY() - 0.25 * s);
-                }
-            }
-            // update enemies and add boolean for is wave or not
-            updateTriangleEnemyView();
-            updateSquareEnemyView();
-            updateCollectibleView();
-            updateBulletView();
+        updateTriangleEnemyView();
+        updateSquareEnemyView();
+        updateCollectibleView();
+        updateBulletView();
+        updatePanelView();
+        for (GamePanel panel : GamePanel.gamePanelList) {
+            panel.repaint();
         }
         GlassFrame.getINSTANCE().repaint();
+        InformationPanel.getINSTANCE().repaint();
     }
     public void updateModel() {
         updateEpsilonModel();
+        updatePanelModel();
         SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
         updateCollectibleModel();
         updateCollisionAndImpact();
-        checkCollisionBulletAndPanel();
+        checkCollisionBulletAndPanels();
         moveAllModels();
         Controller.getINSTANCE().logic.checkGameOver();
         if (startGame && !epsilonGoesBigger) {
             if (Controller.getINSTANCE() == null) return;
-            isWave = Controller.getINSTANCE().logic.makeWave();
-            if (!isWave && GameValues.waveNumber == 4) {
+            /// havaset bashe che gohi dari mikhori
+            if (PanelModel.panelModelList.isEmpty()) return;
+            PanelModel pm = PanelModel.panelModelList.get(0);
+            isWave = Controller.getINSTANCE().logic.makeWave(pm.getX(), pm.getY(), pm.getWidth(), pm.getHeight());
+            if (GameValues.waveNumber == 4 && !isWave) {
                 epsilonGoesBigger = true;
-                startGoingBigger = GamePanel.getINSTANCE().getTimer().getSeconds();
                 return;
             }
             if (isWave) {
                 Constants.startWave.play();
-                startWave = GamePanel.getINSTANCE().getTimer().getSeconds();
+                startWave = gameTimer.getSeconds();
             }
             isWave = false;
         }
@@ -107,19 +92,54 @@ public class Updater {
     /// model functions
     private void updateEpsilonModel() {
         epsilon.updateVertices();
+        epsilon.updateMainPanels(PanelModel.panelModelList);
+
         if (epsilonGoesBigger) {
-            epsilon.setRadius(epsilon.getRadius() + BULLET_REDUCE_HP);
-            if (epsilon.getCenter().getX() + epsilon.getRadius() > GamePanel.getINSTANCE().getWidth() && epsilon.getCenter().getX() - epsilon.getRadius() < 0
-            && epsilon.getCenter().getY() + epsilon.getRadius() > GamePanel.getINSTANCE().getHeight() && epsilon.getCenter().getY() - epsilon.getRadius() < 0) {
+            PanelModel firstMainPanel = PanelModel.panelModelList.get(0);
+            double addRate = Math.max(firstMainPanel.getHeight(), firstMainPanel.getWidth()) / 75;
+            epsilon.setRadius(epsilon.getRadius() + addRate);
+
+            Point2D lst = epsilon.getCenter();
+            epsilon.setCenter(new Point2D.Double(lst.getX() - addRate / 3, lst.getY() - addRate / 3));
+
+            if (Utils.unionPanels(PanelModel.panelModelList, epsilon.getCenter(), epsilon.getRadius()).isEmpty()) {
                 wonGame = true;
             }
-            if (GamePanel.getINSTANCE().getTimer().getSeconds() - startGoingBigger >= 10) wonGame = true;
+
             return;
         }
-        TypedActionHandel.doMove();
-        epsilon.adjustLocation(new Dimension(GamePanel.getINSTANCE().getWidth(), GamePanel.getINSTANCE().getHeight()));
+        TypedActionHandle.doMove();
+        epsilon.adjustLocation(PanelModel.panelModelList);
         if (epsilon.getSpeed() > 0) {
             epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / EPSILON_REDUCE_HP));
+        }
+    }
+    private void updatePanelModel() {
+        for (PanelModel panel : PanelModel.panelModelList) {
+            if (!startGame) {
+                panel.startShrinkValue();
+                if (panel.getWidth() <= Constants.GAME_PANEL_START_DIMENSION_ERROR.width) {
+                    startGame = true;
+                    startTime = gameTimer.getSeconds();
+                    panel.setLeftSpeed(0);
+                    panel.setRightSpeed(0);
+                    panel.setUpSpeed(0);
+                    panel.setDownSpeed(0);
+                }
+            }
+            else if (wonGame) {
+                panel.endGameShrinkValue();
+                if (panel.getWidth() <= GAME_PANEL_END_SIZE.width && panel.getHeight() <= GAME_PANEL_END_SIZE.height) {
+                    Controller.getINSTANCE().logic.showFinishGame();
+                    return;
+                }
+            }
+
+            else if (gameTimer.getSeconds() - startTime >= 10 && gameTimer.getSeconds() - startWave >= 3) {
+                panel.inGameShrinkValue();
+            }
+            panel.shrink();
+
         }
     }
     private void updateEnemiesModel() {
@@ -235,33 +255,37 @@ public class Updater {
             }
         }
     }
-    private void checkCollisionBulletAndPanel() {
+    private void checkCollisionBulletAndPanels() {
         for (int i = 0; i < BulletModel.bulletModelList.size(); i++) {
             BulletModel ptr = BulletModel.bulletModelList.get(i);
-            if (ptr.getCenter().getX() + ptr.getRadius() > GameValues.panelSize.getX()) {
-                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() + 4, GameValues.panelUpLeft.getY());
-                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() + 4, GameValues.panelSize.getY());
-                BulletModel.removeFromAllList(ptr.getId());
-                i--;
+            ArrayList<PanelModel> coveredPanels = ptr.hasCollisions(PanelModel.panelModelList);
+
+            if (coveredPanels == null) return;
+
+            for (PanelModel panel : coveredPanels) {
+                if (ptr.getCenter().getX() + ptr.getRadius() >= panel.getX() + panel.getWidth()) {
+                    panel.bulletHit("right");
+//                    panel.setX(panel.getX() + 4);
+//                    panel.setWidth(panel.getWidth() + 4);
+                }
+                if (ptr.getCenter().getX() - ptr.getRadius() <= panel.getX()) {
+                    panel.bulletHit("left");
+//                    panel.setX(panel.getX() - 8);
+//                    panel.setWidth(panel.getWidth() + 4);
+                }
+                if (ptr.getCenter().getY() + ptr.getRadius() >= panel.getY() + panel.getHeight()) {
+                    panel.bulletHit("down");
+//                    panel.setY(panel.getY() + 4);
+//                    panel.setHeight(panel.getHeight() + 4);
+                }
+                if (ptr.getCenter().getY() - ptr.getRadius() <= panel.getY()) {
+                    panel.bulletHit("up");
+//                    panel.setY(panel.getY() - 8);
+//                    panel.setHeight(panel.getHeight() + 4);
+                }
             }
-            else if (ptr.getCenter().getX() - ptr.getRadius() < 0) {
-                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX() - 8, GameValues.panelUpLeft.getY());
-                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX() + 4, GameValues.panelSize.getY());
-                BulletModel.removeFromAllList(ptr.getId());
-                i--;
-            }
-            else if (ptr.getCenter().getY() + ptr.getRadius() > GameValues.panelSize.getY()) {
-                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX(), GameValues.panelUpLeft.getY() + 4);
-                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX(), GameValues.panelSize.getY() + 4);
-                BulletModel.removeFromAllList(ptr.getId());
-                i--;
-            }
-            else if (ptr.getCenter().getY() - ptr.getRadius() < 0) {
-                GameValues.panelUpLeft = new Point2D.Double(GameValues.panelUpLeft.getX(), GameValues.panelUpLeft.getY() - 8);
-                GameValues.panelSize = new Point2D.Double(GameValues.panelSize.getX(), GameValues.panelSize.getY() + 4);
-                BulletModel.removeFromAllList(ptr.getId());
-                i--;
-            }
+
+            BulletModel.removeFromAllList(ptr.getId());
         }
     }
     private void moveAllModels() {
@@ -304,6 +328,16 @@ public class Updater {
             BulletModel tmp = Controller.getINSTANCE().logic.findBulletModel(ptr.getId());
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentRadius(tmp.getRadius());
+        }
+    }
+    private void updatePanelView() {
+        for (GamePanel ptr : GamePanel.gamePanelList) {
+            PanelModel tmp = Controller.getINSTANCE().logic.findPanelModel(ptr.getId());
+            ptr.setUpLeftX(tmp.getX());
+            ptr.setUpLeftY(tmp.getY());
+            ptr.setWidth(tmp.getWidth());
+            ptr.setHeight(tmp.getHeight());
+            ptr.updateBound();
         }
     }
 

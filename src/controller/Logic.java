@@ -3,8 +3,8 @@ package controller;
 import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
-import controller.handeler.StoreActionHandel;
-import controller.handeler.TypedActionHandel;
+import controller.handeler.StoreActionHandle;
+import controller.handeler.TypedActionHandle;
 import controller.random.RandomHelper;
 import model.bulletModel.BulletModel;
 import model.charactersModel.EpsilonModel;
@@ -13,6 +13,9 @@ import model.charactersModel.TriangleEnemy;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.movement.Movable;
+import model.panelModel.Isometric;
+import model.panelModel.PanelModel;
+import model.panelModel.Rigid;
 import view.bulletView.BulletView;
 import view.charecterViews.EpsilonView;
 import view.charecterViews.SquareEnemyView;
@@ -21,6 +24,7 @@ import view.collectibleView.CollectibleView;
 import view.container.FinishPanel;
 import view.container.GamePanel;
 import view.container.GlassFrame;
+import view.container.InformationPanel;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -32,12 +36,19 @@ public class Logic {
     public EpsilonModel epsilon;
     EpsilonView epsilonView;
     public Logic() {
-        createEpsilon();
+        createInitialPanel();
     }
-    public void createEpsilon() {
-        epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS, EPSILON_RADIUS));
+    private void createEpsilon(double panelX, double panelY) {
+        epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY));
 //        epsilonView = EpsilonView.getINSTANCE();
-        epsilonView = new EpsilonView();
+        epsilonView = new EpsilonView(epsilon.getCenter());
+    }
+    private void createInitialPanel() {
+        PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.YES);
+        InformationPanel.getINSTANCE();
+        GlassFrame.getINSTANCE().getTimer().Reset();
+        GlassFrame.getINSTANCE().getTimer().Start();
+        createEpsilon(panelModel.getX(), panelModel.getY());
     }
     public void createCollectible(int collectibleNumber, int collectibleXp, Point2D enemyCenter) {
         if (collectibleNumber == 1) {
@@ -48,12 +59,12 @@ public class Logic {
             new Collectible(new Point2D.Double(enemyCenter.getX() - 1.5 * COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
         }
     }
-    public boolean makeWave() {
+    public boolean makeWave(double x, double y, double width, double height) {
         if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
 
         GameValues.waveNumber++;
         if (GameValues.waveNumber == 4) return false;
-        ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters();
+        ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(x, y, width, height);
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomWaveEnemyType() == 0) {
                 new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
@@ -84,9 +95,14 @@ public class Logic {
         epsilon.setVerticesNumber(0);
         Constants.EPSILON_REDUCE_HP = 10;
         Constants.BULLET_REDUCE_HP = 5;
-        GlassFrame.getINSTANCE().remove(GamePanel.getINSTANCE());
-        GamePanel.setINSTANCE(null);
-        Controller.setINSTANCE(null);
+        for (GamePanel panel : GamePanel.gamePanelList) {
+            GlassFrame.getINSTANCE().remove(panel);
+        }
+        PanelModel.panelModelList.clear();
+        GamePanel.gamePanelList.clear();
+//        Controller.setINSTANCE(null);
+        GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
+        InformationPanel.setINSTANCE(null);
         BulletModel.bulletModelList.clear();
         SquareEnemy.squareEnemyList.clear();
         TriangleEnemy.triangleEnemyList.clear();
@@ -98,11 +114,11 @@ public class Logic {
         Collidable.collidables.clear();
         Movable.movable.clear();
         GameValues.waveNumber = 0;
-        TypedActionHandel.setDown(false);
-        TypedActionHandel.setLeft(false);
-        TypedActionHandel.setUp(false);
-        TypedActionHandel.setRight(false);
-        StoreActionHandel.setThreeBullet(false);
+        TypedActionHandle.setDown(false);
+        TypedActionHandle.setLeft(false);
+        TypedActionHandle.setUp(false);
+        TypedActionHandle.setRight(false);
+        StoreActionHandle.setThreeBullet(false);
         SkillTreeHandled.makeAllRestart();
     }
     public TriangleEnemy findTriangleEnemyModel(String id) {
@@ -125,6 +141,12 @@ public class Logic {
     }
     public Collectible findCollectibleModel(String id) {
         for (Collectible ptr : Collectible.collectibleList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public PanelModel findPanelModel(String id) {
+        for (PanelModel ptr : PanelModel.panelModelList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

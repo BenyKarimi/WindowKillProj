@@ -5,6 +5,7 @@ import view.bulletView.BulletView;
 import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 import view.collectibleView.CollectibleView;
+import view.container.GamePanel;
 
 public class Controller {
     private static Controller INSTANCE;
@@ -27,6 +28,9 @@ public class Controller {
     }
     public void createCollectibleView(String id) {
         new CollectibleView(id);
+    }
+    public void createGamePanel(String id, double x, double y, double width, double height) {
+        new GamePanel(id, x, y, width, height);
     }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();

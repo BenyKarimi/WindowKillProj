@@ -7,13 +7,13 @@ import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class EpsilonView {
     private static EpsilonView INSTANCE;
-    Point2D currentCenter;
-    int currentXp, currentHp;
-    double currentRadius;
-    ArrayList<Point2D> currentVertices;
-    public EpsilonView() {
+    private Point2D currentCenter;
+    private int currentXp, currentHp;
+    private double currentRadius;
+    private ArrayList<Point2D> currentVertices;
+    public EpsilonView(Point2D currentCenter) {
         INSTANCE = this;
-        currentCenter = new Point2D.Double(EPSILON_RADIUS, EPSILON_RADIUS);
+        this.currentCenter = currentCenter;
         currentRadius = EPSILON_RADIUS;
         currentVertices = new ArrayList<>();
     }

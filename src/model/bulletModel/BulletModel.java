@@ -1,22 +1,25 @@
 package model.bulletModel;
 
 import controller.Controller;
+import controller.Utils;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import model.panelModel.PanelModel;
 import view.bulletView.BulletView;
 import view.charecterViews.SquareEnemyView;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class BulletModel implements Collidable, Movable {
     private final String id;
-    double radius;
-    double speed;
-    Point2D center;
-    Direction direction;
+    private double radius;
+    private double speed;
+    private Point2D center;
+    private Direction direction;
     public static ArrayList<BulletModel> bulletModelList = new ArrayList<>();
 
     public BulletModel(Point2D center, Direction direction) {
@@ -29,6 +32,13 @@ public class BulletModel implements Collidable, Movable {
         Collidable.collidables.add(this);
         Movable.movable.add(this);
         Controller.getINSTANCE().createBulletView(id);
+    }
+
+    public ArrayList<PanelModel> hasCollisions(ArrayList<PanelModel> panelModels) {
+        if (Utils.isCircleInside(panelModels, center, radius)) return null;
+
+        Point2D tmp = Utils.addVectors(center, Utils.multiplyVector(Utils.makeNegativeVector(getDirection().getDirectionVector()), getSpeed()));
+        return Utils.coveringPanels(panelModels, tmp, radius);
     }
 
     public String getId() {

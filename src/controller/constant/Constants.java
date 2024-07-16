@@ -15,6 +15,10 @@ public class Constants {
     public static final double MODEL_UPDATE_TIME=(double) 1000/UPS;
     public static final double EPSILON_RADIUS = 25;
     public static final Dimension SIDE_PANELS_DIMENSION = new Dimension(850, 850);
+    public static final double SHRINK_DECELERATION = 75;
+    public static final Dimension GAME_PANEL_END_SIZE = new Dimension(15, 15);
+    public static final Dimension GAME_PANEL_MIN_DIMENSION = new Dimension(300, 300);
+    public static final Dimension GAME_PANEL_START_DIMENSION_ERROR = new Dimension(430, 430);
     public static int BULLET_REDUCE_HP = 5;
     public static int EPSILON_REDUCE_HP = 10;
     public static int INITIAL_XP = 1000;
@@ -36,6 +40,8 @@ public class Constants {
     public static final Color SHOW_COLOR = new Color(28, 112, 49);
     public static final Image BACKGROUND_IMAGE = new ImageIcon("resources/Background3.jpg").getImage();
     public static double EPSILON_SPEED = 5.5;
+    public static double ACCELERATION_ADD_VALUE = 0.1;
+    public static double ACCELERATION_MAX_VAL = 0.8;
     public static SoundPlayer bulletSound = new SoundPlayer("resources/songs/BulletSound.wav");
     public static SoundPlayer startWave = new SoundPlayer("resources/songs/statrtWave.wav");
     public static SoundPlayer gameOver = new SoundPlayer("resources/songs/GameOver.wav");

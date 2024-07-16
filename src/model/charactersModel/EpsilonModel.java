@@ -1,9 +1,11 @@
 package model.charactersModel;
 
+import controller.Utils;
 import controller.constant.Constants;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import model.panelModel.PanelModel;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -12,14 +14,15 @@ import java.util.ArrayList;
 import static controller.constant.Constants.*;
 
 public class EpsilonModel implements Collidable, Movable {
-    Point2D center;
-    int xp, hp;
-    int verticesNumber;
-    double radius;
-    double speed;
-    public double xVelocity, yVelocity;
-    Direction direction;
-    ArrayList<Point2D> vertices;
+    private Point2D center;
+    private int xp, hp;
+    private int verticesNumber;
+    private double radius;
+    private double speed;
+    private double xVelocity, yVelocity;
+    private ArrayList<PanelModel> mainPanels;
+    private Direction direction;
+    private ArrayList<Point2D> vertices;
 
     public EpsilonModel(Point2D center) {
         this.center = center;
@@ -35,7 +38,7 @@ public class EpsilonModel implements Collidable, Movable {
         Collidable.collidables.add(this);
         Movable.movable.add(this);
     }
-    public void moveWithKeys(double xFactor, double yFactor, Dimension panelSize) {
+    public void moveWithKeys(double xFactor, double yFactor) {
         xVelocity = xVelocity + (xFactor * (EPSILON_SPEED / 10));
         yVelocity = yVelocity + (yFactor * (EPSILON_SPEED / 10));
 
@@ -45,27 +48,18 @@ public class EpsilonModel implements Collidable, Movable {
         else if (yVelocity < 0) yVelocity = Math.max(yVelocity, -EPSILON_SPEED);
 
         center.setLocation(center.getX() + xVelocity, center.getY() + yVelocity);
-        adjustLocation(panelSize);
+        adjustLocation(PanelModel.panelModelList);
     }
-    public void adjustLocation(Dimension panelSize) {
-        double x = center.getX();
-        x = Math.max(x, radius);
-        x = Math.min(x, panelSize.width - radius);
-
-        double y = center.getY();
-        y = Math.max(y, radius);
-        y = Math.min(y, panelSize.height - radius);
-
-        center.setLocation(x, y);
+    public void adjustLocation(ArrayList<PanelModel> panelModels) {
+        center = Utils.adjustedCenter(center, radius, panelModels, EPSILON_SPEED);
     }
+
     public void updateVertices() {
         vertices.clear();
-        if (verticesNumber == 0) return;
-        for (int i = 1; i <= verticesNumber; i++) {
-            double x = radius * Math.cos(Math.toRadians(1.0 * i * 360 / verticesNumber));
-            double y = radius * Math.sin(Math.toRadians(1.0 * i * 360 / verticesNumber));
-            vertices.add(new Point2D.Double(center.getX() + x, center.getY() + y));
-        }
+        vertices = Utils.circlePartition(center, radius, verticesNumber);
+    }
+    public void updateMainPanels(ArrayList<PanelModel> panelModels) {
+        mainPanels = Utils.coveringPanels(panelModels, center, radius);
     }
     @Override
     public boolean isCircular() {
@@ -109,6 +103,10 @@ public class EpsilonModel implements Collidable, Movable {
         return xp;
     }
 
+    public ArrayList<PanelModel> getMainPanels() {
+        return mainPanels;
+    }
+
     public int getHp() {
         return hp;
     }
@@ -135,5 +133,21 @@ public class EpsilonModel implements Collidable, Movable {
 
     public void setRadius(double radius) {
         this.radius = radius;
+    }
+
+    public double getxVelocity() {
+        return xVelocity;
+    }
+
+    public void setxVelocity(double xVelocity) {
+        this.xVelocity = xVelocity;
+    }
+
+    public double getyVelocity() {
+        return yVelocity;
+    }
+
+    public void setyVelocity(double yVelocity) {
+        this.yVelocity = yVelocity;
     }
 }

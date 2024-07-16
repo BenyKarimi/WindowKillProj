@@ -1,6 +1,7 @@
 package view.container;
 
-import controller.handeler.TypedActionHandel;
+import controller.handeler.TypedActionHandle;
+import view.gameTimerView.GameTimer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,7 @@ import static controller.constant.Constants.GLASS_FRAME_DIMENSION;
 
 public final class GlassFrame extends JFrame {
     private static GlassFrame INSTANCE;
+    private GameTimer timer;
     private GlassFrame() throws HeadlessException {
         this.setUndecorated(true);
         this.setBackground(new Color(0,0,0,0));
@@ -21,6 +23,8 @@ public final class GlassFrame extends JFrame {
 
         ImageIcon image = new ImageIcon("resources/AppImage.jpg");
         this.setIconImage(image.getImage());
+
+        timer = new GameTimer();
 
         addKeyListener();
 
@@ -34,14 +38,14 @@ public final class GlassFrame extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (GamePanel.getINSTANCE() == null) return;
-                TypedActionHandel.handlePressedKey(e.getKeyCode());
+                if (GamePanel.gamePanelList.size() == 0) return;
+                TypedActionHandle.handlePressedKey(e.getKeyCode());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (GamePanel.getINSTANCE() == null) return;
-                TypedActionHandel.handleReleasedKey(e.getKeyCode());
+                if (GamePanel.gamePanelList.size() == 0) return;
+                TypedActionHandle.handleReleasedKey(e.getKeyCode());
             }
         });
     }
@@ -49,5 +53,9 @@ public final class GlassFrame extends JFrame {
     public static GlassFrame getINSTANCE() {
         if (INSTANCE == null) INSTANCE = new GlassFrame();
         return INSTANCE;
+    }
+
+    public GameTimer getTimer() {
+        return timer;
     }
 }

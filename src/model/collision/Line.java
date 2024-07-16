@@ -3,7 +3,7 @@ package model.collision;
 import java.awt.geom.Point2D;
 
 public class Line {
-    Point2D start, end;
+    private Point2D start, end;
     public Line(Point2D start, Point2D end) {
         this.start = start;
         this.end = end;

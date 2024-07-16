@@ -16,14 +16,14 @@ import java.util.UUID;
 
 public class SquareEnemy implements Collidable, Movable {
     private final String id;
-    double size;
-    double speed, initialSpeed;
-    boolean isDash, isImpact;
-    int hp;
+    private double size;
+    private double speed, initialSpeed;
+    private boolean isDash, isImpact;
+    private int hp;
     private final int reducerHp, collectibleNumber, collectibleXp;
-    Point2D center;
-    Direction direction;
-    ArrayList<Point2D> vertices;
+    private Point2D center;
+    private Direction direction;
+    private ArrayList<Point2D> vertices;
     public static ArrayList<SquareEnemy> squareEnemyList = new ArrayList<>();
 
     public SquareEnemy(Point2D center, double size, double speed) {

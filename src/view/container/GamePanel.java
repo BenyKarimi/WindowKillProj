@@ -18,15 +18,16 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static controller.Utils.aimAndBulletDrawerCalculator;
-import static controller.constant.Constants.GAME_PANEL_INITIAL_DIMENSION;
 
 public class GamePanel extends JPanel {
-    private static GamePanel INSTANCE;
-    private Point2D mousePoint = new Point2D.Double(0, 0);
-    private GameTimer timer;
-    public GamePanel() {
+    private static Point2D mousePoint = new Point2D.Double(0, 0);
+    private final String id;
+    private double upLeftX, upLeftY, width, height;
+    public static ArrayList<GamePanel> gamePanelList = new ArrayList<>();
+    public GamePanel(String id, double x, double y, double width, double height) {
         try {
             Font font = Font.createFont(Font.TRUETYPE_FONT, new File("resources/akashi.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -35,42 +36,55 @@ public class GamePanel extends JPanel {
             throw new RuntimeException(e);
         }
 
-        INSTANCE = this;
-        timer = new GameTimer();
-        timer.Start();
-        this.setSize(GAME_PANEL_INITIAL_DIMENSION);
+        gamePanelList.add(this);
+        this.id = id;
+        this.upLeftX = x;
+        this.upLeftY = y;
+        this.width = width;
+        this.height = height;
+
         this.setLayout(null);
         this.setBackground(Color.BLACK);
 
-        this.setLocationToCenter(GlassFrame.getINSTANCE());
+        this.updateBound();
 
         this.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                mousePoint = new Point2D.Double(e.getX(), e.getY());
+                mousePoint = new Point2D.Double(e.getX() + upLeftX, e.getY() + upLeftY);
             }
         });
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                MouseClickedActionHandled.leftClicked(new Point2D.Double(e.getX(), e.getY()));
+                MouseClickedActionHandled.leftClicked(new Point2D.Double(e.getX() + upLeftX, e.getY() + upLeftY));
             }
         });
 
         GlassFrame.getINSTANCE().add(this);
     }
-    public void setLocationToCenter(GlassFrame glassFrame){
-        setLocation(glassFrame.getWidth()/2-getWidth()/2,glassFrame.getHeight()/2-getHeight()/2);
+    public void updateBound(){
+        setBounds((int) upLeftX, (int) upLeftY, (int) width, (int) height);
     }
-    public static void setINSTANCE(GamePanel INSTANCE) {
-        GamePanel.INSTANCE = INSTANCE;
+
+    public void setUpLeftX(double upLeftX) {
+        this.upLeftX = upLeftX;
     }
-    public static GamePanel getINSTANCE() {
-//        if (INSTANCE == null) INSTANCE = new GamePanel();
-        return INSTANCE;
+
+    public void setUpLeftY(double upLeftY) {
+        this.upLeftY = upLeftY;
     }
-    public GameTimer getTimer() {
-        return timer;
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -82,67 +96,57 @@ public class GamePanel extends JPanel {
         drawTriangleEnemy((Graphics2D) g);
         drawSquareEnemy((Graphics2D) g);
         drawBulletView((Graphics2D) g);
-        drawInformation((Graphics2D) g);
+//        drawInformation((Graphics2D) g);
     }
     private void drawEpsilon(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();
         Image epsilonImage = new ImageIcon("resources/Epsilon.png").getImage();
         g.drawImage(epsilonImage
-                , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius())
-                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius())
+                , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius() - upLeftX)
+                , (int)(epsilonView.getCurrentCenter().getY() - epsilonView.getCurrentRadius() - upLeftY)
                 , 2 * (int)epsilonView.getCurrentRadius(), 2 * (int)epsilonView.getCurrentRadius(), null);
 
         g.setColor(new Color(255, 133, 0));
         for (Point2D ptr : epsilonView.getCurrentVertices()) {
-            g.fillOval((int) ptr.getX(), (int) ptr.getY(), 10, 10);
+            g.fillOval((int) (ptr.getX() - upLeftX), (int) (ptr.getY() - upLeftY), 10, 10);
         }
     }
     private void drawAim(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();
         Point2D center = aimAndBulletDrawerCalculator(mousePoint, epsilonView.getCurrentCenter(), epsilonView.getCurrentRadius());
         g.setColor(new Color(15, 58, 192));
-        g.fillOval((int)(center.getX() - 5), (int)(center.getY() - 4), 10, 10);
+        g.fillOval((int)(center.getX() - 5 - upLeftX), (int)(center.getY() - 4 - upLeftY), 10, 10);
     }
     private void drawTriangleEnemy(Graphics2D g) {
         Image TriangleEnemyImage = new ImageIcon("resources/TriangeEnemy.png").getImage();
         for (TriangleEnemyView ptr : TriangleEnemyView.triangleEnemyViewList) {
-            g.drawImage(TriangleEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2))
-            , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2))
+            g.drawImage(TriangleEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+            , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
             , (int)(ptr.getCurrentSize()), (int)(ptr.getCurrentSize()), null);
         }
     }
     private void drawSquareEnemy(Graphics2D g) {
         Image SquareEnemyImage = new ImageIcon("resources/SquareEnemy.png").getImage();
         for (SquareEnemyView ptr : SquareEnemyView.squareEnemyViewList) {
-            g.drawImage(SquareEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2))
-                    , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2))
+            g.drawImage(SquareEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
                     , (int)(ptr.getCurrentSize()), (int)(ptr.getCurrentSize()), null);
         }
     }
     private void drawBulletView(Graphics2D g) {
         for (BulletView ptr : BulletView.bulletViewList) {
             g.setColor(new Color(15, 58, 192));
-            g.fillOval((int)(ptr.getCurrentCenter().getX() - ptr.getCurrentRadius())
-                    , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentRadius())
+            g.fillOval((int)(ptr.getCurrentCenter().getX() - ptr.getCurrentRadius() - upLeftX)
+                    , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentRadius() - upLeftY)
                     , 2 * (int)ptr.getCurrentRadius(), 2 * (int)ptr.getCurrentRadius());
         }
     }
     private void drawCollectibleView(Graphics2D g) {
         for (CollectibleView ptr : CollectibleView.collectibleViewList) {
             g.setColor(Color.CYAN);
-            g.fillRect((int) (ptr.getCurrentCenter().getX() - ptr.getCurrentSize() / 2)
-                    , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentSize() / 2)
+            g.fillRect((int) (ptr.getCurrentCenter().getX() - ptr.getCurrentSize() / 2 - upLeftX)
+                    , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentSize() / 2 - upLeftY)
                     , (int) ptr.getCurrentSize(), (int) ptr.getCurrentSize());
         }
-    }
-    private void drawInformation(Graphics2D g) {
-        int width = this.getWidth() / 4;
-        int height = this.getHeight() / 15;
-        g.setColor(Constants.SHOW_COLOR);
-        g.setFont(new Font("akashi", Font.BOLD, 15));
-        g.drawString("XP: " + EpsilonView.getINSTANCE().getCurrentXp(), 20, height);
-        g.drawString("HP: " + EpsilonView.getINSTANCE().getCurrentHp(), width + 20, height);
-        g.drawString(timer.toString(), 2 * width + 20, height);
-        g.drawString("Wave: " + GameValues.waveNumber, 3 * width + 20, height);
     }
 }

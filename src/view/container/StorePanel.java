@@ -2,7 +2,7 @@ package view.container;
 
 import controller.Controller;
 import controller.constant.Constants;
-import controller.handeler.StoreActionHandel;
+import controller.handeler.StoreActionHandle;
 import model.charactersModel.EpsilonModel;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class StorePanel extends JPanel {
         backToGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                StoreActionHandel.handelActions();
+                StoreActionHandle.handelActions();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
@@ -70,8 +70,8 @@ public class StorePanel extends JPanel {
                     return;
                 }
                 epsilon.setXp(epsilon.getXp() - 100);
-                StoreActionHandel.setDoImpact(true);
-                StoreActionHandel.handelActions();
+                StoreActionHandle.setDoImpact(true);
+                StoreActionHandle.handelActions();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
@@ -101,8 +101,8 @@ public class StorePanel extends JPanel {
                     return;
                 }
                 epsilon.setXp(epsilon.getXp() - 75);
-                StoreActionHandel.setThreeBullet(true);
-                StoreActionHandel.handelActions();
+                StoreActionHandle.setThreeBullet(true);
+                StoreActionHandle.handelActions();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
@@ -132,8 +132,8 @@ public class StorePanel extends JPanel {
                     return;
                 }
                 epsilon.setXp(epsilon.getXp() - 50);
-                StoreActionHandel.setAddHp(true);
-                StoreActionHandel.handelActions();
+                StoreActionHandle.setAddHp(true);
+                StoreActionHandle.handelActions();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();

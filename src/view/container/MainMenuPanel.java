@@ -3,13 +3,10 @@ package view.container;
 import controller.Controller;
 import controller.constant.Constants;
 import controller.handeler.SkillTreeHandled;
-import controller.handeler.StoreActionHandel;
-import controller.handeler.TypedActionHandel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -59,7 +56,6 @@ public class MainMenuPanel extends JPanel {
                     throw new RuntimeException(ex);
                 }
                 GlassFrame.getINSTANCE().remove(INSTANCE);
-                GamePanel gamePanel = new GamePanel();
                 Controller controller = new Controller();
                 new SkillTreeHandled();
                 GlassFrame.getINSTANCE().setExtendedState(JFrame.MAXIMIZED_BOTH);

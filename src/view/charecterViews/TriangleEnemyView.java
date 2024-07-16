@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class TriangleEnemyView {
     private final String id;
-    Point2D currentCenter;
-    double currentSize;
+    private Point2D currentCenter;
+    private double currentSize;
     public static ArrayList<TriangleEnemyView> triangleEnemyViewList = new ArrayList<>();
     public TriangleEnemyView(String id) {
         this.id = id;

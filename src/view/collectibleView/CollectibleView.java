@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class CollectibleView {
     private final String id;
-    Point2D currentCenter;
-    double currentSize;
+    private Point2D currentCenter;
+    private double currentSize;
     public static ArrayList<CollectibleView> collectibleViewList = new ArrayList<>();
 
     public CollectibleView(String id) {

@@ -5,6 +5,7 @@ import controller.constant.Constants;
 import controller.constant.KeyActions;
 import model.charactersModel.EpsilonModel;
 import view.container.GamePanel;
+import view.container.GlassFrame;
 import view.gameTimerView.GameTimer;
 
 public class SkillTreeHandled {
@@ -22,7 +23,7 @@ public class SkillTreeHandled {
     private static GameTimer timer;
     private static EpsilonModel epsilon;
     public SkillTreeHandled() {
-        timer = GamePanel.getINSTANCE().getTimer();
+        timer = GlassFrame.getINSTANCE().getTimer();
         epsilon = Controller.getINSTANCE().logic.epsilon;
     }
     public static void handlePressedKeys(int keyKode) {

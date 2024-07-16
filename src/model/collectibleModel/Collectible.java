@@ -10,10 +10,10 @@ import java.util.UUID;
 
 public class Collectible {
     private final String id;
-    double size;
-    double existence;
-    int addedXp;
-    Point2D center;
+    private double size;
+    private double existence;
+    private int addedXp;
+    private Point2D center;
     public static ArrayList<Collectible> collectibleList = new ArrayList<>();
 
     public Collectible(Point2D center, int addedXp) {

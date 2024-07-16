@@ -16,14 +16,14 @@ import java.util.UUID;
 
 public class TriangleEnemy implements Collidable, Movable {
     private final String id;
-    double size;
-    boolean isImpact;
-    double speed, initialSpeed;
-    int hp;
+    private double size;
+    private boolean isImpact;
+    private double speed, initialSpeed;
+    private int hp;
     private final int reducerHp, collectibleNumber, collectibleXp;
-    Point2D center;
-    Direction direction;
-    ArrayList<Point2D> vertices;
+    private Point2D center;
+    private Direction direction;
+    private ArrayList<Point2D> vertices;
     public static ArrayList<TriangleEnemy> triangleEnemyList = new ArrayList<>();
 
     public TriangleEnemy(Point2D center, double size, double speed) {

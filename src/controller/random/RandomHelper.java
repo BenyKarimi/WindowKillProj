@@ -44,7 +44,7 @@ public class RandomHelper {
             return random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 30, ENEMY_SIZE_EASY_LEVEL - 20);
         }
     }
-    public static ArrayList<Point2D> randomWaveEnemyCenters() {
+    public static ArrayList<Point2D> randomWaveEnemyCenters(double x, double y, double width, double height) {
         int tmp = 0;
         if (GameValues.level.equals(Level.EASY)) tmp = 1;
         else if (GameValues.level.equals(Level.MEDIUM)) tmp = 2;
@@ -54,7 +54,7 @@ public class RandomHelper {
         ArrayList<Point2D> out = new ArrayList<>();
 
         while (out.size() < num) {
-            Point2D test = new Point2D.Double(random.nextDouble(0, GamePanel.getINSTANCE().getWidth()), random.nextDouble(0, GamePanel.getINSTANCE().getHeight()));
+            Point2D test = new Point2D.Double(random.nextDouble(x, x + width), random.nextDouble(y, y + width));
             boolean ok = true;
             for (Point2D ptr : out)
                 if (ptr.equals(test)) {

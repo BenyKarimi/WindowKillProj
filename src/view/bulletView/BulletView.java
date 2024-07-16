@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class BulletView {
     private final String id;
-    Point2D currentCenter;
-    double currentRadius;
+    private Point2D currentCenter;
+    private double currentRadius;
     public static ArrayList<BulletView> bulletViewList = new ArrayList<>();
 
     public BulletView(String id) {

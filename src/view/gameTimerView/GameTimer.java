@@ -39,7 +39,7 @@ public class GameTimer implements ActionListener {
     public void Start() {
         timer.start();
     }
-
+    public void Reset() {seconds = 0;}
     @Override
     public void actionPerformed(ActionEvent e) {
         seconds++;

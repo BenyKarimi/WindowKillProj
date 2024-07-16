@@ -1,8 +1,6 @@
 package view.container;
 
-import controller.Controller;
 import controller.constant.Constants;
-import controller.handeler.StoreActionHandel;
 
 import javax.swing.*;
 import java.awt.*;
