@@ -8,7 +8,6 @@ import model.movement.Direction;
 import model.movement.Movable;
 import org.jetbrains.annotations.NotNull;
 import view.charecterViews.NecropickEnemyView;
-import view.charecterViews.SquareEnemyView;
 
 import java.awt.geom.Point2D;
 import java.io.File;
@@ -103,6 +102,12 @@ public class NecropickEnemy extends Enemy {
         for (int i = 0; i < Movable.movable.size(); i++) {
             if (Movable.movable.get(i).getId() != null && Movable.movable.get(i).getId().equals(id)) {
                 Movable.movable.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Enemy.enemiesList.size(); i++) {
+            if (Enemy.enemiesList.get(i).getId().equals(id)) {
+                Enemy.enemiesList.remove(i);
                 break;
             }
         }

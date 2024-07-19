@@ -1,6 +1,10 @@
 package controller;
 
 import model.panelModel.PanelModel;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -11,6 +15,8 @@ import java.util.UUID;
 import static controller.constant.Constants.ERROR;
 
 public class Utils {
+    private static final GeometryFactory geometryFactory = new GeometryFactory();
+
     public static Point2D addVectors(Point2D p1, Point2D p2) {
         return new Point2D.Double(p1.getX() + p2.getX(), p1.getY() + p2.getY());
     }
@@ -158,5 +164,42 @@ public class Utils {
     }
     public static String processRandomId() {
         return UUID.randomUUID().toString();
+    }
+    public static boolean isPolygonInside(Polygon p1, Polygon p2) {
+        return p1.contains(p2);
+    }
+    public static <T, U> boolean pairArrayContainsKey (ArrayList<Pair<T, U>> pairArrayList, T key) {
+        for(Pair<T, U> ptr : pairArrayList) {
+            if (ptr.getFirst().equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public static <T, U> void pairArrayRemoveKey (ArrayList<Pair<T, U>> pairArrayList, T key) {
+        for (int i = 0; i < pairArrayList.size(); i++) {
+            if (pairArrayList.get(i).getFirst().equals(key)) {
+                pairArrayList.remove(i);
+                return;
+            }
+        }
+    }
+    public static Polygon makePolygonWithVertices(ArrayList<Point2D> point1) {
+        Coordinate[] c1 = new Coordinate[point1.size() + 1];
+        for (int i = 0; i <= point1.size(); i++) c1[i] = new Coordinate(point1.get(i % point1.size()).getX(), point1.get(i % point1.size()).getY());
+        return geometryFactory.createPolygon(c1);
+    }
+    public static Geometry calculateUnion(ArrayList<Polygon> polygons) {
+        if (polygons.isEmpty()) {
+            return null;
+        }
+        Geometry geometry = polygons.get(0).union(polygons.get(0));
+
+        geometry.contains(polygons.get(0));
+        for (int i = 1; i < polygons.size(); i++) {
+            geometry = geometry.union(polygons.get(i));
+        }
+
+        return geometry;
     }
 }

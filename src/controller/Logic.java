@@ -56,7 +56,7 @@ public class Logic {
     }
     public boolean makeWave(double x, double y, double width, double height) {
 //        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
-        if (NecropickEnemy.necropickEnemiesList.size() > 0) return false;
+        if (ArchmireEnemy.archmireEnemiesList.size() > 0) return false;
         GameValues.waveNumber++;
         if (GameValues.waveNumber == 4) return false;
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(x, y, width, height);
@@ -66,7 +66,7 @@ public class Logic {
             }
             else {
 //                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-                new NecropickEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+                new ArchmireEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
         }
         return true;
@@ -98,12 +98,15 @@ public class Logic {
         GamePanel.gamePanelList.clear();
         GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
         InformationPanel.setINSTANCE(null);
+        EpsilonModel.epsilonModelsList.clear();
         RigidBulletModel.rigidBulletModelList.clear();
         NonRigidBulletModel.nonRigidBulletModelsList.clear();
+        Enemy.enemiesList.clear();
         SquareEnemy.squareEnemyList.clear();
         TriangleEnemy.triangleEnemyList.clear();
         OmenoctEnemy.omenoctEnemyList.clear();
         NecropickEnemy.necropickEnemiesList.clear();
+        ArchmireEnemy.archmireEnemiesList.clear();
         Collectible.collectibleList.clear();
         BulletView.bulletViewList.clear();
         EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
@@ -111,6 +114,7 @@ public class Logic {
         TriangleEnemyView.triangleEnemyViewList.clear();
         OmenoctEnemyView.omenoctEnemyViewList.clear();
         NecropickEnemyView.necropickEnemyViewsList.clear();
+        ArchmireEnemyView.archmireEnemyViewsList.clear();
         CollectibleView.collectibleViewList.clear();
         Collidable.collidables.clear();
         Movable.movable.clear();
@@ -160,6 +164,12 @@ public class Logic {
     }
     public NecropickEnemy findNecropickEnemyModel(String id) {
         for (NecropickEnemy ptr : NecropickEnemy.necropickEnemiesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public ArchmireEnemy findArchmireEnemyModel(String id) {
+        for (ArchmireEnemy ptr : ArchmireEnemy.archmireEnemiesList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

@@ -79,6 +79,12 @@ public class TriangleEnemy extends Enemy {
                 break;
             }
         }
+        for (int i = 0; i < Enemy.enemiesList.size(); i++) {
+            if (Enemy.enemiesList.get(i).getId().equals(id)) {
+                Enemy.enemiesList.remove(i);
+                break;
+            }
+        }
         for (int i = 0; i < TriangleEnemyView.triangleEnemyViewList.size(); i++) {
             if (TriangleEnemyView.triangleEnemyViewList.get(i).getId().equals(id)) {
                 TriangleEnemyView.triangleEnemyViewList.remove(i);

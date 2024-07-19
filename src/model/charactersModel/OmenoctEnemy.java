@@ -91,6 +91,12 @@ public class OmenoctEnemy extends Enemy {
                 break;
             }
         }
+        for (int i = 0; i < Enemy.enemiesList.size(); i++) {
+            if (Enemy.enemiesList.get(i).getId().equals(id)) {
+                Enemy.enemiesList.remove(i);
+                break;
+            }
+        }
         for (int i = 0; i < OmenoctEnemyView.omenoctEnemyViewList.size(); i++) {
             if (OmenoctEnemyView.omenoctEnemyViewList.get(i).getId().equals(id)) {
                 OmenoctEnemyView.omenoctEnemyViewList.remove(i);

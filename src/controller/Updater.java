@@ -16,10 +16,7 @@ import model.panelModel.PanelModel;
 import model.panelModel.WallSideIndicator;
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
-import view.charecterViews.NecropickEnemyView;
-import view.charecterViews.OmenoctEnemyView;
-import view.charecterViews.SquareEnemyView;
-import view.charecterViews.TriangleEnemyView;
+import view.charecterViews.*;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 import view.container.GlassFrame;
@@ -58,6 +55,7 @@ public class Updater {
         updateSquareEnemyView();
         updateOmenoctEnemyView();
         updateNecropickEnemyView();
+        updateArchmireEnemyView();
         updateCollectibleView();
         updateBulletView();
         updateNonRigidBulletView();
@@ -74,6 +72,7 @@ public class Updater {
         SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
         updateCollectibleModel();
+        reduceHealthByArchmire();
         updateCollisionAndImpact();
         checkCollisionBulletAndPanels();
         moveAllModels();
@@ -171,6 +170,61 @@ public class Updater {
             ptr.updateSpeed(epsilon.getCenter());
             ptr.calculateVertices();
         }
+        for (ArchmireEnemy ptr : ArchmireEnemy.archmireEnemiesList) {
+            ptr.updateDirection(epsilon.getCenter());
+            ptr.updateEntitiesInsideDrown(gameTimer.getMiliSecond());
+            ptr.updateEntitiesInsideAOE(gameTimer.getMiliSecond());
+            ptr.updateCentersMemory(gameTimer.getMiliSecond());
+            ptr.calculateVertices();
+        }
+    }
+    private void reduceHealthByArchmire() {
+        boolean done = false;
+
+        while(!done){
+            done = true;
+            ArrayList<ArchmireEnemy> archmires = ArchmireEnemy.archmireEnemiesList;
+            for (int j = 0; j < archmires.size(); j++) {
+                ArchmireEnemy archmire = archmires.get(j);
+                ArrayList<Pair<Enemy, Integer>> tmp = archmire.getEnemiesInsideDrown();
+                for (int i = 0; i < tmp.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp.get(i).getSecond() >= 1000) {
+                        enemyHealthReduction(tmp.get(i).getFirst(), ARCHMIRE_ENEMY_DROWN_REDUCER_HP);
+                        done = false;
+                        tmp.remove(i);
+                        break;
+                    }
+                }
+                tmp = archmire.getEnemiesInsideAOE();
+                System.out.println(tmp.size());
+                for (int i = 0; i < tmp.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp.get(i).getSecond() >= 1000) {
+                        enemyHealthReduction(tmp.get(i).getFirst(), ARCHMIRE_ENEMY_AOE_REDUCER_HP);
+                        done = false;
+                        tmp.remove(i);
+                        break;
+                    }
+                }
+                ArrayList<Pair<EpsilonModel, Integer>> tmp2 = archmire.getEpsilonsInsideDrown();
+                for (int i = 0; i < tmp2.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp2.get(i).getSecond() >= 1000) {
+                        epsilonHealthReduction(tmp2.get(i).getFirst(), ARCHMIRE_ENEMY_DROWN_REDUCER_HP);
+                        done = false;
+                        tmp2.remove(i);
+                        break;
+                    }
+                }
+                tmp2 = archmire.getEpsilonsInsideAOE();
+                for (int i = 0; i < tmp2.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp2.get(i).getSecond() >= 1000) {
+                        epsilonHealthReduction(tmp2.get(i).getFirst(), ARCHMIRE_ENEMY_AOE_REDUCER_HP);
+                        done = false;
+                        tmp2.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
     private void updateCollectibleModel() {
         int ptr = 0;
@@ -220,8 +274,7 @@ public class Updater {
                             enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
                         }
                         else if (secondVer && !firstVer) {
-                            if (((Enemy) second).getReducerHp() != 0) injured.play();
-                            epsilon.setHp(epsilon.getHp() - ((Enemy) second).getReducerHp());
+                            epsilonHealthReduction(epsilon, ((Enemy) second).getReducerHp());
                         }
                         impactLevel = 5;
                     }
@@ -239,13 +292,12 @@ public class Updater {
                     }
                     else if (first instanceof EpsilonModel && (second instanceof NonRigidBulletModel || second instanceof RigidBulletModel)) {
                         if (second instanceof RigidBulletModel && ((RigidBulletModel) second).getShooterEntity().equals(first.getId())) continue;
-                        injured.play();
                         if (second instanceof NonRigidBulletModel) {
-                            epsilon.setHp(epsilon.getHp() - ((NonRigidBulletModel) second).getReduceHp());
+                            epsilonHealthReduction(epsilon, ((NonRigidBulletModel) second).getReduceHp());
                             NonRigidBulletModel.removeFromAllList(second.getId());
                         }
                         if (second instanceof RigidBulletModel) {
-                            epsilon.setHp(epsilon.getHp() - ((RigidBulletModel) second).getReduceHp());
+                            epsilonHealthReduction(epsilon, ((RigidBulletModel) second).getReduceHp());
                             RigidBulletModel.removeFromAllList(second.getId());
                         }
                         impactLevel = 5;
@@ -280,9 +332,14 @@ public class Updater {
             if (enemy instanceof SquareEnemy) SquareEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof OmenoctEnemy) OmenoctEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof NecropickEnemy) NecropickEnemy.removeFromAllList(enemy.getId());
+            if (enemy instanceof ArchmireEnemy) ArchmireEnemy.removeFromAllList(enemy.getId());
             return true;
         }
         return false;
+    }
+    private void epsilonHealthReduction(EpsilonModel epsilon, int reduceHp) {
+        if (reduceHp != 0) injured.play();
+        epsilon.setHp(epsilon.getHp() - reduceHp);
     }
     private void omenoctWallHealthReduction(WallSideIndicator wallSideIndicator, double pl) {
         for (int i = 0; i < OmenoctEnemy.omenoctEnemyList.size(); i++) {
@@ -362,6 +419,14 @@ public class Updater {
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentSize(tmp.getSize());
             ptr.setStationedType(tmp.getStationedType());
+        }
+    }
+    private void updateArchmireEnemyView() {
+        for (ArchmireEnemyView ptr : ArchmireEnemyView.archmireEnemyViewsList) {
+            ArchmireEnemy tmp = Controller.getINSTANCE().logic.findArchmireEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+            ptr.setCurrentCentersPointMemory(tmp.getCentersPointMemory());
         }
     }
     private void updateCollectibleView() {

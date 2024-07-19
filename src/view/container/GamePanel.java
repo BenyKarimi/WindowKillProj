@@ -1,5 +1,6 @@
 package view.container;
 
+import controller.Pair;
 import controller.constant.Constants;
 import controller.handeler.MouseClickedActionHandled;
 import controller.constant.GameValues;
@@ -98,6 +99,7 @@ public class GamePanel extends JPanel {
         drawSquareEnemy((Graphics2D) g);
         drawOmenoctEnemy((Graphics2D) g);
         drawNecropickEnemy((Graphics2D) g);
+        drawArchmireEnemy((Graphics2D) g);
         drawBulletView((Graphics2D) g);
         drawNonRigidBullet((Graphics2D) g);
     }
@@ -160,6 +162,20 @@ public class GamePanel extends JPanel {
             }
         }
     }
+    private void drawArchmireEnemy(Graphics2D g) {
+        Image ArchmireEnemyImage = new ImageIcon("resources/ArchmireEnemy.png").getImage();
+        for (ArchmireEnemyView ptr : ArchmireEnemyView.archmireEnemyViewsList) {
+            g.drawImage(ArchmireEnemyImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+            for (Pair<Point2D, Integer> tmp : ptr.getCurrentCentersPointMemory()) {
+                g.setColor(new Color(251, 55, 60, (int) ((1 - (GlassFrame.getINSTANCE().getTimer().getMiliSecond() - tmp.getSecond()) / 5000.0) * 125)));
+                g.fillOval((int)(tmp.getFirst().getX() - ptr.getCurrentSize() / 2 - upLeftX)
+                        , (int)(tmp.getFirst().getY() - ptr.getCurrentSize() / 2 - upLeftY)
+                        , (int)ptr.getCurrentSize(), (int)ptr.getCurrentSize());
+            }
+        }
+    }
     private void drawBulletView(Graphics2D g) {
         for (BulletView ptr : BulletView.bulletViewList) {
             g.setColor(new Color(15, 58, 192));
@@ -178,7 +194,7 @@ public class GamePanel extends JPanel {
     }
     private void drawNonRigidBullet(Graphics2D g) {
         for (EnemyNonRigidBulletView ptr : EnemyNonRigidBulletView.nonRigidBulletViewsList) {
-            g.setColor(new Color(255, 182, 0));
+            g.setColor(new Color(255, 182, 0, 255));
             g.fillOval((int)(ptr.getCurrentCenter().getX() - ptr.getCurrentRadius() - upLeftX)
                     , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentRadius() - upLeftY)
                     , 2 * (int)ptr.getCurrentRadius(), 2 * (int)ptr.getCurrentRadius());

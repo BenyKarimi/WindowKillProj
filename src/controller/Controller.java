@@ -3,10 +3,7 @@ package controller;
 
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
-import view.charecterViews.NecropickEnemyView;
-import view.charecterViews.OmenoctEnemyView;
-import view.charecterViews.SquareEnemyView;
-import view.charecterViews.TriangleEnemyView;
+import view.charecterViews.*;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 
@@ -43,6 +40,9 @@ public class Controller {
     }
     public void createNecropickEnemyView(String id) {
         new NecropickEnemyView(id);
+    }
+    public void createArchmireEnemyView(String id) {
+        new ArchmireEnemyView(id);
     }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();

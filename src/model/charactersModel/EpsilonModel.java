@@ -25,6 +25,7 @@ public class EpsilonModel implements Collidable, Movable {
     private ArrayList<PanelModel> mainPanels;
     private Direction direction;
     private ArrayList<Point2D> vertices;
+    public static ArrayList<EpsilonModel> epsilonModelsList = new ArrayList<>();
 
     public EpsilonModel(Point2D center) {
         this.center = center;
@@ -40,6 +41,7 @@ public class EpsilonModel implements Collidable, Movable {
         vertices = new ArrayList<>();
         Collidable.collidables.add(this);
         Movable.movable.add(this);
+        epsilonModelsList.add(this);
     }
     public void moveWithKeys(double xFactor, double yFactor) {
         xVelocity = xVelocity + (xFactor * (EPSILON_SPEED / 10));

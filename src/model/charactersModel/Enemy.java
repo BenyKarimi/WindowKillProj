@@ -18,6 +18,7 @@ public abstract class Enemy implements Collidable, Movable {
     private Point2D center;
     private Direction direction;
     private ArrayList<Point2D> vertices;
+    public static ArrayList<Enemy> enemiesList = new ArrayList<>();
 
     public Enemy(String id, double size, double speed, double initialSpeed, boolean isImpact, int hp, int reducerHp, int collectibleNumber, int collectibleXp, Point2D center, Direction direction, ArrayList<Point2D> vertices) {
         this.id = id;
@@ -32,6 +33,7 @@ public abstract class Enemy implements Collidable, Movable {
         this.center = center;
         this.direction = direction;
         this.vertices = vertices;
+        enemiesList.add(this);
     }
 
     public abstract void calculateVertices();

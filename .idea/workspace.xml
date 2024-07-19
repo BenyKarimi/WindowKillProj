@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Game End Mechanism Updated&#10;Panel Shrinkage Updated">
-      <change afterPath="$PROJECT_DIR$/lib/annotations-20.1.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/NecropickEnemy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/NecropickEnemyPreShow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/OmenoctEnemy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/bulletModel/NonRigidBulletModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/StationedType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/panelModel/WallSideIndicator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/bulletView/EnemyNonRigidBulletView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/NecropickEnemyView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/OmenoctEnemyView.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/locationtech_jts_core.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jts-core-1.18.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/ArchmireEnemy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Pair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/ArchmireEnemy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/ArchmireEnemyView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WindowKill.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WindowKill.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
@@ -22,19 +15,13 @@
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/bulletModel/BulletModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/bulletModel/RigidBulletModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/collision/Collidable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/collision/Collidable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/movement/Direction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/Direction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/movement/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/Movable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/EpsilonView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/charecterViews/EpsilonView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/gameTimerView/GameTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/gameTimerView/GameTimer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +32,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -80,9 +67,10 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Documents/GitHub/WindowKill-Phase1&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -140,7 +128,8 @@
       <workItem from="1721157504777" duration="1010000" />
       <workItem from="1721163730754" duration="1259000" />
       <workItem from="1721288163280" duration="11425000" />
-      <workItem from="1721374514216" duration="28961000" />
+      <workItem from="1721374514216" duration="43799000" />
+      <workItem from="1721420984765" duration="1499000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -226,7 +215,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721164994631</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions">
+      <created>1721404864116</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1721404864116</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +253,8 @@
     <MESSAGE value="Adding Skill tree Panel to main menu panel" />
     <MESSAGE value="Deleted Deprecated Files and Minor Bug Fixes" />
     <MESSAGE value="Game End Mechanism Updated&#10;Panel Shrinkage Updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="Game End Mechanism Updated&#10;Panel Shrinkage Updated" />
+    <MESSAGE value="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

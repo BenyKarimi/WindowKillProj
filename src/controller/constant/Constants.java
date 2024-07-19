@@ -36,6 +36,12 @@ public class Constants {
     public static final int OMENOCT_ENEMY_REDUCER_HP = 8;
     public static final int OMENOCT_ENEMY_COLLECTIBLE_NUMBER = 8;
     public static final int OMENOCT_ENEMY_COLLECTIBLE_XP = 4;
+    public static final int ARCHMIRE_ENEMY_HP = 30;
+    public static final int ARCHMIRE_ENEMY_REDUCER_HP = 0;
+    public static final int ARCHMIRE_ENEMY_COLLECTIBLE_NUMBER = 5;
+    public static final int ARCHMIRE_ENEMY_COLLECTIBLE_XP = 6;
+    public static final int ARCHMIRE_ENEMY_DROWN_REDUCER_HP = 10;
+    public static final int ARCHMIRE_ENEMY_AOE_REDUCER_HP = 2;
     public static final int NECROPICK_ENEMY_HP = 10;
     public static final int NECROPICK_ENEMY_REDUCER_HP = 0;
     public static final int NECROPICK_ENEMY_COLLECTIBLE_NUMBER = 4;

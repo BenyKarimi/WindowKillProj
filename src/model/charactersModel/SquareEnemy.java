@@ -79,6 +79,12 @@ public class SquareEnemy extends Enemy {
                 break;
             }
         }
+        for (int i = 0; i < Enemy.enemiesList.size(); i++) {
+            if (Enemy.enemiesList.get(i).getId().equals(id)) {
+                Enemy.enemiesList.remove(i);
+                break;
+            }
+        }
         for (int i = 0; i < SquareEnemyView.squareEnemyViewList.size(); i++) {
             if (SquareEnemyView.squareEnemyViewList.get(i).getId().equals(id)) {
                 SquareEnemyView.squareEnemyViewList.remove(i);
