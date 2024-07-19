@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class EpsilonView {
+    private final String id;
     private static EpsilonView INSTANCE;
     private Point2D currentCenter;
     private int currentXp, currentHp;
     private double currentRadius;
     private ArrayList<Point2D> currentVertices;
-    public EpsilonView(Point2D currentCenter) {
+    public EpsilonView(String id, Point2D currentCenter) {
+        this.id = id;
         INSTANCE = this;
         this.currentCenter = currentCenter;
         currentRadius = EPSILON_RADIUS;

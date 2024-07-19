@@ -3,10 +3,11 @@ package view.container;
 import controller.constant.Constants;
 import controller.handeler.MouseClickedActionHandled;
 import controller.constant.GameValues;
+import model.charactersModel.NecropickEnemy;
+import model.charactersModel.StationedType;
 import view.bulletView.BulletView;
-import view.charecterViews.EpsilonView;
-import view.charecterViews.SquareEnemyView;
-import view.charecterViews.TriangleEnemyView;
+import view.bulletView.EnemyNonRigidBulletView;
+import view.charecterViews.*;
 import view.collectibleView.CollectibleView;
 import view.gameTimerView.GameTimer;
 
@@ -95,8 +96,10 @@ public class GamePanel extends JPanel {
         drawCollectibleView((Graphics2D) g);
         drawTriangleEnemy((Graphics2D) g);
         drawSquareEnemy((Graphics2D) g);
+        drawOmenoctEnemy((Graphics2D) g);
+        drawNecropickEnemy((Graphics2D) g);
         drawBulletView((Graphics2D) g);
-//        drawInformation((Graphics2D) g);
+        drawNonRigidBullet((Graphics2D) g);
     }
     private void drawEpsilon(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.getINSTANCE();
@@ -133,6 +136,30 @@ public class GamePanel extends JPanel {
                     , (int)(ptr.getCurrentSize()), (int)(ptr.getCurrentSize()), null);
         }
     }
+    private void drawOmenoctEnemy(Graphics2D g) {
+        Image omenoctEnemyImage = new ImageIcon("resources/OmenoctEnemy.png").getImage();
+        for (OmenoctEnemyView ptr : OmenoctEnemyView.omenoctEnemyViewList) {
+            g.drawImage(omenoctEnemyImage, (int)(ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int)(ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int)(ptr.getCurrentSize()), (int)(ptr.getCurrentSize()), null);
+        }
+    }
+    private void drawNecropickEnemy(Graphics2D g) {
+        Image NecropickEnemyImage = new ImageIcon("resources/NecropickEnemy.png").getImage();
+        Image NecropickEnemyPreShowImage = new ImageIcon("resources/NecropickEnemyPreShow.png").getImage();
+        for (NecropickEnemyView ptr : NecropickEnemyView.necropickEnemyViewsList) {
+            if (ptr.getStationedType().equals(StationedType.SHOW)) {
+                g.drawImage(NecropickEnemyImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                        , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                        , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+            }
+            else if (ptr.getStationedType().equals(StationedType.PRE_SHOW)) {
+                g.drawImage(NecropickEnemyPreShowImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                        , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                        , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+            }
+        }
+    }
     private void drawBulletView(Graphics2D g) {
         for (BulletView ptr : BulletView.bulletViewList) {
             g.setColor(new Color(15, 58, 192));
@@ -147,6 +174,14 @@ public class GamePanel extends JPanel {
             g.fillRect((int) (ptr.getCurrentCenter().getX() - ptr.getCurrentSize() / 2 - upLeftX)
                     , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentSize() / 2 - upLeftY)
                     , (int) ptr.getCurrentSize(), (int) ptr.getCurrentSize());
+        }
+    }
+    private void drawNonRigidBullet(Graphics2D g) {
+        for (EnemyNonRigidBulletView ptr : EnemyNonRigidBulletView.nonRigidBulletViewsList) {
+            g.setColor(new Color(255, 182, 0));
+            g.fillOval((int)(ptr.getCurrentCenter().getX() - ptr.getCurrentRadius() - upLeftX)
+                    , (int)(ptr.getCurrentCenter().getY() - ptr.getCurrentRadius() - upLeftY)
+                    , 2 * (int)ptr.getCurrentRadius(), 2 * (int)ptr.getCurrentRadius());
         }
     }
 }

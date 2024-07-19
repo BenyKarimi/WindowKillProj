@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import static controller.constant.Constants.ERROR;
 
 public class Utils {
     public static Point2D addVectors(Point2D p1, Point2D p2) {
@@ -136,5 +139,24 @@ public class Utils {
             }
         }
         return out;
+    }
+    public static boolean ApproxEqual(double a, double b) {
+        return a - ERROR <= b && a + ERROR >= b;
+    }
+    public static ArrayList<Point2D> calculateSquareVertices(Point2D center, double size) {
+        ArrayList<Point2D> out = new ArrayList<>();
+        Point2D leftUp = new Point2D.Double(center.getX() - (size / 2), center.getY() - (size / 2));
+        Point2D rightUp = new Point2D.Double(center.getX() + (size / 2), center.getY() - (size / 2));
+        Point2D rightDown = new Point2D.Double(center.getX() + (size / 2), center.getY() + (size / 2));
+        Point2D leftDown = new Point2D.Double(center.getX() - (size / 2), center.getY() + (size / 2));
+
+        out.add(leftUp);
+        out.add(leftDown);
+        out.add(rightUp);
+        out.add(rightDown);
+        return out;
+    }
+    public static String processRandomId() {
+        return UUID.randomUUID().toString();
     }
 }

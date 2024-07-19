@@ -6,6 +6,7 @@ import controller.constant.Constants;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
+import org.jetbrains.annotations.NotNull;
 import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 
@@ -14,134 +15,49 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class TriangleEnemy implements Collidable, Movable {
-    private final String id;
-    private double size;
-    private boolean isImpact;
-    private double speed, initialSpeed;
-    private int hp;
-    private final int reducerHp, collectibleNumber, collectibleXp;
-    private Point2D center;
-    private Direction direction;
-    private ArrayList<Point2D> vertices;
+import static controller.constant.Constants.*;
+
+public class TriangleEnemy extends Enemy {
     public static ArrayList<TriangleEnemy> triangleEnemyList = new ArrayList<>();
 
     public TriangleEnemy(Point2D center, double size, double speed) {
-        this.center = center;
-        this.size = size;
-        this.speed = speed;
-        this.initialSpeed = speed;
-        this.id = UUID.randomUUID().toString();
-        this.direction = new Direction(new Point2D.Double(0, 0));
-        this.hp = Constants.TRIANGLE_ENEMY_HP;
-        this.reducerHp = Constants.TRIANGLE_ENEMY_REDUCER_HP;
-        this.collectibleNumber = Constants.TRIANGLE_ENEMY_COLLECTIBLE_NUMBER;
-        this.collectibleXp = Constants.TRIANGLE_ENEMY_COLLECTIBLE_XP;
-        vertices = new ArrayList<>();
+        super(Utils.processRandomId(), size, speed, speed, false, TRIANGLE_ENEMY_HP, TRIANGLE_ENEMY_REDUCER_HP, TRIANGLE_ENEMY_COLLECTIBLE_NUMBER, TRIANGLE_ENEMY_COLLECTIBLE_XP,
+                center, new Direction(new Point2D.Double(0, 0)), new ArrayList<>());
         calculateVertices();
-        Controller.getINSTANCE().createTriangleEnemyView(id);
+        Controller.getINSTANCE().createTriangleEnemyView(super.getId());
         Collidable.collidables.add(this);
         triangleEnemyList.add(this);
         Movable.movable.add(this);
     }
+    @Override
     public void calculateVertices() {
-        vertices.clear();
-        Point2D upVer = new Point2D.Double(center.getX(), center.getY() - ((Math.sqrt(3) / 3.0) * size));
-        Point2D leftVer = new Point2D.Double(center.getX() - (size / 2), center.getY() + ((Math.sqrt(3) / 6.0) * size));
-        Point2D rightVer = new Point2D.Double(center.getX() + (size / 2), center.getY() + ((Math.sqrt(3) / 6.0) * size));
-        vertices.add(upVer);
-        vertices.add(leftVer);
-        vertices.add(rightVer);
+        super.getVertices().clear();
+        Point2D upVer = new Point2D.Double(super.getCenter().getX(), super.getCenter().getY() - ((Math.sqrt(3) / 3.0) * super.getSize()));
+        Point2D leftVer = new Point2D.Double(super.getCenter().getX() - (super.getSize() / 2), super.getCenter().getY() + ((Math.sqrt(3) / 6.0) * super.getSize()));
+        Point2D rightVer = new Point2D.Double(super.getCenter().getX() + (super.getSize() / 2), super.getCenter().getY() + ((Math.sqrt(3) / 6.0) * super.getSize()));
+        super.getVertices().add(upVer);
+        super.getVertices().add(leftVer);
+        super.getVertices().add(rightVer);
     }
 
-    public void updateDirection(Point2D point) {
-        Point2D delta = new Point2D.Double(point.getX() - center.getX(), point.getY() - center.getY());
+    @Override
+    public void updateDirection(@NotNull Point2D point) {
+        Point2D delta = new Point2D.Double(point.getX() - super.getCenter().getX(), point.getY() - super.getCenter().getY());
         Direction toPoint = new Direction(delta);
-        if (isImpact && speed > 0.25) {
-            speed -= (speed / 10);
+        if (super.isImpact() && super.getSpeed() > 0.25) {
+            super.setSpeed(super.getSpeed() - (super.getSpeed() / 10));
             return;
         }
-        if (isImpact) isImpact = false;
-        direction = new Direction(toPoint.getDirectionVector());
-        speed = Math.min(speed + (speed / 10), initialSpeed);
+        if (super.isImpact()) super.setImpact(false);
+        super.setDirection(new Direction(toPoint.getDirectionVector()));
+        super.setSpeed(Math.min(super.getSpeed() + (super.getSpeed() / 10), super.getInitialSpeed()));
     }
     public void updateSpeed(Point2D point) {
-        if (!isImpact) {
-            double distance = center.distance(point);
-            if (distance >= 200.0) speed *= 2;
-            else speed = initialSpeed;
+        if (!super.isImpact()) {
+            double distance = super.getCenter().distance(point);
+            if (distance >= 200.0) super.setSpeed(super.getSpeed() * 2);
+            else super.setSpeed(super.getInitialSpeed());
         }
-    }
-    @Override
-    public boolean isCircular() {
-        return false;
-    }
-    @Override
-    public double getRadius() {
-        return 0;
-    }
-
-    public void setImpact(boolean impact) {
-        isImpact = impact;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public void setCenter(Point2D center) {
-        this.center = center;
-    }
-
-    @Override
-    public Point2D getCenter() {
-        return center;
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed;
-    }
-
-    @Override
-    public ArrayList<Point2D> getVertices() {
-        return vertices;
-    }
-    public String getId() {
-        return id;
-    }
-
-    public double getSize() {
-        return size;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getReducerHp() {
-        return reducerHp;
-    }
-
-    public int getCollectibleNumber() {
-        return collectibleNumber;
-    }
-
-    public int getCollectibleXp() {
-        return collectibleXp;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public static void removeFromAllList(String id) {
@@ -170,11 +86,24 @@ public class TriangleEnemy implements Collidable, Movable {
             }
         }
     }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TriangleEnemy that = (TriangleEnemy) o;
-        return Objects.equals(id, that.id);
+    public boolean isCircular() {
+        return false;
+    }
+
+    @Override
+    public boolean isHovering() {
+        return false;
+    }
+
+    @Override
+    public double getRadius() {
+        return 0;
+    }
+
+    @Override
+    public boolean isStationed() {
+        return false;
     }
 }

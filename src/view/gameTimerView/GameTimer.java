@@ -1,17 +1,37 @@
 package view.gameTimerView;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class GameTimer implements ActionListener {
+public class GameTimer {
     private int seconds;
-    private Timer timer;
+    private int miliSecond;
+    private Thread secondThread;
+    private Thread miliSecondThread;
+    private boolean stopped;
 
     public GameTimer() {
         seconds = 0;
-        timer = new Timer(1000, this);
-        timer.start();
+        stopped = false;
+        secondThread = new Thread(() -> {
+            while (!stopped) {
+                seconds++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        secondThread.start();
+        miliSecondThread = new Thread(() -> {
+            while (!stopped) {
+                miliSecond += 100;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        miliSecondThread.start();
     }
 
     @Override
@@ -34,19 +54,18 @@ public class GameTimer implements ActionListener {
     }
 
     public void Stop() {
-        timer.stop();
+        stopped = true;
     }
     public void Start() {
-        timer.start();
+        stopped = false;
     }
     public void Reset() {seconds = 0;}
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        seconds++;
-    }
-
     public int getSeconds() {
         return seconds;
+    }
+
+    public int getMiliSecond() {
+        return miliSecond;
     }
 }
 

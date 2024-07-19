@@ -3,7 +3,7 @@ package model.panelModel;
 import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
-import model.bulletModel.BulletModel;
+import model.bulletModel.RigidBulletModel;
 import view.container.GlassFrame;
 
 import java.awt.*;
@@ -37,7 +37,7 @@ public class PanelModel {
         this.height = height;
         this.isometric = isometric;
         this.rigid = rigid;
-        this.id = UUID.randomUUID().toString();
+        this.id = Utils.processRandomId();
         Controller.getINSTANCE().createGamePanel(id, x, y, width, height);
         panelModelList.add(this);
     }
@@ -98,7 +98,7 @@ public class PanelModel {
 
         changeShrinkByCircle(Controller.getINSTANCE().logic.epsilon.getCenter(), Controller.getINSTANCE().logic.epsilon.getRadius());
 
-        for(BulletModel bullet : BulletModel.bulletModelList)
+        for(RigidBulletModel bullet : RigidBulletModel.rigidBulletModelList)
             changeShrinkByCircle(bullet.getCenter(), bullet.getRadius());
 
         // TODO: add the rigid bullets of enemies
@@ -188,17 +188,17 @@ public class PanelModel {
         }
     }
 
-    public void bulletHit(String wall) {
-        if (wall.equals("right")) {
+    public void bulletHit(WallSideIndicator wall) {
+        if (wall.equals(WallSideIndicator.RIGHT)) {
             rightAccel.add(-Constants.ACCELERATION_MAX_VAL  );
         }
-        if (wall.equals("left")) {
+        if (wall.equals(WallSideIndicator.LEFT)) {
             leftAccel.add(-Constants.ACCELERATION_MAX_VAL);
         }
-        if (wall.equals("up")) {
+        if (wall.equals(WallSideIndicator.UP)) {
             upAccel.add(-Constants.ACCELERATION_MAX_VAL);
         }
-        if (wall.equals("down")) {
+        if (wall.equals(WallSideIndicator.DOWN)) {
             downAccel.add(-Constants.ACCELERATION_MAX_VAL);
         }
     }

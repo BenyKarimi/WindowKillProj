@@ -6,10 +6,9 @@ import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandle;
 import controller.handeler.TypedActionHandle;
 import controller.random.RandomHelper;
-import model.bulletModel.BulletModel;
-import model.charactersModel.EpsilonModel;
-import model.charactersModel.SquareEnemy;
-import model.charactersModel.TriangleEnemy;
+import model.bulletModel.RigidBulletModel;
+import model.bulletModel.NonRigidBulletModel;
+import model.charactersModel.*;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.movement.Movable;
@@ -17,9 +16,8 @@ import model.panelModel.Isometric;
 import model.panelModel.PanelModel;
 import model.panelModel.Rigid;
 import view.bulletView.BulletView;
-import view.charecterViews.EpsilonView;
-import view.charecterViews.SquareEnemyView;
-import view.charecterViews.TriangleEnemyView;
+import view.bulletView.EnemyNonRigidBulletView;
+import view.charecterViews.*;
 import view.collectibleView.CollectibleView;
 import view.container.FinishPanel;
 import view.container.GamePanel;
@@ -29,7 +27,6 @@ import view.container.InformationPanel;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-import static controller.constant.Constants.COLLECTIBLE_SIZE;
 import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class Logic {
@@ -41,7 +38,7 @@ public class Logic {
     private void createEpsilon(double panelX, double panelY) {
         epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY));
 //        epsilonView = EpsilonView.getINSTANCE();
-        epsilonView = new EpsilonView(epsilon.getCenter());
+        epsilonView = new EpsilonView(epsilon.getId(), epsilon.getCenter());
     }
     private void createInitialPanel() {
         PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.YES);
@@ -50,27 +47,26 @@ public class Logic {
         GlassFrame.getINSTANCE().getTimer().Start();
         createEpsilon(panelModel.getX(), panelModel.getY());
     }
-    public void createCollectible(int collectibleNumber, int collectibleXp, Point2D enemyCenter) {
-        if (collectibleNumber == 1) {
-            new Collectible(enemyCenter, collectibleXp);
-        }
-        if (collectibleNumber == 2) {
-            new Collectible(new Point2D.Double(enemyCenter.getX() + 1.5 * COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
-            new Collectible(new Point2D.Double(enemyCenter.getX() - 1.5 * COLLECTIBLE_SIZE, enemyCenter.getY()), collectibleXp);
+    public void createCollectible(int collectibleNumber, int collectibleXp, Point2D enemyCenter, double size) {
+        ArrayList<Point2D> centers = Utils.circlePartition(enemyCenter, size / 2, collectibleNumber);
+
+        for (Point2D ptr : centers) {
+            new Collectible(ptr, collectibleXp);
         }
     }
     public boolean makeWave(double x, double y, double width, double height) {
-        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
-
+//        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
+        if (NecropickEnemy.necropickEnemiesList.size() > 0) return false;
         GameValues.waveNumber++;
         if (GameValues.waveNumber == 4) return false;
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(x, y, width, height);
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomWaveEnemyType() == 0) {
-                new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+//                new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
             else {
-                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+//                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+                new NecropickEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
         }
         return true;
@@ -100,16 +96,21 @@ public class Logic {
         }
         PanelModel.panelModelList.clear();
         GamePanel.gamePanelList.clear();
-//        Controller.setINSTANCE(null);
         GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
         InformationPanel.setINSTANCE(null);
-        BulletModel.bulletModelList.clear();
+        RigidBulletModel.rigidBulletModelList.clear();
+        NonRigidBulletModel.nonRigidBulletModelsList.clear();
         SquareEnemy.squareEnemyList.clear();
         TriangleEnemy.triangleEnemyList.clear();
+        OmenoctEnemy.omenoctEnemyList.clear();
+        NecropickEnemy.necropickEnemiesList.clear();
         Collectible.collectibleList.clear();
         BulletView.bulletViewList.clear();
+        EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
         SquareEnemyView.squareEnemyViewList.clear();
         TriangleEnemyView.triangleEnemyViewList.clear();
+        OmenoctEnemyView.omenoctEnemyViewList.clear();
+        NecropickEnemyView.necropickEnemyViewsList.clear();
         CollectibleView.collectibleViewList.clear();
         Collidable.collidables.clear();
         Movable.movable.clear();
@@ -133,8 +134,8 @@ public class Logic {
         }
         return null;
     }
-    public BulletModel findBulletModel(String id) {
-        for (BulletModel ptr : BulletModel.bulletModelList) {
+    public RigidBulletModel findBulletModel(String id) {
+        for (RigidBulletModel ptr : RigidBulletModel.rigidBulletModelList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;
@@ -147,6 +148,24 @@ public class Logic {
     }
     public PanelModel findPanelModel(String id) {
         for (PanelModel ptr : PanelModel.panelModelList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public OmenoctEnemy findOmenoctEnemyModel(String id) {
+        for (OmenoctEnemy ptr : OmenoctEnemy.omenoctEnemyList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public NecropickEnemy findNecropickEnemyModel(String id) {
+        for (NecropickEnemy ptr : NecropickEnemy.necropickEnemiesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public NonRigidBulletModel findNonRigidBullet(String id) {
+        for (NonRigidBulletModel ptr : NonRigidBulletModel.nonRigidBulletModelsList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

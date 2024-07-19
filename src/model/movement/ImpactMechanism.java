@@ -2,9 +2,7 @@ package model.movement;
 
 import controller.Controller;
 import controller.constant.Constants;
-import model.charactersModel.EpsilonModel;
-import model.charactersModel.SquareEnemy;
-import model.charactersModel.TriangleEnemy;
+import model.charactersModel.*;
 
 import java.awt.geom.Point2D;
 
@@ -33,6 +31,15 @@ public class ImpactMechanism {
         }
         /// square enemy
         for (SquareEnemy ptr : SquareEnemy.squareEnemyList) {
+            Direction direction = getNewDirection(collisionPoint, ptr.getCenter());
+            if (direction != null) {
+                ptr.setImpact(true);
+                ptr.setSpeed(getNewSpeed(collisionPoint, ptr.getCenter()) * impactLevel);
+                ptr.setDirection(direction);
+            }
+        }
+        /// omenoct
+        for (OmenoctEnemy ptr : OmenoctEnemy.omenoctEnemyList) {
             Direction direction = getNewDirection(collisionPoint, ptr.getCenter());
             if (direction != null) {
                 ptr.setImpact(true);

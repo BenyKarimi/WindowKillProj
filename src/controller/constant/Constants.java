@@ -32,6 +32,17 @@ public class Constants {
     public static final int SQUARE_ENEMY_REDUCER_HP = 6;
     public static final int SQUARE_ENEMY_COLLECTIBLE_NUMBER = 1;
     public static final int SQUARE_ENEMY_COLLECTIBLE_XP = 5;
+    public static final int OMENOCT_ENEMY_HP = 20;
+    public static final int OMENOCT_ENEMY_REDUCER_HP = 8;
+    public static final int OMENOCT_ENEMY_COLLECTIBLE_NUMBER = 8;
+    public static final int OMENOCT_ENEMY_COLLECTIBLE_XP = 4;
+    public static final int NECROPICK_ENEMY_HP = 10;
+    public static final int NECROPICK_ENEMY_REDUCER_HP = 0;
+    public static final int NECROPICK_ENEMY_COLLECTIBLE_NUMBER = 4;
+    public static final int NECROPICK_ENEMY_COLLECTIBLE_XP = 2;
+    public static final double NECROPICK_EPSILON_MIN_DISTANCE = 5 * EPSILON_RADIUS;
+    public static final int NECROPICK_RANGE_ATTACK_REDUCE_HP = 5;
+    public static final int NECROPICK_RANGE_ATTACK_NUMBER = 8;
     public static final int COLLECTIBLE_EXISTENCE = 4000;
     public static final int COLLECTIBLE_SIZE = 10;
     public static final int IMPACT_RADIUS = 250;
@@ -42,6 +53,8 @@ public class Constants {
     public static double EPSILON_SPEED = 5.5;
     public static double ACCELERATION_ADD_VALUE = 0.1;
     public static double ACCELERATION_MAX_VAL = 0.8;
+    public static double ERROR = 1.5;
+    public static int OMENOCT_BULLET_REDUCE_HP = 4;
     public static SoundPlayer bulletSound = new SoundPlayer("resources/songs/BulletSound.wav");
     public static SoundPlayer startWave = new SoundPlayer("resources/songs/statrtWave.wav");
     public static SoundPlayer gameOver = new SoundPlayer("resources/songs/GameOver.wav");

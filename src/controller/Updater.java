@@ -4,18 +4,20 @@ import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
 import controller.handeler.TypedActionHandle;
-import model.bulletModel.BulletModel;
-import model.charactersModel.EpsilonModel;
-import model.charactersModel.SquareEnemy;
-import model.charactersModel.TriangleEnemy;
+import model.bulletModel.RigidBulletModel;
+import model.bulletModel.NonRigidBulletModel;
+import model.charactersModel.*;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
 import model.movement.ImpactMechanism;
 import model.movement.Movable;
 import model.panelModel.PanelModel;
-import org.w3c.dom.css.CSSImportRule;
+import model.panelModel.WallSideIndicator;
 import view.bulletView.BulletView;
+import view.bulletView.EnemyNonRigidBulletView;
+import view.charecterViews.NecropickEnemyView;
+import view.charecterViews.OmenoctEnemyView;
 import view.charecterViews.SquareEnemyView;
 import view.charecterViews.TriangleEnemyView;
 import view.collectibleView.CollectibleView;
@@ -41,7 +43,7 @@ public class Updater {
     Timer viewUpdater;
     Timer modelUpdater;
     GameTimer gameTimer;
-    int startTime, startWave, startGoingBigger;
+    int startTime, startWave;
     public Updater() {
         gameTimer = GlassFrame.getINSTANCE().getTimer();
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
@@ -54,8 +56,11 @@ public class Updater {
         updateEpsilonView();
         updateTriangleEnemyView();
         updateSquareEnemyView();
+        updateOmenoctEnemyView();
+        updateNecropickEnemyView();
         updateCollectibleView();
         updateBulletView();
+        updateNonRigidBulletView();
         updatePanelView();
         for (GamePanel panel : GamePanel.gamePanelList) {
             panel.repaint();
@@ -155,6 +160,17 @@ public class Updater {
             ptr.calculateVertices();
             ptr.updateSpeed(epsilon.getCenter());
         }
+        for (OmenoctEnemy ptr : OmenoctEnemy.omenoctEnemyList) {
+            ptr.updateDirection(ptr.findTargetPanel(epsilon.getMainPanels()));
+            ptr.makeAttack(gameTimer.getSeconds(), epsilon.getCenter());
+            ptr.calculateVertices();
+        }
+        for (NecropickEnemy ptr : NecropickEnemy.necropickEnemiesList) {
+            ptr.updateStation(gameTimer.getMiliSecond());
+            ptr.updateDirection(epsilon.getCenter());
+            ptr.updateSpeed(epsilon.getCenter());
+            ptr.calculateVertices();
+        }
     }
     private void updateCollectibleModel() {
         int ptr = 0;
@@ -191,103 +207,118 @@ public class Updater {
                 if (tmp != null) point = tmp.getCollisionPoint();
 
                 if (point != null) {
-                    if ((first instanceof EpsilonModel && second instanceof BulletModel) || first instanceof BulletModel && second instanceof EpsilonModel) continue;
                     double impactLevel = 0;
-                    if (first instanceof EpsilonModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
+                    if (first instanceof NecropickEnemy && second instanceof NecropickEnemy) continue;
+                    if (first instanceof EpsilonModel && second instanceof Enemy) {
                         boolean firstVer = false;
                         boolean secondVer = false;
                         for (Point2D ptr : first.getVertices()) {
-                            if ((int)ptr.getX() == (int)point.getX() && (int)ptr.getY() == (int) point.getY()) firstVer = true;
+                            if (Utils.ApproxEqual(ptr.getX(), point.getX()) && Utils.ApproxEqual(point.getY(), ptr.getY())) firstVer = true;
                         }
                         for (Point2D ptr : second.getVertices()) if (ptr.equals(point)) secondVer = true;
                         if (firstVer && !secondVer) {
-                            if (second instanceof TriangleEnemy) {
-                                ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - EPSILON_REDUCE_HP);
-                                if (((TriangleEnemy) second).getHp() <= 0) {
-                                    enemyDeath.play();
-                                    Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
-                                            , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
-                                    TriangleEnemy.removeFromAllList(second.getId());
-                                }
-                            }
-                            else {
-                                ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - EPSILON_REDUCE_HP);
-                                if (((SquareEnemy) second).getHp() <= 0) {
-                                    enemyDeath.play();
-                                    Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
-                                            , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
-                                    SquareEnemy.removeFromAllList(second.getId());
-                                }
-                            }
+                            enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
                         }
                         else if (secondVer && !firstVer) {
-                            injured.play();
-                            if (second instanceof TriangleEnemy) {
-                                epsilon.setHp(epsilon.getHp() - ((TriangleEnemy) second).getReducerHp());
-                            }
-                            else epsilon.setHp(epsilon.getHp() - ((SquareEnemy) second).getReducerHp());
+                            if (((Enemy) second).getReducerHp() != 0) injured.play();
+                            epsilon.setHp(epsilon.getHp() - ((Enemy) second).getReducerHp());
                         }
-                        impactLevel = BULLET_REDUCE_HP;
+                        impactLevel = 5;
                     }
-                    else if (first instanceof BulletModel && (second instanceof TriangleEnemy || second instanceof SquareEnemy)) {
-                        if (second instanceof TriangleEnemy) {
-                            ((TriangleEnemy) second).setHp(((TriangleEnemy) second).getHp() - BULLET_REDUCE_HP);
-                            if (((TriangleEnemy) second).getHp() <= 0) {
-                                enemyDeath.play();
-                                Controller.getINSTANCE().logic.createCollectible(((TriangleEnemy) second).getCollectibleNumber()
-                                        , ((TriangleEnemy) second).getCollectibleXp(), second.getCenter());
-                                TriangleEnemy.removeFromAllList(second.getId());
-                            }
+                    else if ((first instanceof RigidBulletModel || first instanceof NonRigidBulletModel) && second instanceof Enemy) {
+                        impactLevel = 5;
+                        if (first instanceof RigidBulletModel && !second.getId().equals(((RigidBulletModel) first).getShooterEntity())) {
+                            enemyHealthReduction((Enemy) second, ((RigidBulletModel) first).getReduceHp());
+                            RigidBulletModel.removeFromAllList(first.getId());
                         }
-                        else {
-                            ((SquareEnemy) second).setHp(((SquareEnemy) second).getHp() - BULLET_REDUCE_HP);
-                            if (((SquareEnemy) second).getHp() <= 0) {
-                                enemyDeath.play();
-                                Controller.getINSTANCE().logic.createCollectible(((SquareEnemy) second).getCollectibleNumber()
-                                        , ((SquareEnemy) second).getCollectibleXp(), second.getCenter());
-                                SquareEnemy.removeFromAllList(second.getId());
-                            }
+                        else if (first instanceof NonRigidBulletModel && !second.getId().equals(((NonRigidBulletModel) first).getShooterEnemy())) {
+                            enemyHealthReduction((Enemy) second, ((NonRigidBulletModel) first).getReduceHp());
+                            NonRigidBulletModel.removeFromAllList(first.getId());
                         }
-                        BulletModel.removeFromAllList(first.getId());
-                        impactLevel = BULLET_REDUCE_HP;
+                        else impactLevel = 0;
+                    }
+                    else if (first instanceof EpsilonModel && (second instanceof NonRigidBulletModel || second instanceof RigidBulletModel)) {
+                        if (second instanceof RigidBulletModel && ((RigidBulletModel) second).getShooterEntity().equals(first.getId())) continue;
+                        injured.play();
+                        if (second instanceof NonRigidBulletModel) {
+                            epsilon.setHp(epsilon.getHp() - ((NonRigidBulletModel) second).getReduceHp());
+                            NonRigidBulletModel.removeFromAllList(second.getId());
+                        }
+                        if (second instanceof RigidBulletModel) {
+                            epsilon.setHp(epsilon.getHp() - ((RigidBulletModel) second).getReduceHp());
+                            RigidBulletModel.removeFromAllList(second.getId());
+                        }
+                        impactLevel = 5;
+                    }
+                    else if (first instanceof RigidBulletModel && second instanceof NonRigidBulletModel) {
+                        NonRigidBulletModel.removeFromAllList(second.getId());
+                        RigidBulletModel.removeFromAllList(first.getId());
+                        impactLevel = 2;
+                    }
+                    else if (first instanceof NonRigidBulletModel && second instanceof NonRigidBulletModel) {
+                        NonRigidBulletModel.removeFromAllList(second.getId());
+                        NonRigidBulletModel.removeFromAllList(first.getId());
+                        impactLevel = 2;
+                    }
+                    else if (first instanceof RigidBulletModel && second instanceof RigidBulletModel) {
+                        RigidBulletModel.removeFromAllList(second.getId());
+                        RigidBulletModel.removeFromAllList(first.getId());
+                        impactLevel = 2;
                     }
                     else impactLevel = 2;
-                    ImpactMechanism.applyImpact(point, impactLevel);
+                    if (impactLevel != 0) ImpactMechanism.applyImpact(point, impactLevel);
                 }
             }
         }
     }
+    private boolean enemyHealthReduction(Enemy enemy, int reduceHp) {
+        enemy.setHp(enemy.getHp() - reduceHp);
+        if (enemy.getHp() <= 0) {
+            enemyDeath.play();
+            Controller.getINSTANCE().logic.createCollectible(enemy.getCollectibleNumber(), enemy.getCollectibleXp(), enemy.getCenter(), enemy.getSize());
+            if (enemy instanceof TriangleEnemy) TriangleEnemy.removeFromAllList(enemy.getId());
+            if (enemy instanceof SquareEnemy) SquareEnemy.removeFromAllList(enemy.getId());
+            if (enemy instanceof OmenoctEnemy) OmenoctEnemy.removeFromAllList(enemy.getId());
+            if (enemy instanceof NecropickEnemy) NecropickEnemy.removeFromAllList(enemy.getId());
+            return true;
+        }
+        return false;
+    }
+    private void omenoctWallHealthReduction(WallSideIndicator wallSideIndicator, double pl) {
+        for (int i = 0; i < OmenoctEnemy.omenoctEnemyList.size(); i++) {
+            OmenoctEnemy omenoct = OmenoctEnemy.omenoctEnemyList.get(i);
+            if (omenoct.isConnectedToWall(wallSideIndicator, pl)) {
+                if (enemyHealthReduction(omenoct, BULLET_REDUCE_HP)) i--;
+            }
+        }
+    }
     private void checkCollisionBulletAndPanels() {
-        for (int i = 0; i < BulletModel.bulletModelList.size(); i++) {
-            BulletModel ptr = BulletModel.bulletModelList.get(i);
+        for (int i = 0; i < RigidBulletModel.rigidBulletModelList.size(); i++) {
+            RigidBulletModel ptr = RigidBulletModel.rigidBulletModelList.get(i);
             ArrayList<PanelModel> coveredPanels = ptr.hasCollisions(PanelModel.panelModelList);
 
             if (coveredPanels == null) return;
 
             for (PanelModel panel : coveredPanels) {
                 if (ptr.getCenter().getX() + ptr.getRadius() >= panel.getX() + panel.getWidth()) {
-                    panel.bulletHit("right");
-//                    panel.setX(panel.getX() + 4);
-//                    panel.setWidth(panel.getWidth() + 4);
+                    panel.bulletHit(WallSideIndicator.RIGHT);
+                    omenoctWallHealthReduction(WallSideIndicator.RIGHT, panel.getX() + panel.getWidth());
                 }
                 if (ptr.getCenter().getX() - ptr.getRadius() <= panel.getX()) {
-                    panel.bulletHit("left");
-//                    panel.setX(panel.getX() - 8);
-//                    panel.setWidth(panel.getWidth() + 4);
+                    panel.bulletHit(WallSideIndicator.LEFT);
+                    omenoctWallHealthReduction(WallSideIndicator.LEFT, panel.getX());
                 }
                 if (ptr.getCenter().getY() + ptr.getRadius() >= panel.getY() + panel.getHeight()) {
-                    panel.bulletHit("down");
-//                    panel.setY(panel.getY() + 4);
-//                    panel.setHeight(panel.getHeight() + 4);
+                    panel.bulletHit(WallSideIndicator.DOWN);
+                    omenoctWallHealthReduction(WallSideIndicator.DOWN, panel.getY() + panel.getHeight());
                 }
                 if (ptr.getCenter().getY() - ptr.getRadius() <= panel.getY()) {
-                    panel.bulletHit("up");
-//                    panel.setY(panel.getY() - 8);
-//                    panel.setHeight(panel.getHeight() + 4);
+                    panel.bulletHit(WallSideIndicator.UP);
+                    omenoctWallHealthReduction(WallSideIndicator.UP, panel.getY());
                 }
             }
 
-            BulletModel.removeFromAllList(ptr.getId());
+            RigidBulletModel.removeFromAllList(ptr.getId());
         }
     }
     private void moveAllModels() {
@@ -318,6 +349,21 @@ public class Updater {
             ptr.setCurrentSize(tmp.getSize());
         }
     }
+    private void updateOmenoctEnemyView() {
+        for (OmenoctEnemyView ptr : OmenoctEnemyView.omenoctEnemyViewList) {
+            OmenoctEnemy tmp = Controller.getINSTANCE().logic.findOmenoctEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateNecropickEnemyView() {
+        for (NecropickEnemyView ptr : NecropickEnemyView.necropickEnemyViewsList) {
+            NecropickEnemy tmp = Controller.getINSTANCE().logic.findNecropickEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+            ptr.setStationedType(tmp.getStationedType());
+        }
+    }
     private void updateCollectibleView() {
         for (CollectibleView ptr : CollectibleView.collectibleViewList) {
             Collectible tmp = Controller.getINSTANCE().logic.findCollectibleModel(ptr.getId());
@@ -327,7 +373,14 @@ public class Updater {
     }
     private void updateBulletView() {
         for (BulletView ptr : BulletView.bulletViewList) {
-            BulletModel tmp = Controller.getINSTANCE().logic.findBulletModel(ptr.getId());
+            RigidBulletModel tmp = Controller.getINSTANCE().logic.findBulletModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentRadius(tmp.getRadius());
+        }
+    }
+    private void updateNonRigidBulletView() {
+        for (EnemyNonRigidBulletView ptr : EnemyNonRigidBulletView.nonRigidBulletViewsList) {
+            NonRigidBulletModel tmp = Controller.getINSTANCE().logic.findNonRigidBullet(ptr.getId());
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentRadius(tmp.getRadius());
         }

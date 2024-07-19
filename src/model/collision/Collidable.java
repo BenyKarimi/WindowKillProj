@@ -9,6 +9,7 @@ import static controller.Utils.weightedAddVectors;
 
 public interface Collidable {
     boolean isCircular();
+    boolean isHovering();
     double getRadius();
     Point2D getCenter();
     String getId();
@@ -16,6 +17,7 @@ public interface Collidable {
 
     ArrayList<Collidable> collidables = new ArrayList<>();
     default CollisionPoint collides(Collidable other) {
+        if (isHovering() && other.isHovering()) return null;
         if (isCircular() && other.isCircular()) {
             double distance = getCenter().distance(other.getCenter());
             if (distance <= getRadius() + other.getRadius()) {

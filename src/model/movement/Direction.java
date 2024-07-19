@@ -10,8 +10,14 @@ public class Direction {
     private DirectionState state = DirectionState.neutral;
 
     public Direction(Point2D deltaPos) {
-        if (deltaPos.getX() == 0 && deltaPos.getY() < 0) isUpward = true;
-        else if (deltaPos.getX() == 0 && deltaPos.getY() > 0) isDownward = true;
+        if (deltaPos.getX() == 0 && deltaPos.getY() < 0) {
+            isUpward = true;
+            this.state = DirectionState.positive;
+        }
+        else if (deltaPos.getX() == 0 && deltaPos.getY() > 0) {
+            isDownward = true;
+            this.state = DirectionState.negative;
+        }
         else if (deltaPos.getX() == 0) this.state = DirectionState.neutral;
         else {
             this.slope = deltaPos.getY() / deltaPos.getX();

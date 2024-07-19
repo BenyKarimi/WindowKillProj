@@ -7,28 +7,30 @@ import model.movement.Direction;
 import model.movement.Movable;
 import model.panelModel.PanelModel;
 import view.bulletView.BulletView;
-import view.charecterViews.SquareEnemyView;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class BulletModel implements Collidable, Movable {
+public class RigidBulletModel implements Collidable, Movable {
     private final String id;
+    private final String shooterEntity;
+    private final int reduceHp;
     private double radius;
     private double speed;
     private Point2D center;
     private Direction direction;
-    public static ArrayList<BulletModel> bulletModelList = new ArrayList<>();
+    public static ArrayList<RigidBulletModel> rigidBulletModelList = new ArrayList<>();
 
-    public BulletModel(Point2D center, Direction direction) {
+    public RigidBulletModel(Point2D center, Direction direction, int reduceHp, String shooterEntity, double speed) {
         this.center = center;
         this.direction = direction;
-        speed = 5;
-        id = UUID.randomUUID().toString();
+        this.reduceHp = reduceHp;
+        this.shooterEntity = shooterEntity;
+        this.speed = speed;
+        id = Utils.processRandomId();
         radius = 5.0;
-        bulletModelList.add(this);
+        rigidBulletModelList.add(this);
         Collidable.collidables.add(this);
         Movable.movable.add(this);
         Controller.getINSTANCE().createBulletView(id);
@@ -48,6 +50,11 @@ public class BulletModel implements Collidable, Movable {
     @Override
     public boolean isCircular() {
         return true;
+    }
+
+    @Override
+    public boolean isHovering() {
+        return false;
     }
 
     public double getRadius() {
@@ -73,9 +80,9 @@ public class BulletModel implements Collidable, Movable {
         return null;
     }
     public static void removeFromAllList(String id) {
-        for (int i = 0; i < bulletModelList.size(); i++) {
-            if (bulletModelList.get(i).getId().equals(id)) {
-                bulletModelList.remove(i);
+        for (int i = 0; i < rigidBulletModelList.size(); i++) {
+            if (rigidBulletModelList.get(i).getId().equals(id)) {
+                rigidBulletModelList.remove(i);
                 break;
             }
         }
@@ -100,5 +107,18 @@ public class BulletModel implements Collidable, Movable {
     }
     public Direction getDirection() {
         return direction;
+    }
+
+    @Override
+    public boolean isStationed() {
+        return false;
+    }
+
+    public String getShooterEntity() {
+        return shooterEntity;
+    }
+
+    public int getReduceHp() {
+        return reduceHp;
     }
 }

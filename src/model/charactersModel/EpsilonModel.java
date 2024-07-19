@@ -10,10 +10,12 @@ import model.panelModel.PanelModel;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static controller.constant.Constants.*;
 
 public class EpsilonModel implements Collidable, Movable {
+    private final String id;
     private Point2D center;
     private int xp, hp;
     private int verticesNumber;
@@ -26,6 +28,7 @@ public class EpsilonModel implements Collidable, Movable {
 
     public EpsilonModel(Point2D center) {
         this.center = center;
+        this.id = Utils.processRandomId();
         xp = INITIAL_XP;
         hp = INITIAL_HP;
         xVelocity = 0;
@@ -65,6 +68,12 @@ public class EpsilonModel implements Collidable, Movable {
     public boolean isCircular() {
         return true;
     }
+
+    @Override
+    public boolean isHovering() {
+        return false;
+    }
+
     @Override
     public double getRadius() {
         return radius;
@@ -81,7 +90,7 @@ public class EpsilonModel implements Collidable, Movable {
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
     @Override
     public double getSpeed() {
@@ -121,6 +130,10 @@ public class EpsilonModel implements Collidable, Movable {
 
     public Direction getDirection() {
         return direction;
+    }
+    @Override
+    public boolean isStationed() {
+        return false;
     }
 
     public void setDirection(Direction direction) {

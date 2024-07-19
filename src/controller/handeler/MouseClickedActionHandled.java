@@ -3,10 +3,9 @@ package controller.handeler;
 import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
-import model.bulletModel.BulletModel;
+import model.bulletModel.RigidBulletModel;
 import model.charactersModel.EpsilonModel;
 import model.movement.Direction;
-import view.container.GamePanel;
 import view.container.GlassFrame;
 
 import java.awt.geom.Point2D;
@@ -20,9 +19,9 @@ public class MouseClickedActionHandled {
                 Direction direction1 = new Direction(new Point2D.Double(clickedPoint.getX() - epsilon.getCenter().getX(), clickedPoint.getY() - epsilon.getCenter().getY()));
                 Direction direction2 = new Direction(new Point2D.Double(clickedPoint.getX() - epsilon.getCenter().getX() + 20, clickedPoint.getY() - epsilon.getCenter().getY() - 20));
                 Direction direction3 = new Direction(new Point2D.Double(clickedPoint.getX() - epsilon.getCenter().getX() - 20, clickedPoint.getY() - epsilon.getCenter().getY() + 20));
-                new BulletModel(center, direction1);
-                new BulletModel(center, direction2);
-                new BulletModel(center, direction3);
+                new RigidBulletModel(center, direction1, Constants.BULLET_REDUCE_HP, epsilon.getId(), 5);
+                new RigidBulletModel(center, direction2, Constants.BULLET_REDUCE_HP, epsilon.getId(), 5);
+                new RigidBulletModel(center, direction3, Constants.BULLET_REDUCE_HP, epsilon.getId(), 5);
             }
             else {
                 StoreActionHandle.setThreeBullet(false);
@@ -30,7 +29,7 @@ public class MouseClickedActionHandled {
         }
         else {
             Direction direction = new Direction(new Point2D.Double(clickedPoint.getX() - epsilon.getCenter().getX(), clickedPoint.getY() - epsilon.getCenter().getY()));
-            new BulletModel(center, direction);
+            new RigidBulletModel(center, direction, Constants.BULLET_REDUCE_HP, epsilon.getId(), 5);
         }
         Constants.bulletSound.play();
     }
