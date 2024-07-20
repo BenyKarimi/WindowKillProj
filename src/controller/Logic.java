@@ -57,10 +57,10 @@ public class Logic {
     public boolean makeWave(double x, double y, double width, double height) {
 //        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
 //        if (WyrmEnemy.wyrmEnemiesList.size() > 0) return false;
-        if (BlackOrbMiniBoss.blackOrbMiniBossesList.size() > 0) return false;
+        if (BarricadosEnemy.barricadosEnemiesList.size() > 0) return false;
         GameValues.waveNumber++;
         if (GameValues.waveNumber == 4) return false;
-        ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(x, y, width, height);
+        ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(2 * x, 2 * y, width, height);
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomWaveEnemyType() == 0) {
 //                new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
@@ -68,7 +68,7 @@ public class Logic {
             else {
 //                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
 //                new WyrmEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-                new BlackOrbMiniBoss(ptr, RandomHelper.randomWaveEnemySize());
+                new BarricadosEnemy(ptr, 2 * RandomHelper.randomWaveEnemySize(), true, GlassFrame.getINSTANCE().getTimer().getMiliSecond());
             }
         }
         return true;
@@ -111,6 +111,7 @@ public class Logic {
         ArchmireEnemy.archmireEnemiesList.clear();
         WyrmEnemy.wyrmEnemiesList.clear();
         BlackOrbMiniBoss.blackOrbMiniBossesList.clear();
+        BarricadosEnemy.barricadosEnemiesList.clear();
         OrbEnemy.orbEnemiesList.clear();
         Collectible.collectibleList.clear();
         BulletView.bulletViewList.clear();
@@ -122,6 +123,7 @@ public class Logic {
         ArchmireEnemyView.archmireEnemyViewsList.clear();
         WyrmEnemyView.wyrmEnemyViewsList.clear();
         BlackOrbMiniBossView.blackOrbMiniBossViewsList.clear();
+        BarricadosEnemyView.barricadosEnemyViewsList.clear();
         CollectibleView.collectibleViewList.clear();
         Collidable.collidables.clear();
         Movable.movable.clear();
@@ -183,6 +185,12 @@ public class Logic {
     }
     public BlackOrbMiniBoss findBlackOrbMiniBossModel(String id) {
         for (BlackOrbMiniBoss ptr : BlackOrbMiniBoss.blackOrbMiniBossesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public BarricadosEnemy findBarricadosEnemyModel(String id) {
+        for (BarricadosEnemy ptr : BarricadosEnemy.barricadosEnemiesList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

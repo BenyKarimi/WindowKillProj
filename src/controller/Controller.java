@@ -50,6 +50,9 @@ public class Controller {
     public void createBlackOrbMiniBossView(String id) {
         new BlackOrbMiniBossView(id);
     }
+    public void createBarricadosEnemyView(String id) {
+        new BarricadosEnemyView(id);
+    }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();
         return INSTANCE;

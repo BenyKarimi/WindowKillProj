@@ -104,6 +104,7 @@ public class GamePanel extends JPanel {
         drawArchmireEnemy((Graphics2D) g);
         drawWyrmEnemy((Graphics2D) g);
         drawBlackOrbMiniBoss((Graphics2D) g);
+        drawBarricadosEnemy((Graphics2D) g);
         drawBulletView((Graphics2D) g);
         drawNonRigidBullet((Graphics2D) g);
     }
@@ -222,6 +223,14 @@ public class GamePanel extends JPanel {
         g2d.setPaint(color);
         g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g2d.draw(line);
+    }
+    private void drawBarricadosEnemy(Graphics2D g) {
+        Image barricadosEnemyImage = new ImageIcon("resources/BarricadosEnemy.png").getImage();
+        for (BarricadosEnemyView ptr : BarricadosEnemyView.barricadosEnemyViewsList) {
+            g.drawImage(barricadosEnemyImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+        }
     }
     private void drawBulletView(Graphics2D g) {
         for (BulletView ptr : BulletView.bulletViewList) {

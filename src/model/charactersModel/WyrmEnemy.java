@@ -145,4 +145,7 @@ public class WyrmEnemy extends Enemy {
             }
         }
     }
+    public void removePanel() {
+        PanelModel.removeFromAllList(wyrmPanel.getId());
+    }
 }

@@ -59,6 +59,7 @@ public class Updater {
         updateArchmireEnemyView();
         updateWyrmEnemyView();
         updateBlackOrbMiniBoss();
+        updateBarricadosEnemyView();
         updateCollectibleView();
         updateBulletView();
         updateNonRigidBulletView();
@@ -194,6 +195,14 @@ public class Updater {
             ptr.updateEntitiesLaserCollision(gameTimer.getMiliSecond());
             if (ptr.isFullyMade() && ptr.getOrbEnemies().isEmpty()) {
                 BlackOrbMiniBoss.blackOrbMiniBossesList.remove(i--);
+            }
+        }
+        for (int i = 0; i < BarricadosEnemy.barricadosEnemiesList.size(); i++) {
+            BarricadosEnemy ptr = BarricadosEnemy.barricadosEnemiesList.get(i);
+            if (ptr.checkToRemove(gameTimer.getMiliSecond())) {
+                BarricadosEnemy.removeFromAllList(ptr.getId());
+                ptr.removePanel();
+                i--;
             }
         }
     }
@@ -388,12 +397,11 @@ public class Updater {
             if (enemy instanceof NecropickEnemy) NecropickEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof ArchmireEnemy) ArchmireEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof WyrmEnemy) {
-                PanelModel.removeFromAllList(((WyrmEnemy) enemy).getWyrmPanel().getId());
+                ((WyrmEnemy) enemy).removePanel();
                 WyrmEnemy.removeFromAllList(enemy.getId());
             }
-            // TODO: orb remove
             if (enemy instanceof OrbEnemy) {
-                PanelModel.removeFromAllList(((OrbEnemy) enemy).getOrbPanel().getId());
+                ((OrbEnemy) enemy).removePanel();
                 OrbEnemy.removeFromAllList(enemy.getId());
                 ((OrbEnemy) enemy).removeFromParentBoss();
             }
@@ -506,6 +514,13 @@ public class Updater {
             ptr.setCurrentOrbLocations(tmp.getOrbsLocation());
             ptr.setOrbRadius(tmp.getOrbRadius());
             ptr.setCurrentOrbLasers(tmp.getOrbLasers());
+        }
+    }
+    private void updateBarricadosEnemyView() {
+        for (BarricadosEnemyView ptr : BarricadosEnemyView.barricadosEnemyViewsList) {
+            BarricadosEnemy tmp = Controller.getINSTANCE().logic.findBarricadosEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
         }
     }
     private void updateCollectibleView() {

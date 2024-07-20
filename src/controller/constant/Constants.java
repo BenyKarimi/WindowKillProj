@@ -32,6 +32,10 @@ public class Constants {
     public static final int SQUARE_ENEMY_REDUCER_HP = 6;
     public static final int SQUARE_ENEMY_COLLECTIBLE_NUMBER = 1;
     public static final int SQUARE_ENEMY_COLLECTIBLE_XP = 5;
+    public static final int BARRICADOS_ENEMY_HP = Integer.MAX_VALUE;
+    public static final int BARRICADOS_ENEMY_REDUCER_HP = 0;
+    public static final int BARRICADOS_ENEMY_COLLECTIBLE_NUMBER = 0;
+    public static final int BARRICADOS_ENEMY_COLLECTIBLE_XP = 0;
     public static final int ORB_ENEMY_HP = 30;
     public static final int ORB_ENEMY_REDUCER_HP = 0;
     public static final int ORB_ENEMY_LASER_REDUCER_HP = 12;

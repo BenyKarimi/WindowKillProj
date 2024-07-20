@@ -126,7 +126,7 @@ public class PanelModel implements Movable {
     }
     private boolean collidesWithOtherPanel() {
         for(PanelModel panel : panelModelList) {
-            if ((!this.equals(panel) && new Rectangle((int)x, (int)y, (int)height, (int)width).intersects(new Rectangle((int)panel.getX(), (int)panel.getY(), (int)panel.getHeight(), (int)panel.getWidth())))
+            if ((!this.equals(panel) && new Rectangle((int)x, (int)y, (int)width, (int)height).intersects(new Rectangle((int)panel.getX(), (int)panel.getY(), (int)panel.getWidth(), (int)panel.getHeight())))
                 && (rigid.equals(Rigid.YES) || panel.rigid.equals(Rigid.YES)))
                 return true;
         }

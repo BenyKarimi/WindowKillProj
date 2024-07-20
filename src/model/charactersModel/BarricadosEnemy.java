@@ -1,6 +1,6 @@
 package model.charactersModel;
 
-
+import controller.Controller;
 import controller.Utils;
 import model.collision.Collidable;
 import model.movement.Direction;
@@ -8,34 +8,40 @@ import model.movement.Movable;
 import model.panelModel.Isometric;
 import model.panelModel.PanelModel;
 import model.panelModel.Rigid;
+import view.charecterViews.BarricadosEnemyView;
 import view.charecterViews.WyrmEnemyView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 import static controller.constant.Constants.*;
+import static controller.constant.Constants.WYRM_ENEMY_COLLECTIBLE_XP;
 
-public class OrbEnemy extends Enemy {
+public class BarricadosEnemy extends Enemy {
 
-    private PanelModel orbPanel;
-    private BlackOrbMiniBoss parentBoss;
-    public static ArrayList<OrbEnemy> orbEnemiesList = new ArrayList<>();
+    private final boolean panelRigid;
+    private PanelModel barricadosPanel;
+    private final int timeMade;
 
-    public OrbEnemy(Point2D center, double size, double speed, BlackOrbMiniBoss parentBoss) {
-        super(Utils.processRandomId(), size, speed, speed, false, ORB_ENEMY_HP, ORB_ENEMY_REDUCER_HP, ORB_ENEMY_COLLECTIBLE_NUMBER, ORB_ENEMY_COLLECTIBLE_XP,
+    public static ArrayList<BarricadosEnemy> barricadosEnemiesList = new ArrayList<>();
+
+    public BarricadosEnemy(Point2D center, double size, boolean panelRigid, int timeMade) {
+        super(Utils.processRandomId(), size, 0, 0, false, BARRICADOS_ENEMY_HP, BARRICADOS_ENEMY_REDUCER_HP, BARRICADOS_ENEMY_COLLECTIBLE_NUMBER, BARRICADOS_ENEMY_COLLECTIBLE_XP,
                 center, new Direction(new Point2D.Double(0, 0)), new ArrayList<>());
-        this.parentBoss = parentBoss;
+        this.panelRigid = panelRigid;
+        this.timeMade = timeMade;
         calculateVertices();
         makePanel();
+        Controller.getINSTANCE().createBarricadosEnemyView(super.getId());
         Collidable.collidables.add(this);
-        orbEnemiesList.add(this);
+        barricadosEnemiesList.add(this);
         Movable.movable.add(this);
     }
 
     @Override
     public void calculateVertices() {
         super.getVertices().clear();
-        ArrayList<Point2D> ver = Utils.circlePartition(super.getCenter(), super.getSize(), 36);
+        ArrayList<Point2D> ver = Utils.calculateSquareVertices(super.getCenter(), super.getSize());
         for (Point2D ptr : ver) super.getVertices().add(ptr);
     }
 
@@ -46,13 +52,20 @@ public class OrbEnemy extends Enemy {
     }
 
     private void makePanel() {
-        orbPanel = new PanelModel(super.getCenter().getX() - super.getSize() * 2, super.getCenter().getY() - super.getSize() * 2, super.getSize() * 4, super.getSize() * 4, Isometric.YES, Rigid.NO, true);
+        if (panelRigid) {
+            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.YES, true);
+        }
+        else {
+            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.NO, true);
+        }
     }
-
+    public boolean checkToRemove(int time) {
+        return time - timeMade >= 2000 * 60;
+    }
     public static void removeFromAllList(String id) {
-        for (int i = 0; i < orbEnemiesList.size(); i++) {
-            if (orbEnemiesList.get(i).getId().equals(id)) {
-                orbEnemiesList.remove(i);
+        for (int i = 0; i < barricadosEnemiesList.size(); i++) {
+            if (barricadosEnemiesList.get(i).getId().equals(id)) {
+                barricadosEnemiesList.remove(i);
                 break;
             }
         }
@@ -74,21 +87,20 @@ public class OrbEnemy extends Enemy {
                 break;
             }
         }
+        for (int i = 0; i < BarricadosEnemyView.barricadosEnemyViewsList.size(); i++) {
+            if (BarricadosEnemyView.barricadosEnemyViewsList.get(i).getId().equals(id)) {
+                BarricadosEnemyView.barricadosEnemyViewsList.remove(i);
+                break;
+            }
+        }
     }
     public void removePanel() {
-        PanelModel.removeFromAllList(orbPanel.getId());
-    }
-    public void removeFromParentBoss() {
-        parentBoss.removeEnemy(this);
-    }
-
-    public PanelModel getOrbPanel() {
-        return orbPanel;
+        PanelModel.removeFromAllList(barricadosPanel.getId());
     }
 
     @Override
     public boolean isCircular() {
-        return true;
+        return false;
     }
 
     @Override
@@ -98,7 +110,7 @@ public class OrbEnemy extends Enemy {
 
     @Override
     public double getRadius() {
-        return getSize();
+        return 0;
     }
 
     @Override
