@@ -41,7 +41,7 @@ public class Logic {
         epsilonView = new EpsilonView(epsilon.getId(), epsilon.getCenter());
     }
     private void createInitialPanel() {
-        PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.YES);
+        PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.NO);
         InformationPanel.getINSTANCE();
         GlassFrame.getINSTANCE().getTimer().Reset();
         GlassFrame.getINSTANCE().getTimer().Start();
@@ -56,7 +56,8 @@ public class Logic {
     }
     public boolean makeWave(double x, double y, double width, double height) {
 //        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
-        if (ArchmireEnemy.archmireEnemiesList.size() > 0) return false;
+//        if (WyrmEnemy.wyrmEnemiesList.size() > 0) return false;
+        if (BlackOrbMiniBoss.blackOrbMiniBossesList.size() > 0) return false;
         GameValues.waveNumber++;
         if (GameValues.waveNumber == 4) return false;
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(x, y, width, height);
@@ -66,7 +67,8 @@ public class Logic {
             }
             else {
 //                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-                new ArchmireEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+//                new WyrmEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+                new BlackOrbMiniBoss(ptr, RandomHelper.randomWaveEnemySize());
             }
         }
         return true;
@@ -107,6 +109,9 @@ public class Logic {
         OmenoctEnemy.omenoctEnemyList.clear();
         NecropickEnemy.necropickEnemiesList.clear();
         ArchmireEnemy.archmireEnemiesList.clear();
+        WyrmEnemy.wyrmEnemiesList.clear();
+        BlackOrbMiniBoss.blackOrbMiniBossesList.clear();
+        OrbEnemy.orbEnemiesList.clear();
         Collectible.collectibleList.clear();
         BulletView.bulletViewList.clear();
         EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
@@ -115,6 +120,8 @@ public class Logic {
         OmenoctEnemyView.omenoctEnemyViewList.clear();
         NecropickEnemyView.necropickEnemyViewsList.clear();
         ArchmireEnemyView.archmireEnemyViewsList.clear();
+        WyrmEnemyView.wyrmEnemyViewsList.clear();
+        BlackOrbMiniBossView.blackOrbMiniBossViewsList.clear();
         CollectibleView.collectibleViewList.clear();
         Collidable.collidables.clear();
         Movable.movable.clear();
@@ -164,6 +171,18 @@ public class Logic {
     }
     public NecropickEnemy findNecropickEnemyModel(String id) {
         for (NecropickEnemy ptr : NecropickEnemy.necropickEnemiesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public WyrmEnemy findWyrmEnemyModel(String id) {
+        for (WyrmEnemy ptr : WyrmEnemy.wyrmEnemiesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public BlackOrbMiniBoss findBlackOrbMiniBossModel(String id) {
+        for (BlackOrbMiniBoss ptr : BlackOrbMiniBoss.blackOrbMiniBossesList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

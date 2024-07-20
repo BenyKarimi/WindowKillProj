@@ -12,7 +12,6 @@ import view.charecterViews.OmenoctEnemyView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import static controller.constant.Constants.*;
 
@@ -138,16 +137,16 @@ public class OmenoctEnemy extends Enemy {
     }
     public boolean isConnectedToWall(WallSideIndicator wallSideIndicator, double pl) {
         if (wallSideIndicator.equals(WallSideIndicator.UP)) {
-            return Utils.ApproxEqual(this.getCenter().getY() - super.getSize() / 2, pl);
+            return Utils.approxEqual(this.getCenter().getY() - super.getSize() / 2, pl);
         }
         if (wallSideIndicator.equals((WallSideIndicator.DOWN))) {
-            return Utils.ApproxEqual(this.getCenter().getY() + super.getSize() / 2, pl);
+            return Utils.approxEqual(this.getCenter().getY() + super.getSize() / 2, pl);
         }
         if (wallSideIndicator.equals((WallSideIndicator.RIGHT))) {
-            return Utils.ApproxEqual(this.getCenter().getX() + super.getSize() / 2, pl);
+            return Utils.approxEqual(this.getCenter().getX() + super.getSize() / 2, pl);
         }
         if (wallSideIndicator.equals((WallSideIndicator.LEFT))) {
-            return  Utils.ApproxEqual(this.getCenter().getX() - super.getSize() / 2, pl);
+            return  Utils.approxEqual(this.getCenter().getX() - super.getSize() / 2, pl);
         }
         return false;
     }

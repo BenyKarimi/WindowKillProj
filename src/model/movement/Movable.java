@@ -16,7 +16,9 @@ public interface Movable {
     boolean isStationed();
 
     default void move() {
-        if (isStationed()) return;
+        if (isStationed()) {
+            return;
+        }
         Point2D tmp = Utils.addVectors(getCenter(), Utils.multiplyVector(getDirection().getDirectionVector(), getSpeed()));
         setCenter(tmp);
     }

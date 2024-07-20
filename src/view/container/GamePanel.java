@@ -6,6 +6,7 @@ import controller.handeler.MouseClickedActionHandled;
 import controller.constant.GameValues;
 import model.charactersModel.NecropickEnemy;
 import model.charactersModel.StationedType;
+import model.collision.Line;
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
@@ -100,6 +102,8 @@ public class GamePanel extends JPanel {
         drawOmenoctEnemy((Graphics2D) g);
         drawNecropickEnemy((Graphics2D) g);
         drawArchmireEnemy((Graphics2D) g);
+        drawWyrmEnemy((Graphics2D) g);
+        drawBlackOrbMiniBoss((Graphics2D) g);
         drawBulletView((Graphics2D) g);
         drawNonRigidBullet((Graphics2D) g);
     }
@@ -175,6 +179,49 @@ public class GamePanel extends JPanel {
                         , (int)ptr.getCurrentSize(), (int)ptr.getCurrentSize());
             }
         }
+    }
+    private void drawWyrmEnemy(Graphics2D g) {
+        Image wyrmEnemyImage = new ImageIcon("resources/WyrmEnemy.png").getImage();
+        for (WyrmEnemyView ptr : WyrmEnemyView.wyrmEnemyViewsList) {
+            g.drawImage(wyrmEnemyImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+        }
+    }
+    private void drawBlackOrbMiniBoss(Graphics2D g) {
+        Image orbEnemyImage = new ImageIcon("resources/OrbEnemy.png").getImage();
+        for (BlackOrbMiniBossView ptr : BlackOrbMiniBossView.blackOrbMiniBossViewsList) {
+            /// draw Orbs
+            for (Point2D point : ptr.getCurrentOrbLocations()) {
+                g.drawImage(orbEnemyImage, (int) ((point.getX() - ptr.getOrbRadius()) - upLeftX)
+                        , (int) ((point.getY() - ptr.getOrbRadius()) - upLeftY)
+                        , (int) (ptr.getOrbRadius() * 2), (int) (ptr.getOrbRadius() * 2), null);
+            }
+            /// draw Lasers
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            for (Line line : ptr.getCurrentOrbLasers()) {
+                Line2D line2D = new Line2D.Double(line.getStart().getX() - upLeftX, line.getStart().getY() - upLeftY, line.getEnd().getX() - upLeftX, line.getEnd().getY() - upLeftY);
+                drawGlowingLine(g, line2D);
+            }
+        }
+    }
+    private void drawGlowingLine(Graphics2D g2d, Line2D line) {
+        Color color = new Color(0x4F, 0x1C, 0x9B, 0xFF);
+        GradientPaint gradient = new GradientPaint(
+                (float) line.getX1(), (float) line.getY1(), new Color(0x4F, 0x1C, 0x9B, 128),
+                (float) line.getX2(), (float) line.getY2(), new Color(0x4F, 0x1C, 0x9B, 0)
+        );
+
+        g2d.setPaint(gradient);
+
+        g2d.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        // Draw the glow
+        g2d.draw(line);
+
+        g2d.setPaint(color);
+        g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.draw(line);
     }
     private void drawBulletView(Graphics2D g) {
         for (BulletView ptr : BulletView.bulletViewList) {

@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static controller.constant.Constants.*;
 
@@ -56,6 +57,8 @@ public class Updater {
         updateOmenoctEnemyView();
         updateNecropickEnemyView();
         updateArchmireEnemyView();
+        updateWyrmEnemyView();
+        updateBlackOrbMiniBoss();
         updateCollectibleView();
         updateBulletView();
         updateNonRigidBulletView();
@@ -63,6 +66,7 @@ public class Updater {
         for (GamePanel panel : GamePanel.gamePanelList) {
             panel.repaint();
         }
+        GlassFrame.getINSTANCE().revalidate();
         GlassFrame.getINSTANCE().repaint();
         InformationPanel.getINSTANCE().repaint();
     }
@@ -72,10 +76,12 @@ public class Updater {
         SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
         updateCollectibleModel();
+        reduceHealthByBlackOrb();
         reduceHealthByArchmire();
         updateCollisionAndImpact();
         checkCollisionBulletAndPanels();
         moveAllModels();
+//        System.out.println(PanelModel.panelModelList.size());
         Controller.getINSTANCE().logic.checkGameOver();
         if (startGame && !epsilonGoesBigger) {
             if (Controller.getINSTANCE() == null) return;
@@ -145,7 +151,7 @@ public class Updater {
                 panel.inGameShrinkValue();
             }
             panel.shrink(wonGame);
-
+            panel.updateCenter();
         }
     }
     private void updateEnemiesModel() {
@@ -177,6 +183,48 @@ public class Updater {
             ptr.updateCentersMemory(gameTimer.getMiliSecond());
             ptr.calculateVertices();
         }
+        for (WyrmEnemy ptr : WyrmEnemy.wyrmEnemiesList) {
+            ptr.calculateVertices();
+            ptr.makeAttack(gameTimer.getSeconds(), epsilon.getCenter());
+            ptr.updateDirection(epsilon.getCenter());
+        }
+        for (int i = 0; i < BlackOrbMiniBoss.blackOrbMiniBossesList.size(); i++) {
+            BlackOrbMiniBoss ptr = BlackOrbMiniBoss.blackOrbMiniBossesList.get(i);
+            ptr.makeOrbs(gameTimer.getMiliSecond());
+            ptr.updateEntitiesLaserCollision(gameTimer.getMiliSecond());
+            if (ptr.isFullyMade() && ptr.getOrbEnemies().isEmpty()) {
+                BlackOrbMiniBoss.blackOrbMiniBossesList.remove(i--);
+            }
+        }
+    }
+    private void reduceHealthByBlackOrb() {
+        boolean done = false;
+
+        while (!done) {
+            done = true;
+            ArrayList<BlackOrbMiniBoss> blackOrbs = BlackOrbMiniBoss.blackOrbMiniBossesList;
+            for (int j = 0; j < blackOrbs.size(); j++) {
+                BlackOrbMiniBoss blackOrb = blackOrbs.get(j);
+                ArrayList<Pair<Enemy, Integer>> tmp = blackOrb.getEnemiesLaserCollision();
+                for (int i = 0; i < tmp.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp.get(i).getSecond() >= 1000) {
+                        enemyHealthReduction(tmp.get(i).getFirst(), ORB_ENEMY_LASER_REDUCER_HP);
+                        done = false;
+                        tmp.remove(i);
+                        break;
+                    }
+                }
+                ArrayList<Pair<EpsilonModel, Integer>> tmp2 = blackOrb.getEpsilonLaserCollision();
+                for (int i = 0; i < tmp2.size(); i++) {
+                    if (gameTimer.getMiliSecond() - tmp2.get(i).getSecond() >= 1000) {
+                        epsilonHealthReduction(tmp2.get(i).getFirst(), ORB_ENEMY_LASER_REDUCER_HP);
+                        done = false;
+                        tmp2.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
     }
     private void reduceHealthByArchmire() {
         boolean done = false;
@@ -196,7 +244,6 @@ public class Updater {
                     }
                 }
                 tmp = archmire.getEnemiesInsideAOE();
-                System.out.println(tmp.size());
                 for (int i = 0; i < tmp.size(); i++) {
                     if (gameTimer.getMiliSecond() - tmp.get(i).getSecond() >= 1000) {
                         enemyHealthReduction(tmp.get(i).getFirst(), ARCHMIRE_ENEMY_AOE_REDUCER_HP);
@@ -263,15 +310,22 @@ public class Updater {
                 if (point != null) {
                     double impactLevel = 0;
                     if (first instanceof NecropickEnemy && second instanceof NecropickEnemy) continue;
+                    if (first instanceof WyrmEnemy) {
+                        ((WyrmEnemy) first).reverseClockwise(gameTimer.getMiliSecond());
+                        if (second instanceof WyrmEnemy) {
+                            ((WyrmEnemy) second).reverseClockwise(gameTimer.getMiliSecond());
+                            continue;
+                        }
+                    }
                     if (first instanceof EpsilonModel && second instanceof Enemy) {
                         boolean firstVer = false;
                         boolean secondVer = false;
                         for (Point2D ptr : first.getVertices()) {
-                            if (Utils.ApproxEqual(ptr.getX(), point.getX()) && Utils.ApproxEqual(point.getY(), ptr.getY())) firstVer = true;
+                            if (Utils.approxEqual(ptr.getX(), point.getX()) && Utils.approxEqual(point.getY(), ptr.getY())) firstVer = true;
                         }
                         for (Point2D ptr : second.getVertices()) if (ptr.equals(point)) secondVer = true;
                         if (firstVer && !secondVer) {
-                            enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
+                            if (!(second instanceof ArchmireEnemy) && !(second instanceof WyrmEnemy)) enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
                         }
                         else if (secondVer && !firstVer) {
                             epsilonHealthReduction(epsilon, ((Enemy) second).getReducerHp());
@@ -333,6 +387,16 @@ public class Updater {
             if (enemy instanceof OmenoctEnemy) OmenoctEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof NecropickEnemy) NecropickEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof ArchmireEnemy) ArchmireEnemy.removeFromAllList(enemy.getId());
+            if (enemy instanceof WyrmEnemy) {
+                PanelModel.removeFromAllList(((WyrmEnemy) enemy).getWyrmPanel().getId());
+                WyrmEnemy.removeFromAllList(enemy.getId());
+            }
+            // TODO: orb remove
+            if (enemy instanceof OrbEnemy) {
+                PanelModel.removeFromAllList(((OrbEnemy) enemy).getOrbPanel().getId());
+                OrbEnemy.removeFromAllList(enemy.getId());
+                ((OrbEnemy) enemy).removeFromParentBoss();
+            }
             return true;
         }
         return false;
@@ -427,6 +491,21 @@ public class Updater {
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentSize(tmp.getSize());
             ptr.setCurrentCentersPointMemory(tmp.getCentersPointMemory());
+        }
+    }
+    private void updateWyrmEnemyView() {
+        for (WyrmEnemyView ptr : WyrmEnemyView.wyrmEnemyViewsList) {
+            WyrmEnemy tmp = Controller.getINSTANCE().logic.findWyrmEnemyModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateBlackOrbMiniBoss() {
+        for (BlackOrbMiniBossView ptr : BlackOrbMiniBossView.blackOrbMiniBossViewsList) {
+            BlackOrbMiniBoss tmp = Controller.getINSTANCE().logic.findBlackOrbMiniBossModel(ptr.getId());
+            ptr.setCurrentOrbLocations(tmp.getOrbsLocation());
+            ptr.setOrbRadius(tmp.getOrbRadius());
+            ptr.setCurrentOrbLasers(tmp.getOrbLasers());
         }
     }
     private void updateCollectibleView() {

@@ -1,5 +1,6 @@
 package controller;
 
+import model.collision.Line;
 import model.panelModel.PanelModel;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -8,7 +9,6 @@ import org.locationtech.jts.geom.Polygon;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -146,7 +146,7 @@ public class Utils {
         }
         return out;
     }
-    public static boolean ApproxEqual(double a, double b) {
+    public static boolean approxEqual(double a, double b) {
         return a - ERROR <= b && a + ERROR >= b;
     }
     public static ArrayList<Point2D> calculateSquareVertices(Point2D center, double size) {
@@ -201,5 +201,14 @@ public class Utils {
         }
 
         return geometry;
+    }
+    public static boolean checkLinesAndPolygonCollision(ArrayList<Line> lines, ArrayList<Point2D> vertices) {
+        for (int i = 0; i < vertices.size(); i++) {
+            Line tmp = new Line(vertices.get(i), vertices.get(((i + 1) % vertices.size())));
+            for (Line line : lines) {
+                if (Line.findIntersection(line, tmp) != null) return true;
+            }
+        }
+        return false;
     }
 }

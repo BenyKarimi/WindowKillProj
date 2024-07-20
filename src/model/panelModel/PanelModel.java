@@ -4,6 +4,12 @@ import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
 import model.bulletModel.RigidBulletModel;
+import model.charactersModel.Enemy;
+import model.collision.Collidable;
+import model.movement.Direction;
+import model.movement.Movable;
+import view.charecterViews.ArchmireEnemyView;
+import view.container.GamePanel;
 import view.container.GlassFrame;
 
 import java.awt.*;
@@ -12,12 +18,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class PanelModel {
+public class PanelModel implements Movable {
     private double x;
     private double y;
     private double width;
     private double height;
-    private double leftSpeed = 0, bulletRelatedLeftSpeed = 0;
+    private double leftSpeed = 0;
+    private double bulletRelatedLeftSpeed = 0;
     private double rightSpeed = 0, bulletRelatedRightSpeed = 0;
     private double upSpeed = 0, bulletRelatedUpSpeed = 0;
     private double downSpeed = 0, bulletRelatedDownSpeed = 0;
@@ -28,23 +35,31 @@ public class PanelModel {
     private Isometric isometric;
     private Rigid rigid;
     private final String id;
+    private Direction direction;
+    private double speed;
+    private Point2D center;
+    private boolean stationed;
     public static ArrayList<PanelModel> panelModelList = new ArrayList<>();
 
-    public PanelModel(double x, double y, double width, double height, Isometric isometric, Rigid rigid) {
+    public PanelModel(double x, double y, double width, double height, Isometric isometric, Rigid rigid, boolean stationed) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.isometric = isometric;
         this.rigid = rigid;
+        this.direction = new Direction(new Point2D.Double(0, 0));
+        this.speed = 0;
+        this.stationed = stationed;
         this.id = Utils.processRandomId();
         Controller.getINSTANCE().createGamePanel(id, x, y, width, height);
         panelModelList.add(this);
+        Movable.movable.add(this);
     }
 
     public PanelModel(Dimension size, Isometric isometric, Rigid rigid) {
         this((double) GlassFrame.getINSTANCE().getWidth() / 2 - (double) size.width / 2, (double) GlassFrame.getINSTANCE().getHeight() / 2 - (double) size.height / 2,
-                size.width, size.height, isometric, rigid);
+                size.width, size.height, isometric, rigid, false);
     }
     public void changeShrinkByCircle(Point2D center, double radius) {
         if (Utils.coveringPanels(PanelModel.panelModelList, center, radius).size() == 0) {
@@ -101,7 +116,6 @@ public class PanelModel {
         for(RigidBulletModel bullet : RigidBulletModel.rigidBulletModelList)
             changeShrinkByCircle(bullet.getCenter(), bullet.getRadius());
 
-        // TODO: add the rigid bullets of enemies
     }
     public void endGameShrinkValue() {
         leftSpeed = width / Constants.SHRINK_DECELERATION;
@@ -112,12 +126,19 @@ public class PanelModel {
     }
     private boolean collidesWithOtherPanel() {
         for(PanelModel panel : panelModelList) {
-            if (!this.equals(panel) && new Rectangle((int)x, (int)y, (int)height, (int)width).intersects(new Rectangle((int)panel.getX(), (int)panel.getY(), (int)panel.getHeight(), (int)panel.getWidth()))
+            if ((!this.equals(panel) && new Rectangle((int)x, (int)y, (int)height, (int)width).intersects(new Rectangle((int)panel.getX(), (int)panel.getY(), (int)panel.getHeight(), (int)panel.getWidth())))
                 && (rigid.equals(Rigid.YES) || panel.rigid.equals(Rigid.YES)))
                 return true;
         }
 
         return false;
+    }
+    public void updateCenter() {
+        center = new Point2D.Double(x + width / 2, y + height / 2);
+    }
+    private void updateLeftLocationWithCenter() {
+        x = center.getX() - width / 2;
+        y = center.getY() - height / 2;
     }
     public void shrink(boolean wonGame) {
         if (!leftAccel.isEmpty()) {
@@ -186,11 +207,12 @@ public class PanelModel {
             y -= upSpeed + bulletRelatedUpSpeed;
             height += upSpeed + bulletRelatedUpSpeed;
         }
+//        System.out.println(bulletRelatedRightSpeed);
     }
 
     public void bulletHit(WallSideIndicator wall) {
         if (wall.equals(WallSideIndicator.RIGHT)) {
-            rightAccel.add(-Constants.ACCELERATION_MAX_VAL  );
+            rightAccel.add(-Constants.ACCELERATION_MAX_VAL );
         }
         if (wall.equals(WallSideIndicator.LEFT)) {
             leftAccel.add(-Constants.ACCELERATION_MAX_VAL);
@@ -235,6 +257,39 @@ public class PanelModel {
         this.rigid = rigid;
     }
 
+    @Override
+    public void setCenter(Point2D center) {
+        this.center = center;
+        updateLeftLocationWithCenter();
+    }
+
+    @Override
+    public Point2D getCenter() {
+        return center;
+    }
+
+    @Override
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
+    public boolean isStationed() {
+        return stationed;
+    }
     public String getId() {
         return id;
     }
@@ -269,7 +324,27 @@ public class PanelModel {
     public void setHeight(double height) {
         this.height = height;
     }
-
+    public static void removeFromAllList(String id) {
+        for (int i = 0; i < panelModelList.size(); i++) {
+            if (panelModelList.get(i).getId().equals(id)) {
+                panelModelList.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < Movable.movable.size(); i++) {
+            if (Movable.movable.get(i).getId() != null && Movable.movable.get(i).getId().equals(id)) {
+                Movable.movable.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < GamePanel.gamePanelList.size(); i++) {
+            if (GamePanel.gamePanelList.get(i).getId().equals(id)) {
+                GlassFrame.getINSTANCE().remove(GamePanel.gamePanelList.get(i));
+                GamePanel.gamePanelList.remove(i);
+                break;
+            }
+        }
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

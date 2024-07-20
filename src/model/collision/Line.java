@@ -1,6 +1,7 @@
 package model.collision;
 
 import java.awt.geom.Point2D;
+import java.util.Objects;
 
 public class Line {
     private Point2D start, end;
@@ -23,5 +24,21 @@ public class Line {
             return new Point2D.Double(l1.start.getX() + (t * s1_x), l1.start.getY() + (t * s1_y));
         }
         return null;
+    }
+
+    public Point2D getStart() {
+        return start;
+    }
+
+    public Point2D getEnd() {
+        return end;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Line line = (Line) o;
+        return Objects.equals(start, line.start) && Objects.equals(end, line.end);
     }
 }

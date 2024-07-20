@@ -44,13 +44,7 @@ public class ArchmireEnemy extends Enemy{
     public void updateDirection(Point2D point) {
         Point2D delta = new Point2D.Double(point.getX() - super.getCenter().getX(), point.getY() - super.getCenter().getY());
         Direction toPoint = new Direction(delta);
-        if (super.isImpact() && super.getSpeed() > 0.25) {
-            super.setSpeed(super.getSpeed() - (super.getSpeed() / 10));
-            return;
-        }
-        if (super.isImpact()) super.setImpact(false);
         super.setDirection(new Direction(toPoint.getDirectionVector()));
-        super.setSpeed(Math.min(super.getSpeed() + (super.getSpeed() / 10), super.getInitialSpeed()));
     }
     public void updateEntitiesInsideDrown(int time) {
         for (Enemy enemy : Enemy.enemiesList) {

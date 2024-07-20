@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/locationtech_jts_core.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jts-core-1.18.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/ArchmireEnemy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controller/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/ArchmireEnemy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/ArchmireEnemyView.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding Archmire enemy model &#10;Adding Pair class&#10;Adding Utils some helpful methods">
+      <change afterPath="$PROJECT_DIR$/resources/OrbEnemy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/WyrmEnemy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/BlackOrbMiniBoss.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/OrbEnemy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/WyrmEnemy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/BlackOrbMiniBossView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/WyrmEnemyView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WindowKill.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WindowKill.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/ArchmireEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/ArchmireEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collision/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/collision/Line.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/movement/Movable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,27 +53,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Documents/GitHub/WindowKill-Phase1&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/benya/Desktop/tmp",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\benya\Documents\GitHub\WindowKillProj\resources" />
       <recent name="C:\Users\benya\Desktop\WindowKill\resources\songs" />
       <recent name="C:\Users\benya\Desktop\WindowKill\resources" />
     </key>
@@ -129,7 +129,8 @@
       <workItem from="1721163730754" duration="1259000" />
       <workItem from="1721288163280" duration="11425000" />
       <workItem from="1721374514216" duration="43799000" />
-      <workItem from="1721420984765" duration="1499000" />
+      <workItem from="1721420984765" duration="1644000" />
+      <workItem from="1721454730539" duration="21830000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -222,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721404864116</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Adding Archmire enemy model &#10;Adding Pair class&#10;Adding Utils some helpful methods">
+      <created>1721422594085</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1721422594085</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,7 +262,8 @@
     <MESSAGE value="Deleted Deprecated Files and Minor Bug Fixes" />
     <MESSAGE value="Game End Mechanism Updated&#10;Panel Shrinkage Updated" />
     <MESSAGE value="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding omenoct and necropick enemies &#10;Adding non-rigid Bullet and changing bullet model to rigid bullet &#10;Changing logic of collisions" />
+    <MESSAGE value="Adding Archmire enemy model &#10;Adding Pair class&#10;Adding Utils some helpful methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding Archmire enemy model &#10;Adding Pair class&#10;Adding Utils some helpful methods" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

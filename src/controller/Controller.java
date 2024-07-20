@@ -44,6 +44,12 @@ public class Controller {
     public void createArchmireEnemyView(String id) {
         new ArchmireEnemyView(id);
     }
+    public void createWyrmEnemyView(String id) {
+        new WyrmEnemyView(id);
+    }
+    public void createBlackOrbMiniBossView(String id) {
+        new BlackOrbMiniBossView(id);
+    }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();
         return INSTANCE;
