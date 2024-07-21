@@ -28,8 +28,7 @@ public class RandomHelper {
         return random.nextDouble(currentSpeed * 1.5, currentSpeed * 3);
     }
     public static int randomFirstWaveEnemyType() {
-//        return random.nextInt(0, 2);
-        return 0;
+        return random.nextInt(0, 2);
     }
     private static int randomSecondWaveEnemyType() {
         int type = 0;
@@ -117,7 +116,6 @@ public class RandomHelper {
         else tmp = 2;
 
         int num = (int) random.nextDouble((tmp * (GameValues.waveNumber - 3)) + GameValues.waveLengthTime / 30000.0, (tmp * (GameValues.waveNumber - 3)) + GameValues.waveLengthTime / 30000.0 + 2);
-//        int num = 1;
         ArrayList<Integer> indices = randomArrayListIndices(num, candidate.size());
 
         ArrayList<Pair<Point2D, Integer>> out = new ArrayList<>();

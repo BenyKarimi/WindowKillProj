@@ -67,9 +67,9 @@ public class Logic {
             if (RandomHelper.randomFirstWaveEnemyType() == 0) {
                 if (SquareEnemy.squareEnemyList.isEmpty()) new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
-//            else {
-//                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-//            }
+            else {
+                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
         }
     }
     private void doSpawn() {
@@ -84,7 +84,7 @@ public class Logic {
                 new TriangleEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
             else if (centerAndTime.getSecond() == 3) {
-                new OmenoctEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed(), RandomHelper.omenoctWallSide());
+                new OmenoctEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed() * 1.5, RandomHelper.omenoctWallSide());
             }
             else if (centerAndTime.getSecond() == 4) {
                 new NecropickEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
@@ -197,6 +197,9 @@ public class Logic {
         TypedActionHandle.setUp(false);
         TypedActionHandle.setRight(false);
         StoreActionHandle.setThreeBullet(false);
+        StoreActionHandle.setBanishHovering(false);
+        StoreActionHandle.setFreezing(false);
+        StoreActionHandle.setHotBullet(false);
     }
     public EpsilonModel findEpsilonModel(String id) {
         for (EpsilonModel ptr : EpsilonModel.epsilonModelsList) {

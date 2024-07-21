@@ -10,7 +10,13 @@ public class StoreActionHandle {
     private static boolean doImpact = false;
     private static boolean threeBullet = false;
     private static boolean addHp = false;
-    private static long startThreeBullet;
+    private static boolean banishHovering = false;
+    private static boolean freezing = false;
+    private static boolean hotBullet = false;
+    private static int startThreeBullet;
+    private static int startBanish;
+    private static int startFreezing;
+    private static int hotBulletCoolDown;
 
     public static void handelActions() {
         for (GamePanel panel : GamePanel.gamePanelList) panel.setVisible(true);
@@ -31,10 +37,28 @@ public class StoreActionHandle {
             epsilon.setHp(epsilon.getHp() + 10);
             addHp = false;
         }
+        else if (banishHovering) {
+            startBanish = GlassFrame.getINSTANCE().getTimer().getSeconds();
+        }
+        else if (freezing) {
+            startFreezing = GlassFrame.getINSTANCE().getTimer().getSeconds();
+        }
+        else if (hotBullet) {
+            hotBulletCoolDown = GlassFrame.getINSTANCE().getTimer().getSeconds();
+        }
     }
 
-    public static long getStartThreeBullet() {
+    public static int getStartThreeBullet() {
         return startThreeBullet;
+    }
+    public static int getStartBanish() {
+        return startBanish;
+    }
+    public static int getStartFreezing() {
+        return startFreezing;
+    }
+    public static int getHotBulletCoolDown() {
+        return hotBulletCoolDown;
     }
 
     public static boolean isDoImpact() {
@@ -59,5 +83,29 @@ public class StoreActionHandle {
 
     public static void setAddHp(boolean addHp) {
         StoreActionHandle.addHp = addHp;
+    }
+
+    public static boolean isBanishHovering() {
+        return banishHovering;
+    }
+
+    public static void setBanishHovering(boolean banishHovering) {
+        StoreActionHandle.banishHovering = banishHovering;
+    }
+
+    public static boolean isFreezing() {
+        return freezing;
+    }
+
+    public static void setFreezing(boolean freezing) {
+        StoreActionHandle.freezing = freezing;
+    }
+
+    public static boolean isHotBullet() {
+        return hotBullet;
+    }
+
+    public static void setHotBullet(boolean hotBullet) {
+        StoreActionHandle.hotBullet = hotBullet;
     }
 }

@@ -31,7 +31,7 @@ public class TypedActionHandle {
         else if (keyCode == KeyActions.RIGHT) {
             right = true;
         }
-        else if (keyCode == KeyActions.showStore) {
+        else if (keyCode == KeyActions.showStore && !StoreActionHandle.isFreezing()) {
             if (StorePanel.getNow() != null) return;
             Controller.getINSTANCE().updater.getViewUpdater().stop();
             Controller.getINSTANCE().updater.getModelUpdater().stop();

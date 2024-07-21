@@ -3,6 +3,7 @@ package controller;
 import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
+import controller.handeler.StoreActionHandle;
 import controller.handeler.TypedActionHandle;
 import model.bulletModel.RigidBulletModel;
 import model.bulletModel.NonRigidBulletModel;
@@ -470,6 +471,22 @@ public class Updater {
     }
     private void moveAllModels() {
         for (Movable ptr : Movable.movable) {
+            if (StoreActionHandle.isFreezing()) {
+                if (gameTimer.getSeconds() - StoreActionHandle.getStartFreezing() < 10) {
+                    if (!(ptr instanceof RigidBulletModel && ((RigidBulletModel) ptr).getShooterEntity().equals(epsilon.getId()))){
+                        continue;
+                    }
+                }
+                else StoreActionHandle.setFreezing(false);
+            }
+
+            if (StoreActionHandle.isBanishHovering()) {
+                if (gameTimer.getSeconds() - StoreActionHandle.getStartBanish() < 10) {
+                    if (ptr instanceof Enemy && !((Enemy) ptr).isHovering()) continue;
+                }
+                else StoreActionHandle.setBanishHovering(false);
+            }
+
             ptr.move();
         }
     }
