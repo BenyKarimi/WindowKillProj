@@ -104,7 +104,7 @@ public class OmenoctEnemy extends Enemy {
         }
     }
 
-    public Point2D findTargetPanel(ArrayList<PanelModel> candidatePanels) {
+    public Point2D findTargetPanel(ArrayList<PanelModel> candidatePanels, Point2D def) {
         boolean ok = false;
         for (PanelModel panel : candidatePanels) {
             if (currentPanel != null && this.currentPanel.equals(panel)) {
@@ -116,6 +116,7 @@ public class OmenoctEnemy extends Enemy {
 
         Point2D out = null;
 
+        if (currentPanel == null) return def;
 
         if (wallSideIndicator.equals(WallSideIndicator.LEFT)) {
             if (isConnectedToWall(wallSideIndicator, currentPanel.getX())) out = super.getCenter();
@@ -175,5 +176,9 @@ public class OmenoctEnemy extends Enemy {
     @Override
     public boolean isStationed() {
         return false;
+    }
+
+    public WallSideIndicator getWallSideIndicator() {
+        return wallSideIndicator;
     }
 }

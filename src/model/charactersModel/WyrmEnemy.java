@@ -71,7 +71,7 @@ public class WyrmEnemy extends Enemy {
         wyrmPanel.setSpeed(super.getSpeed());
     }
     private void makePanel() {
-        wyrmPanel = new PanelModel(super.getVertices().get(0).getX() - super.getSize() / 2, super.getVertices().get(0).getY() - super.getSize() / 2, super.getSize() * 2, super.getSize() * 2, Isometric.YES, Rigid.NO, false);
+        wyrmPanel = new PanelModel(super.getVertices().get(0).getX() - super.getSize() / 2, super.getVertices().get(0).getY() - super.getSize() / 2, super.getSize() * 2, super.getSize() * 2, Isometric.YES, Rigid.NO);
     }
 
     public void makeAttack(int time, Point2D epsilonCenter) {

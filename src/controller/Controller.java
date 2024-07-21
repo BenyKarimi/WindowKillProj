@@ -7,6 +7,8 @@ import view.charecterViews.*;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 
+import java.awt.geom.Point2D;
+
 public class Controller {
     private static Controller INSTANCE;
     public Updater updater;
@@ -15,7 +17,10 @@ public class Controller {
         INSTANCE = this;
         logic = new Logic();
         updater = new Updater();
-        updater.epsilon = logic.epsilon;
+//        updater.epsilon = logic.epsilon;
+    }
+    public void createEpsilonView(String id, Point2D center) {
+        new EpsilonView(id, center);
     }
     public void createTriangleEnemyView(String id) {
         new TriangleEnemyView(id);

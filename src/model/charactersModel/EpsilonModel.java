@@ -1,5 +1,6 @@
 package model.charactersModel;
 
+import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
 import model.collision.Collidable;
@@ -39,6 +40,7 @@ public class EpsilonModel implements Collidable, Movable {
         direction = new Direction(new Point2D.Double(0, 0));
         radius = EPSILON_RADIUS;
         vertices = new ArrayList<>();
+        Controller.getINSTANCE().createEpsilonView(this.id, this.center);
         Collidable.collidables.add(this);
         Movable.movable.add(this);
         epsilonModelsList.add(this);

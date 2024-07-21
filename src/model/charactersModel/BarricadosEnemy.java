@@ -53,10 +53,10 @@ public class BarricadosEnemy extends Enemy {
 
     private void makePanel() {
         if (panelRigid) {
-            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.YES, true);
+            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.YES);
         }
         else {
-            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.NO, true);
+            barricadosPanel = new PanelModel(super.getVertices().get(0).getX(), super.getVertices().get(0).getY(), super.getSize(), super.getSize(), Isometric.YES, Rigid.NO);
         }
     }
     public boolean checkToRemove(int time) {

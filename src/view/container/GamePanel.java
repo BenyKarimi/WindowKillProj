@@ -109,7 +109,7 @@ public class GamePanel extends JPanel {
         drawNonRigidBullet((Graphics2D) g);
     }
     private void drawEpsilon(Graphics2D g) {
-        EpsilonView epsilonView = EpsilonView.getINSTANCE();
+        EpsilonView epsilonView = EpsilonView.epsilonViewsList.get(0);
         Image epsilonImage = new ImageIcon("resources/Epsilon.png").getImage();
         g.drawImage(epsilonImage
                 , (int)(epsilonView.getCurrentCenter().getX() - epsilonView.getCurrentRadius() - upLeftX)
@@ -122,7 +122,7 @@ public class GamePanel extends JPanel {
         }
     }
     private void drawAim(Graphics2D g) {
-        EpsilonView epsilonView = EpsilonView.getINSTANCE();
+        EpsilonView epsilonView = EpsilonView.epsilonViewsList.get(0);
         Point2D center = aimAndBulletDrawerCalculator(mousePoint, epsilonView.getCurrentCenter(), epsilonView.getCurrentRadius());
         g.setColor(new Color(15, 58, 192));
         g.fillOval((int)(center.getX() - 5 - upLeftX), (int)(center.getY() - 4 - upLeftY), 10, 10);
@@ -174,7 +174,7 @@ public class GamePanel extends JPanel {
                     , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
                     , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
             for (Pair<Point2D, Integer> tmp : ptr.getCurrentCentersPointMemory()) {
-                g.setColor(new Color(251, 55, 60, (int) ((1 - (GlassFrame.getINSTANCE().getTimer().getMiliSecond() - tmp.getSecond()) / 5000.0) * 125)));
+                g.setColor(new Color(251, 55, 60, (int) ((1 - (GlassFrame.getINSTANCE().getTimer().getMiliSecond() - tmp.getSecond()) / 6000.0) * 125)));
                 g.fillOval((int)(tmp.getFirst().getX() - ptr.getCurrentSize() / 2 - upLeftX)
                         , (int)(tmp.getFirst().getY() - ptr.getCurrentSize() / 2 - upLeftY)
                         , (int)ptr.getCurrentSize(), (int)ptr.getCurrentSize());

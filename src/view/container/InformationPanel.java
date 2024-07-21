@@ -37,8 +37,8 @@ public class InformationPanel extends JPanel {
         int height = this.getHeight() / 2;
         g.setColor(Constants.SHOW_COLOR);
         g.setFont(new Font("akashi", Font.BOLD, 15));
-        g.drawString("XP: " + EpsilonView.getINSTANCE().getCurrentXp(), 0, height);
-        g.drawString("HP: " + EpsilonView.getINSTANCE().getCurrentHp(), width, height);
+        g.drawString("XP: " + EpsilonView.epsilonViewsList.get(0).getCurrentXp(), 0, height);
+        g.drawString("HP: " + EpsilonView.epsilonViewsList.get(0).getCurrentHp(), width, height);
         g.drawString(GlassFrame.getINSTANCE().getTimer().toString(), 2 * width, height);
         g.drawString("Wave: " + GameValues.waveNumber, 3 * width, height);
     }

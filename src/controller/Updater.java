@@ -27,7 +27,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static controller.constant.Constants.*;
 
@@ -40,8 +39,8 @@ public class Updater {
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
-    GameTimer gameTimer;
-    int startTime, startWave;
+    private GameTimer gameTimer;
+    private int startTime;
     public Updater() {
         gameTimer = GlassFrame.getINSTANCE().getTimer();
         viewUpdater = new Timer((int) FRAME_UPDATE_TIME, e -> updateView()){{setCoalesce(true);}};
@@ -72,6 +71,8 @@ public class Updater {
         InformationPanel.getINSTANCE().repaint();
     }
     public void updateModel() {
+        epsilon = EpsilonModel.epsilonModelsList.get(0);
+        GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
         updateEpsilonModel();
         updatePanelModel();
         SkillTreeHandled.addHpByTime();
@@ -82,27 +83,41 @@ public class Updater {
         updateCollisionAndImpact();
         checkCollisionBulletAndPanels();
         moveAllModels();
-//        System.out.println(PanelModel.panelModelList.size());
         Controller.getINSTANCE().logic.checkGameOver();
-        if (startGame && !epsilonGoesBigger) {
-            if (Controller.getINSTANCE() == null) return;
-            /// havaset bashe che gohi dari mikhori
-            if (PanelModel.panelModelList.isEmpty()) return;
-            PanelModel pm = PanelModel.panelModelList.get(0);
-            isWave = Controller.getINSTANCE().logic.makeWave(pm.getX(), pm.getY(), pm.getWidth(), pm.getHeight());
-            if (GameValues.waveNumber == 4 && !isWave) {
-                epsilonGoesBigger = true;
-                epsilonGoesBiggerTime = gameTimer.getSeconds();
-                return;
-            }
-            if (isWave) {
-                Constants.startWave.play();
-                startWave = gameTimer.getSeconds();
-            }
-            isWave = false;
-        }
+        updateWave();
     }
     /// model functions
+    private void updateWave() {
+        if (Controller.getINSTANCE() == null) return;
+        if (PanelModel.panelModelList.isEmpty()) return;
+        if (startGame) {
+            if (!GameValues.firstRoundFinish && !epsilonGoesBigger) {
+                PanelModel pm = PanelModel.panelModelList.get(0);
+                isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
+                if (GameValues.waveNumber + 1 == 2 && isWave) {
+                    epsilonGoesBigger = true;
+                    epsilonGoesBiggerTime = gameTimer.getSeconds();
+                }
+                else if (isWave) {
+                    Controller.getINSTANCE().logic.makeFirstRoundWave(pm.getX(), pm.getY(), pm.getWidth(), pm.getHeight());
+                    startWave.play();
+                    GameValues.waveStartTime = gameTimer.getMiliSecond();
+                }
+            }
+            else if (GameValues.firstRoundFinish) {
+                isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
+                if (GameValues.waveNumber + 1 == 9 && isWave) {
+                    /// TODO: Move Epsilon Cover Panel to center
+                    return;
+                }
+                else if (isWave) {
+                    Controller.getINSTANCE().logic.updateSecondRoundWave(gameTimer.getMiliSecond());
+                    startWave.play();
+                }
+                Controller.getINSTANCE().logic.updateSpawn(gameTimer.getMiliSecond());
+            }
+        }
+    }
     private void updateEpsilonModel() {
         epsilon.updateVertices();
         epsilon.updateMainPanels(PanelModel.panelModelList);
@@ -115,10 +130,9 @@ public class Updater {
             Point2D lst = epsilon.getCenter();
             epsilon.setCenter(new Point2D.Double(lst.getX() - addRate / 3, lst.getY() - addRate / 3));
 
-            if (Utils.unionPanels(PanelModel.panelModelList, epsilon.getCenter(), epsilon.getRadius()).isEmpty()) {
+            if (Utils.unionPanels(PanelModel.panelModelList, epsilon.getCenter(), epsilon.getRadius()).isEmpty()  || gameTimer.getSeconds() - epsilonGoesBiggerTime >= 10) {
                 wonGame = true;
             }
-
             return;
         }
         TypedActionHandle.doMove();
@@ -142,13 +156,16 @@ public class Updater {
             }
             else if (wonGame) {
                 panel.endGameShrinkValue();
-                if ((panel.getWidth() <= GAME_PANEL_END_SIZE.width && panel.getHeight() <= GAME_PANEL_END_SIZE.height) || gameTimer.getSeconds() - epsilonGoesBiggerTime >= 10) {
+                if ((panel.getWidth() <= GAME_PANEL_END_SIZE.width && panel.getHeight() <= GAME_PANEL_END_SIZE.height)) {
+                    startGame = false;
+                    wonGame = false;
+                    epsilonGoesBigger = false;
                     Controller.getINSTANCE().logic.showFinishGame();
                     return;
                 }
             }
 
-            else if (gameTimer.getSeconds() - startTime >= 10 && gameTimer.getSeconds() - startWave >= 3) {
+            else if (gameTimer.getSeconds() - startTime >= 10 && gameTimer.getMiliSecond() - GameValues.waveStartTime >= 3000) {
                 panel.inGameShrinkValue();
             }
             panel.shrink(wonGame);
@@ -167,7 +184,7 @@ public class Updater {
             ptr.updateSpeed(epsilon.getCenter());
         }
         for (OmenoctEnemy ptr : OmenoctEnemy.omenoctEnemyList) {
-            ptr.updateDirection(ptr.findTargetPanel(epsilon.getMainPanels()));
+            ptr.updateDirection(ptr.findTargetPanel(epsilon.getMainPanels(), epsilon.getCenter()));
             ptr.makeAttack(gameTimer.getSeconds(), epsilon.getCenter());
             ptr.calculateVertices();
         }
@@ -390,6 +407,7 @@ public class Updater {
         enemy.setHp(enemy.getHp() - reduceHp);
         if (enemy.getHp() <= 0) {
             enemyDeath.play();
+            GameValues.temporaryEnemyKilledNumber++;
             Controller.getINSTANCE().logic.createCollectible(enemy.getCollectibleNumber(), enemy.getCollectibleXp(), enemy.getCenter(), enemy.getSize());
             if (enemy instanceof TriangleEnemy) TriangleEnemy.removeFromAllList(enemy.getId());
             if (enemy instanceof SquareEnemy) SquareEnemy.removeFromAllList(enemy.getId());
@@ -458,11 +476,14 @@ public class Updater {
 
     /// view functions
     private void updateEpsilonView() {
-        Controller.getINSTANCE().logic.epsilonView.setCurrentCenter(epsilon.getCenter());
-        Controller.getINSTANCE().logic.epsilonView.setCurrentHp(epsilon.getHp());
-        Controller.getINSTANCE().logic.epsilonView.setCurrentXp(epsilon.getXp());
-        Controller.getINSTANCE().logic.epsilonView.setCurrentVertices(epsilon.getVertices());
-        Controller.getINSTANCE().logic.epsilonView.setCurrentRadius(epsilon.getRadius());
+        for (EpsilonView ptr : EpsilonView.epsilonViewsList) {
+            EpsilonModel tmp = Controller.getINSTANCE().logic.findEpsilonModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentXp(tmp.getXp());
+            ptr.setCurrentHp(tmp.getHp());
+            ptr.setCurrentVertices(tmp.getVertices());
+            ptr.setCurrentRadius(tmp.getRadius());
+        }
     }
     private void updateTriangleEnemyView() {
         for (TriangleEnemyView ptr : TriangleEnemyView.triangleEnemyViewList) {

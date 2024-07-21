@@ -1,5 +1,9 @@
 package controller;
 
+import controller.constant.Constants;
+import controller.constant.Level;
+import model.charactersModel.Enemy;
+import model.charactersModel.OrbEnemy;
 import model.collision.Line;
 import model.panelModel.PanelModel;
 import org.locationtech.jts.geom.Coordinate;
@@ -9,6 +13,7 @@ import org.locationtech.jts.geom.Polygon;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -210,5 +215,42 @@ public class Utils {
             }
         }
         return false;
+    }
+    public static int getMinimumKilled(Level level) {
+        if (level.equals(Level.EASY)) return Constants.END_SECOND_SPAWN_KILLED_EASY;
+        if (level.equals(Level.MEDIUM)) return Constants.END_SECOND_SPAWN_KILLED_MEDIUM;
+        if (level.equals(Level.HARD)) return Constants.END_SECOND_SPAWN_KILLED_HARD;
+        return 0;
+    }
+    public static ArrayList<Rectangle2D> getCandidateRectangles() {
+        int widthNum = (int) (Constants.GLASS_FRAME_DIMENSION.width / (Constants.ENEMY_SIZE_EASY_LEVEL * 2));
+        int heightNum = (int) (Constants.GLASS_FRAME_DIMENSION.height / (Constants.ENEMY_SIZE_EASY_LEVEL * 2));
+
+        ArrayList<Rectangle2D> out = new ArrayList<>();
+        for (int i = 0; i < widthNum; i++) {
+            for (int j = 0; j < heightNum; j++) {
+                Rectangle2D tmp = new Rectangle2D.Double(1.0 * Constants.GLASS_FRAME_DIMENSION.width / widthNum * i,
+                        1.0 * Constants.GLASS_FRAME_DIMENSION.height / heightNum * j, Constants.ENEMY_SIZE_EASY_LEVEL * 2, Constants.ENEMY_SIZE_EASY_LEVEL * 2);
+                boolean firstOk = true;
+                boolean secondOk = true;
+                for (Enemy enemy : Enemy.enemiesList) {
+                    Rectangle2D tmp2;
+                    if (enemy instanceof OrbEnemy) {
+                        tmp2 = new Rectangle2D.Double(enemy.getCenter().getX() - enemy.getSize() * 2, enemy.getCenter().getY() - enemy.getSize() * 2, enemy.getSize() * 4, enemy.getSize() * 4);
+                    }
+                    else {
+                        tmp2 = new Rectangle2D.Double(enemy.getCenter().getX() - enemy.getSize() / 2, enemy.getCenter().getY() - enemy.getSize() / 2, enemy.getSize(), enemy.getSize());
+                    }
+                    if (tmp.intersects(tmp2)) firstOk = false;
+                }
+                for (PanelModel panel : PanelModel.panelModelList) {
+                    Rectangle2D tmp2 = new Rectangle2D.Double(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
+                    if (tmp.intersects(tmp2)) secondOk = false;
+                }
+
+                if (firstOk && secondOk) out.add(tmp);
+            }
+        }
+        return out;
     }
 }

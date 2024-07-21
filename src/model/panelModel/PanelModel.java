@@ -38,10 +38,9 @@ public class PanelModel implements Movable {
     private Direction direction;
     private double speed;
     private Point2D center;
-    private boolean stationed;
     public static ArrayList<PanelModel> panelModelList = new ArrayList<>();
 
-    public PanelModel(double x, double y, double width, double height, Isometric isometric, Rigid rigid, boolean stationed) {
+    public PanelModel(double x, double y, double width, double height, Isometric isometric, Rigid rigid) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -50,8 +49,8 @@ public class PanelModel implements Movable {
         this.rigid = rigid;
         this.direction = new Direction(new Point2D.Double(0, 0));
         this.speed = 0;
-        this.stationed = stationed;
         this.id = Utils.processRandomId();
+        updateCenter();
         Controller.getINSTANCE().createGamePanel(id, x, y, width, height);
         panelModelList.add(this);
         Movable.movable.add(this);
@@ -59,7 +58,7 @@ public class PanelModel implements Movable {
 
     public PanelModel(Dimension size, Isometric isometric, Rigid rigid) {
         this((double) GlassFrame.getINSTANCE().getWidth() / 2 - (double) size.width / 2, (double) GlassFrame.getINSTANCE().getHeight() / 2 - (double) size.height / 2,
-                size.width, size.height, isometric, rigid, false);
+                size.width, size.height, isometric, rigid);
     }
     public void changeShrinkByCircle(Point2D center, double radius) {
         if (Utils.coveringPanels(PanelModel.panelModelList, center, radius).size() == 0) {
@@ -288,7 +287,7 @@ public class PanelModel implements Movable {
 
     @Override
     public boolean isStationed() {
-        return stationed;
+        return false;
     }
     public String getId() {
         return id;

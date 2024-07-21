@@ -12,20 +12,20 @@ public class EpsilonView {
     private int currentXp, currentHp;
     private double currentRadius;
     private ArrayList<Point2D> currentVertices;
+    public static ArrayList<EpsilonView> epsilonViewsList = new ArrayList<>();
     public EpsilonView(String id, Point2D currentCenter) {
         this.id = id;
         INSTANCE = this;
         this.currentCenter = currentCenter;
         currentRadius = EPSILON_RADIUS;
         currentVertices = new ArrayList<>();
+        epsilonViewsList.add(this);
     }
 
-    public static EpsilonView getINSTANCE() {
-//        if (INSTANCE == null) {
-//            INSTANCE = new EpsilonView();
-//        }
-        return INSTANCE;
+    public String getId() {
+        return id;
     }
+
     public double getCurrentRadius() {
         return currentRadius;
     }

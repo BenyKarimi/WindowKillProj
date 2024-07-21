@@ -1,71 +1,57 @@
 package view.gameTimerView;
 
 public class GameTimer {
-    private int seconds;
-    private int miliSecond;
     private Thread secondThread;
     private Thread miliSecondThread;
-    private boolean stopped;
+    private GameTimerRunnable secondRunnable;
+    private GameTimerRunnable miliSecondRunnable;
 
     public GameTimer() {
-        seconds = 0;
-        stopped = false;
-        secondThread = new Thread(() -> {
-            while (!stopped) {
-                seconds++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        secondRunnable = new GameTimerRunnable(1000, 1);
+        secondThread = new Thread(secondRunnable);
         secondThread.start();
-        miliSecondThread = new Thread(() -> {
-            while (!stopped) {
-                miliSecond += 100;
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        miliSecondRunnable = new GameTimerRunnable(100, 100);
+        miliSecondThread = new Thread(miliSecondRunnable);
         miliSecondThread.start();
     }
 
     @Override
     public String toString() {
         String out = "";
-        if (seconds / 60 < 10) {
-            out += ("0" + Integer.valueOf(seconds / 60).toString());
+        if (secondRunnable.getSeconds() / 60 < 10) {
+            out += ("0" + Integer.valueOf(secondRunnable.getSeconds() / 60).toString());
         }
         else {
-            out += (Integer.valueOf(seconds / 60).toString());
+            out += (Integer.valueOf(secondRunnable.getSeconds() / 60).toString());
         }
         out += ":";
-        if (seconds % 60 < 10) {
-            out += ("0" + Integer.valueOf(seconds % 60).toString());
+        if (secondRunnable.getSeconds() % 60 < 10) {
+            out += ("0" + Integer.valueOf(secondRunnable.getSeconds() % 60).toString());
         }
         else {
-            out += (Integer.valueOf(seconds % 60).toString());
+            out += (Integer.valueOf(secondRunnable.getSeconds() % 60).toString());
         }
         return out;
     }
 
     public void Stop() {
-        stopped = true;
+        secondRunnable.pause();
+        miliSecondRunnable.pause();
     }
     public void Start() {
-        stopped = false;
+        secondRunnable.resume();
+        miliSecondRunnable.resume();
     }
-    public void Reset() {seconds = 0;}
+    public void Reset() {
+        secondRunnable.setSeconds(0);
+        miliSecondRunnable.setSeconds(0);
+    }
     public int getSeconds() {
-        return seconds;
+        return secondRunnable.getSeconds();
     }
 
     public int getMiliSecond() {
-        return miliSecond;
+        return miliSecondRunnable.getSeconds();
     }
 }
 

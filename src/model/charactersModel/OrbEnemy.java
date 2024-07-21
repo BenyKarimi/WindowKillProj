@@ -46,7 +46,7 @@ public class OrbEnemy extends Enemy {
     }
 
     private void makePanel() {
-        orbPanel = new PanelModel(super.getCenter().getX() - super.getSize() * 2, super.getCenter().getY() - super.getSize() * 2, super.getSize() * 4, super.getSize() * 4, Isometric.YES, Rigid.NO, true);
+        orbPanel = new PanelModel(super.getCenter().getX() - super.getSize() * 2, super.getCenter().getY() - super.getSize() * 2, super.getSize() * 4, super.getSize() * 4, Isometric.YES, Rigid.NO);
     }
 
     public static void removeFromAllList(String id) {

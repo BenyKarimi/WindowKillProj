@@ -30,21 +30,24 @@ import java.util.ArrayList;
 import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class Logic {
+    private int lastAttackUpdate;
+    private boolean canSpawn;
     public EpsilonModel epsilon;
-    EpsilonView epsilonView;
     public Logic() {
         createInitialPanel();
+        canSpawn = false;
+//        makeThread();
     }
     private void createEpsilon(double panelX, double panelY) {
         epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY));
-//        epsilonView = EpsilonView.getINSTANCE();
-        epsilonView = new EpsilonView(epsilon.getId(), epsilon.getCenter());
     }
     private void createInitialPanel() {
         PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.NO);
-        InformationPanel.getINSTANCE();
-        GlassFrame.getINSTANCE().getTimer().Reset();
-        GlassFrame.getINSTANCE().getTimer().Start();
+        if (!GameValues.firstRoundFinish) {
+            InformationPanel.getINSTANCE();
+            GlassFrame.getINSTANCE().getTimer().Reset();
+            GlassFrame.getINSTANCE().getTimer().Start();
+        }
         createEpsilon(panelModel.getX(), panelModel.getY());
     }
     public void createCollectible(int collectibleNumber, int collectibleXp, Point2D enemyCenter, double size) {
@@ -54,52 +57,113 @@ public class Logic {
             new Collectible(ptr, collectibleXp);
         }
     }
-    public boolean makeWave(double x, double y, double width, double height) {
-//        if (TriangleEnemy.triangleEnemyList.size() != 0 || SquareEnemy.squareEnemyList.size() != 0) return false;
-//        if (WyrmEnemy.wyrmEnemiesList.size() > 0) return false;
-        if (BarricadosEnemy.barricadosEnemiesList.size() > 0) return false;
-        GameValues.waveNumber++;
-        if (GameValues.waveNumber == 4) return false;
-        ArrayList<Point2D> enemiesCenter = RandomHelper.randomWaveEnemyCenters(2 * x, 2 * y, width, height);
+    public boolean checkCanMakeWave() {
+        return Enemy.enemiesList.isEmpty();
+    }
+    public void makeFirstRoundWave(double x, double y, double width, double height) {
+        if (GameValues.waveNumber + 1 < 2) GameValues.waveNumber++;
+        ArrayList<Point2D> enemiesCenter = RandomHelper.randomFirstWaveEnemyCenters(x, y, width, height);
         for (Point2D ptr : enemiesCenter) {
-            if (RandomHelper.randomWaveEnemyType() == 0) {
-//                new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            if (RandomHelper.randomFirstWaveEnemyType() == 0) {
+                if (SquareEnemy.squareEnemyList.isEmpty()) new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
-            else {
+//            else {
 //                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-//                new WyrmEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-                new BarricadosEnemy(ptr, 2 * RandomHelper.randomWaveEnemySize(), true, GlassFrame.getINSTANCE().getTimer().getMiliSecond());
+//            }
+        }
+    }
+    private void doSpawn() {
+        ArrayList<Pair<Point2D, Integer>> toSpawn = RandomHelper.randomSecondWaveEnemyCentersAndType();
+//        System.out.println(toSpawn.size());
+
+        for (Pair<Point2D, Integer> centerAndTime : toSpawn) {
+            if (centerAndTime.getSecond() == 1) {
+                new SquareEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
+            else if (centerAndTime.getSecond() == 2) {
+                new TriangleEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
+            else if (centerAndTime.getSecond() == 3) {
+                new OmenoctEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed(), RandomHelper.omenoctWallSide());
+            }
+            else if (centerAndTime.getSecond() == 4) {
+                new NecropickEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
+            else if (centerAndTime.getSecond() == 5) {
+                new ArchmireEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
+            else if (centerAndTime.getSecond() == 6) {
+                new WyrmEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+            }
+            else if (centerAndTime.getSecond() == 7) {
+                new BarricadosEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize() * 1.5, RandomHelper.barricadosType(), GlassFrame.getINSTANCE().getTimer().getMiliSecond());
+            }
+            else if (centerAndTime.getSecond() == 8) {
+                new BlackOrbMiniBoss(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize());
             }
         }
-        return true;
     }
+    public void updateSecondRoundWave(int time) {
+        if (Enemy.enemiesList.isEmpty()) {
+            canSpawn = true;
+            GameValues.waveStartTime = time;
+            GameValues.temporaryEnemyKilledNumber = 0;
+            doSpawn();
+            if (GameValues.waveNumber < 9) GameValues.waveNumber++;
+        }
+    }
+    public void updateSpawn(int time) {
+        if (GameValues.temporaryEnemyKilledNumber > Utils.getMinimumKilled(GameValues.level)) {
+            canSpawn = false;
+        }
+
+        if (canSpawn && time - lastAttackUpdate >= 5000) {
+            lastAttackUpdate = time;
+            doSpawn();
+        }
+    }
+
     public void checkGameOver() {
         if (epsilon.getHp() <= 0) {
             showFinishGame();
         }
     }
     public void showFinishGame() {
-        if (epsilon.getHp() <= 0) Constants.gameOver.play();
-        else Constants.winGame.play();
-
-        int finishXP = epsilon.getXp();
-        deleteAllInfo();
-        new FinishPanel(finishXP);
+        if (epsilon.getHp() <= 0) {
+            Constants.gameOver.play();
+            int finishXP = epsilon.getXp();
+            deleteAllInfo(true);
+            new FinishPanel(finishXP);
+        }
+        else if (!GameValues.firstRoundFinish) {
+            Constants.INITIAL_HP = epsilon.getHp();
+            GameValues.firstRoundFinish = true;
+            deleteAllInfo(false);
+            GameValues.waveNumber += 2;
+            createInitialPanel();
+        }
     }
-    private void deleteAllInfo() {
-        Controller.getINSTANCE().updater.modelUpdater.stop();
-        Controller.getINSTANCE().updater.viewUpdater.stop();
+    private void deleteAllInfo(boolean lose) {
         Constants.INITIAL_XP = epsilon.getXp();
-        epsilon.setVerticesNumber(0);
-        Constants.EPSILON_REDUCE_HP = 10;
-        Constants.BULLET_REDUCE_HP = 5;
+        if (lose) {
+            Controller.getINSTANCE().updater.modelUpdater.stop();
+            Controller.getINSTANCE().updater.viewUpdater.stop();
+            epsilon.setVerticesNumber(0);
+            Constants.EPSILON_REDUCE_HP = 10;
+            Constants.BULLET_REDUCE_HP = 5;
+            GameValues.waveNumber = 0;
+            SkillTreeHandled.makeAllRestart();
+            GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
+            InformationPanel.setINSTANCE(null);
+            GameValues.firstRoundFinish = false;
+        }
         for (GamePanel panel : GamePanel.gamePanelList) {
             GlassFrame.getINSTANCE().remove(panel);
         }
+        GlassFrame.getINSTANCE().revalidate();
+        GlassFrame.getINSTANCE().repaint();
         PanelModel.panelModelList.clear();
         GamePanel.gamePanelList.clear();
-        GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
-        InformationPanel.setINSTANCE(null);
         EpsilonModel.epsilonModelsList.clear();
         RigidBulletModel.rigidBulletModelList.clear();
         NonRigidBulletModel.nonRigidBulletModelsList.clear();
@@ -116,6 +180,7 @@ public class Logic {
         Collectible.collectibleList.clear();
         BulletView.bulletViewList.clear();
         EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
+        EpsilonView.epsilonViewsList.clear();
         SquareEnemyView.squareEnemyViewList.clear();
         TriangleEnemyView.triangleEnemyViewList.clear();
         OmenoctEnemyView.omenoctEnemyViewList.clear();
@@ -127,13 +192,17 @@ public class Logic {
         CollectibleView.collectibleViewList.clear();
         Collidable.collidables.clear();
         Movable.movable.clear();
-        GameValues.waveNumber = 0;
         TypedActionHandle.setDown(false);
         TypedActionHandle.setLeft(false);
         TypedActionHandle.setUp(false);
         TypedActionHandle.setRight(false);
         StoreActionHandle.setThreeBullet(false);
-        SkillTreeHandled.makeAllRestart();
+    }
+    public EpsilonModel findEpsilonModel(String id) {
+        for (EpsilonModel ptr : EpsilonModel.epsilonModelsList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
     }
     public TriangleEnemy findTriangleEnemyModel(String id) {
         for (TriangleEnemy ptr : TriangleEnemy.triangleEnemyList) {
