@@ -84,6 +84,9 @@ public class Constants {
     public static int BOSS_HAND_HP = 100;
     public static double BOSS_SIZE = 200;
     public static int BOSS_REDUCE_HP = 10;
+    public static double BOSS_AOE_RADIUS = 30;
+    public static int BOSS_AOE_REDUCE_HP = 10;
+    public static int BOSS_AOE_CENTER_NUMBERS = 3;
     public static int BOSS_BULLET_REDUCE_HP = 10;
     public static int BOSS_ADDED_XP = 250;
     public static SoundPlayer bulletSound = new SoundPlayer("resources/songs/BulletSound.wav");

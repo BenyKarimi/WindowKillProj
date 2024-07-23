@@ -3,6 +3,7 @@ package model.charactersModel.boss;
 import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
+import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.Enemy;
 import model.collision.Collidable;
 import model.movement.Direction;
@@ -15,6 +16,8 @@ import view.charecterViews.bossView.BossRightHandView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import static controller.constant.Constants.BOSS_BULLET_REDUCE_HP;
 
 public class BossRightHand implements Movable, Collidable {
     private final String id;
@@ -33,7 +36,7 @@ public class BossRightHand implements Movable, Collidable {
         this.size = size;
         this.id = Utils.processRandomId();
         this.speed = 0;
-        this.hp = Constants.BOSS_HEAD_HP;
+        this.hp = Constants.BOSS_HAND_HP;
         this.canInjure = false;
         direction = new Direction(new Point2D.Double(0, 0));
         vertices = new ArrayList<>();
@@ -53,7 +56,11 @@ public class BossRightHand implements Movable, Collidable {
     private void makePanel() {
         rightHandPanel = new PanelModel(vertices.get(0).getX(), vertices.get(0).getY(), size, size, Isometric.NO, Rigid.NO);
     }
-
+    public void makeAttack(Point2D epsilonCenter) {
+        Direction bulletDirection = new Direction(new Point2D.Double(epsilonCenter.getX() - center.getX(), epsilonCenter.getY() - center.getY()));
+        Point2D bulletCenter = Utils.aimAndBulletDrawerCalculator(epsilonCenter, center, size);
+        new NonRigidBulletModel(bulletCenter, bulletDirection, BOSS_BULLET_REDUCE_HP, id);
+    }
     @Override
     public boolean isCircular() {
         return false;
@@ -131,6 +138,11 @@ public class BossRightHand implements Movable, Collidable {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
+
+    public PanelModel getRightHandPanel() {
+        return rightHandPanel;
+    }
+
     public static void removeFromAllList(String id) {
         for (int i = 0; i < bossRightHandsList.size(); i++) {
             if (bossRightHandsList.get(i).getId().equals(id)) {

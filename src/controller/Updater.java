@@ -108,7 +108,6 @@ public class Updater {
             else if (GameValues.firstRoundFinish) {
                 isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
                 if (GameValues.waveNumber + 1 == 5 && isWave) {
-                    /// TODO: Move Epsilon Cover Panel to center
                     if (PanelModel.panelModelList.get(0).moveToCenter()) {
                         PanelModel.panelModelList.get(0).setDirection(new Direction(new Point2D.Double(0, 0)));
                         PanelModel.panelModelList.get(0).setSpeed(0);

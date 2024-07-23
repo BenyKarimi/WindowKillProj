@@ -1,5 +1,5 @@
 package model.charactersModel.boss;
 
 public enum BossAttackType {
-    SQUEEZE, PROJECTILE
+    SQUEEZE, PROJECTILE, VOMIT, POWER_PUNCH
 }

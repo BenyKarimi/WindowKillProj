@@ -9,12 +9,14 @@ public class BossHeadView {
     private Point2D currentCenter;
     private double currentSize;
     private boolean dead;
+    private ArrayList<Point2D> currentAoeCenters;
     public static ArrayList<BossHeadView> bossHeadViewsList = new ArrayList<>();
 
     public BossHeadView(String id) {
         this.id = id;
         this.dead = false;
         currentCenter = new Point2D.Double(0, 0);
+        currentAoeCenters = new ArrayList<>();
         bossHeadViewsList.add(this);
     }
 
@@ -44,5 +46,13 @@ public class BossHeadView {
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public ArrayList<Point2D> getCurrentAoeCenters() {
+        return currentAoeCenters;
+    }
+
+    public void setCurrentAoeCenters(ArrayList<Point2D> currentAoeCenters) {
+        this.currentAoeCenters = currentAoeCenters;
     }
 }

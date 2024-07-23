@@ -1,6 +1,7 @@
 package controller.bossHandle;
 
 import controller.Controller;
+import controller.Pair;
 import controller.Utils;
 import controller.constant.Constants;
 import controller.constant.GameValues;
@@ -12,6 +13,7 @@ import model.bulletModel.RigidBulletModel;
 import model.charactersModel.*;
 import model.charactersModel.boss.BossHead;
 import model.charactersModel.boss.BossLeftHand;
+import model.charactersModel.boss.BossPunch;
 import model.charactersModel.boss.BossRightHand;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
@@ -25,6 +27,7 @@ import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.EpsilonView;
 import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
+import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
 import view.container.GamePanel;
 import view.container.GlassFrame;
@@ -48,6 +51,7 @@ public class BossUpdater {
     private BossHead bossHead;
     private BossRightHand bossRightHand;
     private BossLeftHand bossLeftHand;
+    private BossPunch bossPunch;
     private PanelModel epsilonPanel;
     private boolean wonGame = false;
     private boolean firstBossAttackFinished = false;
@@ -74,6 +78,7 @@ public class BossUpdater {
         updateBossHeadView();
         updateBossRightHandView();
         updateBossLeftHandView();
+        updateBossPunchView();
         updateBulletView();
         updateNonRigidBulletView();
         updatePanelView();
@@ -90,6 +95,7 @@ public class BossUpdater {
         updateEpsilonModel();
         updateBoss();
         updatePanelModel();
+        reduceHealthByVomit();
         SkillTreeHandled.addHpByTime();
         updateCollisionAndImpact();
         checkCollisionBulletAndPanels();
@@ -97,6 +103,7 @@ public class BossUpdater {
         Controller.getINSTANCE().logic.checkGameOver();
 
         if (!GameValues.bossFightStart) {
+            if (bossHead == null) return;
             Point2D dest = new Point2D.Double(epsilonPanel.getX() + epsilonPanel.getWidth() / 2, epsilonPanel.getY() - BOSS_SIZE / 2);
             if (Utils.pointsApproxEqual(dest, bossHead.getHeadPanel().getCenter())) {
                 bossHead.setDirection(new Direction(new Point2D.Double(0, 0)));
@@ -135,13 +142,18 @@ public class BossUpdater {
         bossHandler.setBossHead(bossHead);
         bossHandler.setBossLeftHand(bossLeftHand);
         bossHandler.setBossRightHand(bossRightHand);
+        bossHandler.setBossPunch(bossPunch);
 
-        bossHandler.makeAttack(gameTimer.getSeconds());
-        bossHandler.updateAttack(gameTimer.getMiliSecond());
+        if (GameValues.bossFightStart && !secondBossAttackFinished) {
+            bossHandler.updateModels(gameTimer.getMiliSecond());
+            bossHandler.makeAttack(gameTimer.getMiliSecond(), firstBossAttackFinished);
+            bossHandler.updateAttack(gameTimer.getMiliSecond(), epsilon.getCenter(), epsilonPanel);
+        }
 
         bossHead = bossHandler.getBossHead();
         bossLeftHand = bossHandler.getBossLeftHand();
         bossRightHand = bossHandler.getBossRightHand();
+        bossPunch = bossHandler.getBossPunch();
     }
     private void updateEpsilonModel() {
         epsilon.updateVertices();
@@ -164,6 +176,16 @@ public class BossUpdater {
         epsilon.adjustLocation(PanelModel.panelModelList);
         if (epsilon.getSpeed() > 0) {
             epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / 10));
+        }
+    }
+    private void reduceHealthByVomit() {
+        if (bossHead == null) return;
+        ArrayList<Pair<EpsilonModel, Integer>> tmp = bossHead.getEpsilonsInsideAoe();
+        for (int i = 0; i < tmp.size(); i++) {
+            if (gameTimer.getMiliSecond() - tmp.get(i).getSecond() >= 1000) {
+                epsilonHealthReduction(tmp.get(i).getFirst(), BOSS_AOE_REDUCE_HP);
+                tmp.remove(i--);
+            }
         }
     }
     private void updatePanelModel() {
@@ -195,45 +217,53 @@ public class BossUpdater {
 
                 if (point != null) {
                     double impactLevel = 0;
-                    if (first instanceof EpsilonModel && (second instanceof BossRightHand || second instanceof BossLeftHand)) {
+                    if (first instanceof EpsilonModel && (second instanceof BossRightHand || second instanceof BossLeftHand || second instanceof BossPunch)) {
                         epsilonHealthReduction((EpsilonModel) first, BOSS_REDUCE_HP);
                         impactLevel = 5;
                     }
                     else if (first instanceof EpsilonModel && second instanceof NonRigidBulletModel) {
-                        epsilonHealthReduction((EpsilonModel) first, BOSS_BULLET_REDUCE_HP);
+                        epsilonHealthReduction((EpsilonModel) first, ((NonRigidBulletModel) second).getReduceHp());
                         NonRigidBulletModel.removeFromAllList(second.getId());
+                        impactLevel = 5;
                     }
                     else if (first instanceof RigidBulletModel && second instanceof BossHead) {
+                        if (!((BossHead) second).isCanInjure()) continue;
                         ((BossHead) second).setHp(((BossHead) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                         if (((BossHead) second).getHp() <= 0) {
                             secondBossAttackFinished = true;
                             removeLeftHand();
                             removeRightHand();
+                            removePunch();
                             ((BossHead) second).setDead(true);
                             epsilon.setXp(epsilon.getXp() + BOSS_ADDED_XP);
                         }
                         else if (((BossHead) second).getHp() < (2 * BOSS_HEAD_HP) / 3) {
+                            bossPunch = new BossPunch(new Point2D.Double(GLASS_FRAME_DIMENSION.width / 2.0, GLASS_FRAME_DIMENSION.height - BOSS_SIZE / 2.0), BOSS_SIZE);
                             firstBossAttackFinished = true;
                         }
                         RigidBulletModel.removeFromAllList(first.getId());
+                        impactLevel = 5;
                     }
                     else if (first instanceof RigidBulletModel && (second instanceof BossLeftHand || second instanceof BossRightHand)) {
                         if (second instanceof BossLeftHand) {
+                            if (!((BossLeftHand) second).isCanInjure()) continue;
                             ((BossLeftHand) second).setHp(((BossLeftHand) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                             if (((BossLeftHand) second).getHp() <= 0) {
                                 removeLeftHand();
                             }
                         }
                         else {
+                            if (!((BossRightHand) second).isCanInjure()) continue;
                             ((BossRightHand) second).setHp(((BossRightHand) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                             if (((BossRightHand) second).getHp() <= 0) {
                                 removeRightHand();
                             }
                         }
+                        impactLevel = 5;
                         RigidBulletModel.removeFromAllList(first.getId());
                     }
                     else impactLevel = 2;
-                    if (impactLevel != 0) ImpactMechanism.applyImpact(point, impactLevel);
+                    ImpactMechanism.applyImpact(point, impactLevel);
                 }
             }
         }
@@ -312,6 +342,13 @@ public class BossUpdater {
         bossHead.removePanel();
         bossHead = null;
     }
+    private void removePunch() {
+        if (bossPunch == null) return;
+        bossHandler.setBossPunch(null);
+        BossPunch.removeFromAllList(bossPunch.getId());
+        bossPunch.removePanel();
+        bossPunch = null;
+    }
 
     /// update View
     private void updateEpsilonView() {
@@ -354,6 +391,7 @@ public class BossUpdater {
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setDead(tmp.isDead());
             ptr.setCurrentSize(tmp.getSize());
+            ptr.setCurrentAoeCenters(tmp.getAoeCenters());
         }
     }
     private void updateBossRightHandView() {
@@ -366,6 +404,13 @@ public class BossUpdater {
     private void updateBossLeftHandView() {
         for (BossLeftHandView ptr : BossLeftHandView.bossLeftHandViewsList) {
             BossLeftHand tmp = Controller.getINSTANCE().logic.findBossLeftHandModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
+        }
+    }
+    private void updateBossPunchView() {
+        for (BossPunchView ptr : BossPunchView.bossPunchViewsList) {
+            BossPunch tmp = Controller.getINSTANCE().logic.findBossPunchModel(ptr.getId());
             ptr.setCurrentCenter(tmp.getCenter());
             ptr.setCurrentSize(tmp.getSize());
         }

@@ -1,55 +1,43 @@
 package model.charactersModel.boss;
 
 import controller.Controller;
-import controller.Pair;
 import controller.Utils;
 import controller.constant.Constants;
-import model.charactersModel.Enemy;
-import model.charactersModel.EpsilonModel;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
 import model.panelModel.Isometric;
 import model.panelModel.PanelModel;
 import model.panelModel.Rigid;
-import view.charecterViews.bossView.BossHeadView;
-import view.charecterViews.bossView.BossRightHandView;
+import view.charecterViews.bossView.BossPunchView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
-public class BossHead implements Movable, Collidable {
+public class BossPunch implements Movable, Collidable {
     private final String id;
     private double size;
     private double speed;
     private int hp;
-    private boolean canInjure;
     private Point2D center;
     private Direction direction;
     private ArrayList<Point2D> vertices;
-    private PanelModel headPanel;
-    private boolean dead;
-    private ArrayList<Pair<EpsilonModel, Integer>> epsilonsInsideAoe;
-    private ArrayList<Point2D> aoeCenters;
-    public static ArrayList<BossHead> bossHeadsList = new ArrayList<>();
+    private PanelModel punchPanel;
+    public static ArrayList<BossPunch> bossPunchesList = new ArrayList<>();
 
-    public BossHead(Point2D center, double size) {
+    public BossPunch(Point2D center, double size) {
         this.center = center;
         this.size = size;
         this.id = Utils.processRandomId();
         this.speed = 0;
-        this.hp = Constants.BOSS_HEAD_HP;
-        this.canInjure = false;
-        this.dead = false;
-        epsilonsInsideAoe = new ArrayList<>();
-        aoeCenters = new ArrayList<>();
-        vertices = new ArrayList<>();
+        this.hp = Constants.BOSS_HAND_HP;
         direction = new Direction(new Point2D.Double(0, 0));
+        vertices = new ArrayList<>();
         calculateVertices();
         makePanel();
-        Controller.getINSTANCE().createBossHeadView(id);
+        Controller.getINSTANCE().createBossPunchView(id);
         Collidable.collidables.add(this);
-        bossHeadsList.add(this);
+        bossPunchesList.add(this);
         Movable.movable.add(this);
     }
 
@@ -58,39 +46,12 @@ public class BossHead implements Movable, Collidable {
         ArrayList<Point2D> ver = Utils.calculateSquareVertices(center, size);
         vertices.addAll(ver);
     }
-
     private void makePanel() {
-        headPanel = new PanelModel(vertices.get(0).getX(), vertices.get(0).getY(), size, size, Isometric.NO, Rigid.NO);
+        punchPanel = new PanelModel(vertices.get(0).getX(), vertices.get(0).getY(), size, size, Isometric.NO, Rigid.NO);
     }
 
-    public void updateEpsilonInsideAoe(int time) {
-        for (EpsilonModel epsilon : EpsilonModel.epsilonModelsList) {
-            boolean inside = false;
-            for (Point2D aoeCenter : aoeCenters) {
-                if (aoeCenter.distance(epsilon.getCenter()) <= Constants.BOSS_AOE_RADIUS - epsilon.getRadius()) {
-                    inside = true;
-                }
-            }
-            if (inside) {
-                if (!Utils.pairArrayContainsKey(epsilonsInsideAoe, epsilon)) epsilonsInsideAoe.add(new Pair<>(epsilon, time));
-            }
-            else Utils.pairArrayRemoveKey(epsilonsInsideAoe, epsilon);
-        }
-    }
-    public ArrayList<Point2D> getAoeCenters() {
-        return aoeCenters;
-    }
-
-    public void setAoeCenters(ArrayList<Point2D> aoeCenters) {
-        this.aoeCenters = aoeCenters;
-    }
-
-    public ArrayList<Pair<EpsilonModel, Integer>> getEpsilonsInsideAoe() {
-        return epsilonsInsideAoe;
-    }
-
-    public PanelModel getHeadPanel() {
-        return headPanel;
+    public PanelModel getPunchPanel() {
+        return punchPanel;
     }
 
     @Override
@@ -151,10 +112,6 @@ public class BossHead implements Movable, Collidable {
         return hp;
     }
 
-    public boolean isCanInjure() {
-        return canInjure;
-    }
-
     public void setSpeed(double speed) {
         this.speed = speed;
     }
@@ -163,25 +120,14 @@ public class BossHead implements Movable, Collidable {
         this.hp = hp;
     }
 
-    public void setCanInjure(boolean canInjure) {
-        this.canInjure = canInjure;
-    }
-
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
 
-    public boolean isDead() {
-        return dead;
-    }
-
-    public void setDead(boolean dead) {
-        this.dead = dead;
-    }
     public static void removeFromAllList(String id) {
-        for (int i = 0; i < bossHeadsList.size(); i++) {
-            if (bossHeadsList.get(i).getId().equals(id)) {
-                bossHeadsList.remove(i);
+        for (int i = 0; i < bossPunchesList.size(); i++) {
+            if (bossPunchesList.get(i).getId().equals(id)) {
+                bossPunchesList.remove(i);
                 break;
             }
         }
@@ -197,14 +143,14 @@ public class BossHead implements Movable, Collidable {
                 break;
             }
         }
-        for (int i = 0; i < BossHeadView.bossHeadViewsList.size(); i++) {
-            if (BossHeadView.bossHeadViewsList.get(i).getId().equals(id)) {
-                BossHeadView.bossHeadViewsList.remove(i);
+        for (int i = 0; i < BossPunchView.bossPunchViewsList.size(); i++) {
+            if (BossPunchView.bossPunchViewsList.get(i).getId().equals(id)) {
+                BossPunchView.bossPunchViewsList.remove(i);
                 break;
             }
         }
     }
     public void removePanel() {
-        PanelModel.removeFromAllList(headPanel.getId());
+        PanelModel.removeFromAllList(punchPanel.getId());
     }
 }

@@ -361,4 +361,5 @@ public class PanelModel implements Movable {
         PanelModel that = (PanelModel) o;
         return Objects.equals(id, that.id);
     }
+
 }

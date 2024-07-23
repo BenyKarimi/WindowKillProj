@@ -12,6 +12,7 @@ import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
 import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
+import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
 import view.collectibleView.CollectibleView;
 import view.gameTimerView.GameTimer;
@@ -97,6 +98,7 @@ public class GamePanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        drawBoss((Graphics2D) g);
         drawEpsilon((Graphics2D) g);
         drawAim((Graphics2D) g);
         drawCollectibleView((Graphics2D) g);
@@ -110,7 +112,6 @@ public class GamePanel extends JPanel {
         drawBarricadosEnemy((Graphics2D) g);
         drawBulletView((Graphics2D) g);
         drawNonRigidBullet((Graphics2D) g);
-        drawBoss((Graphics2D) g);
     }
     private void drawEpsilon(Graphics2D g) {
         EpsilonView epsilonView = EpsilonView.epsilonViewsList.get(0);
@@ -267,6 +268,10 @@ public class GamePanel extends JPanel {
             g.drawImage((ptr.isDead() ? bossDeathImage : bossHeadImage), (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
                     , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
                     , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+            for (Point2D aoeCenters : ptr.getCurrentAoeCenters()) {
+                g.setColor(new Color(255, 70, 70));
+                g.fillOval((int)(aoeCenters.getX() - Constants.BOSS_AOE_RADIUS - upLeftX), (int)(aoeCenters.getY() - Constants.BOSS_AOE_RADIUS - upLeftY), (int) (2 * Constants.BOSS_AOE_RADIUS), (int) (2 * Constants.BOSS_AOE_RADIUS));
+            }
         }
 
         Image bossRightHandImage = new ImageIcon("resources/rightHand.png").getImage();
@@ -279,6 +284,13 @@ public class GamePanel extends JPanel {
         Image bossLeftHandImage = new ImageIcon("resources/leftHand.png").getImage();
         for (BossLeftHandView ptr : BossLeftHandView.bossLeftHandViewsList) {
             g.drawImage(bossLeftHandImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+        }
+
+        Image bossPunchImage = new ImageIcon("resources/BossPunch.png").getImage();
+        for (BossPunchView ptr : BossPunchView.bossPunchViewsList) {
+            g.drawImage(bossPunchImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
                     , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
                     , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
         }

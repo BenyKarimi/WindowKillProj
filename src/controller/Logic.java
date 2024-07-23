@@ -12,6 +12,7 @@ import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.*;
 import model.charactersModel.boss.BossHead;
 import model.charactersModel.boss.BossLeftHand;
+import model.charactersModel.boss.BossPunch;
 import model.charactersModel.boss.BossRightHand;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
@@ -188,6 +189,12 @@ public class Logic {
             Constants.EPSILON_REDUCE_HP = 10;
             Constants.BULLET_REDUCE_HP = 5;
             GameValues.waveNumber = 0;
+            GameValues.firstRoundFinish = false;
+            GameValues.secondRoundFinish = false;
+            GameValues.temporaryEnemyKilledNumber = 0;
+            GameValues.bossFightStart = false;
+            GameValues.waveLengthTime = 0;
+            GameValues.waveStartTime = 0;
             SkillTreeHandled.makeAllRestart();
             GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
             InformationPanel.setINSTANCE(null);
@@ -337,6 +344,12 @@ public class Logic {
     }
     public BossLeftHand findBossLeftHandModel(String id) {
         for (BossLeftHand ptr : BossLeftHand.bossLeftHandsList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public BossPunch findBossPunchModel(String id) {
+        for (BossPunch ptr : BossPunch.bossPunchesList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

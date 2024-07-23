@@ -7,6 +7,7 @@ import controller.constant.Level;
 import model.charactersModel.BarricadosEnemy;
 import model.charactersModel.BlackOrbMiniBoss;
 import model.charactersModel.OmenoctEnemy;
+import model.charactersModel.boss.BossAttackType;
 import model.panelModel.WallSideIndicator;
 import view.container.GlassFrame;
 
@@ -15,14 +16,28 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static controller.constant.Constants.ENEMY_SIZE_EASY_LEVEL;
-import static controller.constant.Constants.ENEMY_SPEED_EASY_LEVEL;
+import static controller.constant.Constants.*;
 
 public class RandomHelper {
     private static Random random = new Random();
     public static boolean squareEnemyDash() {
         int tmp = random.nextInt(0, 4);
         return tmp == 1;
+    }
+    public static BossAttackType makeFirstRoundBossAttack() {
+        int type = random.nextInt(0, 2);
+        if (type == 0) return BossAttackType.SQUEEZE;
+        return BossAttackType.PROJECTILE;
+    }
+    public static ArrayList<Point2D> bossAoeRandomCenters(double x, double y, double width, double height) {
+        ArrayList<Point2D> out = new ArrayList<>();
+        int num = random.nextInt(BOSS_AOE_CENTER_NUMBERS, BOSS_AOE_CENTER_NUMBERS * 2 + 1);
+
+        while (out.size() < num) {
+            Point2D tmp = new Point2D.Double(random.nextDouble(x, x + width), random.nextDouble(y, y + height));
+            if (!out.contains(tmp)) out.add(tmp);
+        }
+        return out;
     }
     public static double squareEnemySpeed(double currentSpeed) {
         return random.nextDouble(currentSpeed * 1.5, currentSpeed * 3);
