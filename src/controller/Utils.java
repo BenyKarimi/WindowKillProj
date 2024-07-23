@@ -154,6 +154,9 @@ public class Utils {
     public static boolean approxEqual(double a, double b) {
         return a - ERROR <= b && a + ERROR >= b;
     }
+    public static boolean pointsApproxEqual(Point2D a, Point2D b) {
+        return approxEqual(a.getX(), b.getX()) && approxEqual(a.getY(), b.getY());
+    }
     public static ArrayList<Point2D> calculateSquareVertices(Point2D center, double size) {
         ArrayList<Point2D> out = new ArrayList<>();
         Point2D leftUp = new Point2D.Double(center.getX() - (size / 2), center.getY() - (size / 2));

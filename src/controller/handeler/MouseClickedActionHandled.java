@@ -3,6 +3,7 @@ package controller.handeler;
 import controller.Controller;
 import controller.Utils;
 import controller.constant.Constants;
+import controller.constant.GameValues;
 import model.bulletModel.RigidBulletModel;
 import model.charactersModel.EpsilonModel;
 import model.movement.Direction;
@@ -12,6 +13,7 @@ import java.awt.geom.Point2D;
 
 public class MouseClickedActionHandled {
     public static void leftClicked(Point2D clickedPoint) {
+        if (GameValues.secondRoundFinish && !GameValues.bossFightStart) return;
         EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;
         Point2D center = Utils.aimAndBulletDrawerCalculator(clickedPoint, epsilon.getCenter(), epsilon.getRadius());
         if (StoreActionHandle.isHotBullet()) {

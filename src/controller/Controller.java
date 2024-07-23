@@ -4,6 +4,9 @@ package controller;
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
+import view.charecterViews.bossView.BossHeadView;
+import view.charecterViews.bossView.BossLeftHandView;
+import view.charecterViews.bossView.BossRightHandView;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 
@@ -57,6 +60,15 @@ public class Controller {
     }
     public void createBarricadosEnemyView(String id) {
         new BarricadosEnemyView(id);
+    }
+    public void createBossHeadView(String id) {
+        new BossHeadView(id);
+    }
+    public void createBossRightHandView(String id) {
+        new BossRightHandView(id);
+    }
+    public void createBossLeftHandView(String id) {
+        new BossLeftHandView(id);
     }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.bossHandle.BossUpdater;
 import controller.constant.Constants;
 import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
@@ -9,6 +10,9 @@ import controller.random.RandomHelper;
 import model.bulletModel.RigidBulletModel;
 import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.*;
+import model.charactersModel.boss.BossHead;
+import model.charactersModel.boss.BossLeftHand;
+import model.charactersModel.boss.BossRightHand;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.movement.Movable;
@@ -18,6 +22,9 @@ import model.panelModel.Rigid;
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
+import view.charecterViews.bossView.BossHeadView;
+import view.charecterViews.bossView.BossLeftHandView;
+import view.charecterViews.bossView.BossRightHandView;
 import view.collectibleView.CollectibleView;
 import view.container.FinishPanel;
 import view.container.GamePanel;
@@ -33,6 +40,7 @@ public class Logic {
     private int lastAttackUpdate;
     private boolean canSpawn;
     public EpsilonModel epsilon;
+    private BossUpdater bossUpdater;
     public Logic() {
         createInitialPanel();
         canSpawn = false;
@@ -61,7 +69,7 @@ public class Logic {
         return Enemy.enemiesList.isEmpty();
     }
     public void makeFirstRoundWave(double x, double y, double width, double height) {
-        if (GameValues.waveNumber + 1 < 2) GameValues.waveNumber++;
+        if (GameValues.waveNumber + 1 < 4) GameValues.waveNumber++;
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomFirstWaveEnemyCenters(x, y, width, height);
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomFirstWaveEnemyType() == 0) {
@@ -113,7 +121,7 @@ public class Logic {
         }
     }
     public void updateSpawn(int time) {
-        if (GameValues.temporaryEnemyKilledNumber > Utils.getMinimumKilled(GameValues.level)) {
+        if (GameValues.temporaryEnemyKilledNumber >= Utils.getMinimumKilled(GameValues.level)) {
             canSpawn = false;
         }
 
@@ -142,10 +150,38 @@ public class Logic {
             GameValues.waveNumber += 2;
             createInitialPanel();
         }
+        else if (!GameValues.secondRoundFinish) {
+            Controller.getINSTANCE().updater.modelUpdater.stop();
+            Controller.getINSTANCE().updater.viewUpdater.stop();
+
+            RigidBulletModel.rigidBulletModelList.clear();
+            NonRigidBulletModel.nonRigidBulletModelsList.clear();
+            Collectible.collectibleList.clear();
+
+            BulletView.bulletViewList.clear();
+            EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
+            CollectibleView.collectibleViewList.clear();
+
+
+            GameValues.secondRoundFinish = true;
+            GameValues.waveNumber++;
+            GameValues.waveStartTime = GlassFrame.getINSTANCE().getTimer().getMiliSecond();
+            bossUpdater = new BossUpdater();
+        }
+        else {
+            Constants.winGame.play();
+            int finishXP = epsilon.getXp();
+            deleteAllInfo(true);
+            new FinishPanel(finishXP);
+        }
     }
-    private void deleteAllInfo(boolean lose) {
+    private void deleteAllInfo(boolean end) {
         Constants.INITIAL_XP = epsilon.getXp();
-        if (lose) {
+        if (GameValues.secondRoundFinish) {
+            bossUpdater.getModelUpdater().stop();
+            bossUpdater.getViewUpdater().stop();
+        }
+        if (end) {
             Controller.getINSTANCE().updater.modelUpdater.stop();
             Controller.getINSTANCE().updater.viewUpdater.stop();
             epsilon.setVerticesNumber(0);
@@ -177,7 +213,11 @@ public class Logic {
         BlackOrbMiniBoss.blackOrbMiniBossesList.clear();
         BarricadosEnemy.barricadosEnemiesList.clear();
         OrbEnemy.orbEnemiesList.clear();
+        BossHead.bossHeadsList.clear();
+        BossLeftHand.bossLeftHandsList.clear();
+        BossRightHand.bossRightHandsList.clear();
         Collectible.collectibleList.clear();
+
         BulletView.bulletViewList.clear();
         EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
         EpsilonView.epsilonViewsList.clear();
@@ -190,6 +230,10 @@ public class Logic {
         BlackOrbMiniBossView.blackOrbMiniBossViewsList.clear();
         BarricadosEnemyView.barricadosEnemyViewsList.clear();
         CollectibleView.collectibleViewList.clear();
+        BossHeadView.bossHeadViewsList.clear();
+        BossRightHandView.bossRightHandViewsList.clear();
+        BossLeftHandView.bossLeftHandViewsList.clear();
+
         Collidable.collidables.clear();
         Movable.movable.clear();
         TypedActionHandle.setDown(false);
@@ -278,5 +322,27 @@ public class Logic {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;
+    }
+    public BossHead findBossHeadModel(String id) {
+        for (BossHead ptr : BossHead.bossHeadsList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public BossRightHand findBossRightHandModel(String id) {
+        for (BossRightHand ptr : BossRightHand.bossRightHandsList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public BossLeftHand findBossLeftHandModel(String id) {
+        for (BossLeftHand ptr : BossLeftHand.bossLeftHandsList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+
+    public BossUpdater getBossUpdater() {
+        return bossUpdater;
     }
 }

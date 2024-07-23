@@ -1,6 +1,7 @@
 package controller.handeler;
 
 import controller.Controller;
+import controller.constant.GameValues;
 import controller.constant.KeyActions;
 import model.charactersModel.EpsilonModel;
 import view.container.GamePanel;
@@ -16,6 +17,7 @@ public class TypedActionHandle {
     private static boolean right = false;
 
     public static void handlePressedKey(int keyCode) {
+        if (GameValues.secondRoundFinish && !GameValues.bossFightStart) return;
         if (keyCode == KeyActions.skillTreeAttack || keyCode == KeyActions.skillTreeDefence || keyCode == KeyActions.skillTreeProteus) {
             SkillTreeHandled.handlePressedKeys(keyCode);
         }
@@ -33,8 +35,14 @@ public class TypedActionHandle {
         }
         else if (keyCode == KeyActions.showStore && !StoreActionHandle.isFreezing()) {
             if (StorePanel.getNow() != null) return;
-            Controller.getINSTANCE().updater.getViewUpdater().stop();
-            Controller.getINSTANCE().updater.getModelUpdater().stop();
+            if (!GameValues.secondRoundFinish) {
+                Controller.getINSTANCE().updater.getViewUpdater().stop();
+                Controller.getINSTANCE().updater.getModelUpdater().stop();
+            }
+            else {
+                Controller.getINSTANCE().logic.getBossUpdater().getViewUpdater().stop();
+                Controller.getINSTANCE().logic.getBossUpdater().getModelUpdater().stop();
+            }
             GlassFrame.getINSTANCE().getTimer().Stop();
             for (GamePanel panel : GamePanel.gamePanelList) panel.setVisible(false);
             new StorePanel();

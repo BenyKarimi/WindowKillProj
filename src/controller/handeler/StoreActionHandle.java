@@ -1,6 +1,7 @@
 package controller.handeler;
 
 import controller.Controller;
+import controller.constant.GameValues;
 import model.charactersModel.EpsilonModel;
 import model.movement.ImpactMechanism;
 import view.container.GamePanel;
@@ -20,8 +21,14 @@ public class StoreActionHandle {
 
     public static void handelActions() {
         for (GamePanel panel : GamePanel.gamePanelList) panel.setVisible(true);
-        Controller.getINSTANCE().updater.getViewUpdater().start();
-        Controller.getINSTANCE().updater.getModelUpdater().start();
+        if (!GameValues.secondRoundFinish) {
+            Controller.getINSTANCE().updater.getViewUpdater().start();
+            Controller.getINSTANCE().updater.getModelUpdater().start();
+        }
+        else {
+            Controller.getINSTANCE().logic.getBossUpdater().getViewUpdater().start();
+            Controller.getINSTANCE().logic.getBossUpdater().getModelUpdater().start();
+        }
         GlassFrame.getINSTANCE().getTimer().Start();
 
         EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;

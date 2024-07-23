@@ -11,6 +11,7 @@ import model.charactersModel.*;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
+import model.movement.Direction;
 import model.movement.ImpactMechanism;
 import model.movement.Movable;
 import model.panelModel.PanelModel;
@@ -33,14 +34,13 @@ import static controller.constant.Constants.*;
 
 public class Updater {
     private boolean startGame = false;
-    private boolean isWave = false;
     private boolean wonGame = false;
     private boolean epsilonGoesBigger = false;
     private int epsilonGoesBiggerTime;
     EpsilonModel epsilon;
     Timer viewUpdater;
     Timer modelUpdater;
-    private GameTimer gameTimer;
+    private final GameTimer gameTimer;
     private int startTime;
     public Updater() {
         gameTimer = GlassFrame.getINSTANCE().getTimer();
@@ -50,7 +50,6 @@ public class Updater {
         modelUpdater.start();
     }
     public void updateView() {
-        // update enemies and add boolean for is wave or not
         updateEpsilonView();
         updateTriangleEnemyView();
         updateSquareEnemyView();
@@ -92,6 +91,7 @@ public class Updater {
         if (Controller.getINSTANCE() == null) return;
         if (PanelModel.panelModelList.isEmpty()) return;
         if (startGame) {
+            boolean isWave = false;
             if (!GameValues.firstRoundFinish && !epsilonGoesBigger) {
                 PanelModel pm = PanelModel.panelModelList.get(0);
                 isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
@@ -107,8 +107,13 @@ public class Updater {
             }
             else if (GameValues.firstRoundFinish) {
                 isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
-                if (GameValues.waveNumber + 1 == 9 && isWave) {
+                if (GameValues.waveNumber + 1 == 5 && isWave) {
                     /// TODO: Move Epsilon Cover Panel to center
+                    if (PanelModel.panelModelList.get(0).moveToCenter()) {
+                        PanelModel.panelModelList.get(0).setDirection(new Direction(new Point2D.Double(0, 0)));
+                        PanelModel.panelModelList.get(0).setSpeed(0);
+                        Controller.getINSTANCE().logic.showFinishGame();
+                    }
                     return;
                 }
                 else if (isWave) {
@@ -139,7 +144,7 @@ public class Updater {
         TypedActionHandle.doMove();
         epsilon.adjustLocation(PanelModel.panelModelList);
         if (epsilon.getSpeed() > 0) {
-            epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / EPSILON_REDUCE_HP));
+            epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / 10));
         }
     }
     private void updatePanelModel() {
@@ -486,6 +491,8 @@ public class Updater {
                 }
                 else StoreActionHandle.setBanishHovering(false);
             }
+
+            if (ptr instanceof PanelModel && ((PanelModel) ptr).collidesWithOtherPanel()) continue;
 
             ptr.move();
         }

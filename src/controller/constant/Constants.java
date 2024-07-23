@@ -19,7 +19,7 @@ public class Constants {
     public static final Dimension GAME_PANEL_END_SIZE = new Dimension(15, 15);
     public static final Dimension GAME_PANEL_MIN_DIMENSION = new Dimension(300, 300);
     public static final Dimension GAME_PANEL_START_DIMENSION_ERROR = new Dimension(430, 430);
-    public static int BULLET_REDUCE_HP = 5;
+    public static int BULLET_REDUCE_HP = 100;
     public static int HOT_BULLET_REDUCE_HP = 50;
     public static int EPSILON_REDUCE_HP = 10;
     public static int INITIAL_XP = 1000;
@@ -70,7 +70,7 @@ public class Constants {
     public static final int IMPACT_RADIUS = 250;
     public static final double ENEMY_SPEED_EASY_LEVEL = 1;
     public static final double ENEMY_SIZE_EASY_LEVEL = 60;
-    public static final int END_SECOND_SPAWN_KILLED_EASY = 4;
+    public static final int END_SECOND_SPAWN_KILLED_EASY = 0;
     public static final int END_SECOND_SPAWN_KILLED_MEDIUM = 6;
     public static final int END_SECOND_SPAWN_KILLED_HARD = 8;
     public static final Color SHOW_COLOR = new Color(28, 112, 49);
@@ -78,8 +78,14 @@ public class Constants {
     public static double EPSILON_SPEED = 5.5;
     public static double ACCELERATION_ADD_VALUE = 0.1;
     public static double ACCELERATION_MAX_VAL = 0.8;
-    public static double ERROR = 1.5;
+    public static double ERROR = 5;
     public static int OMENOCT_BULLET_REDUCE_HP = 4;
+    public static int BOSS_HEAD_HP = 300;
+    public static int BOSS_HAND_HP = 100;
+    public static double BOSS_SIZE = 200;
+    public static int BOSS_REDUCE_HP = 10;
+    public static int BOSS_BULLET_REDUCE_HP = 10;
+    public static int BOSS_ADDED_XP = 250;
     public static SoundPlayer bulletSound = new SoundPlayer("resources/songs/BulletSound.wav");
     public static SoundPlayer startWave = new SoundPlayer("resources/songs/statrtWave.wav");
     public static SoundPlayer gameOver = new SoundPlayer("resources/songs/GameOver.wav");

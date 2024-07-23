@@ -123,7 +123,7 @@ public class PanelModel implements Movable {
         upSpeed = height / Constants.SHRINK_DECELERATION;
         downSpeed = height / Constants.SHRINK_DECELERATION;
     }
-    private boolean collidesWithOtherPanel() {
+    public boolean collidesWithOtherPanel() {
         for(PanelModel panel : panelModelList) {
             if ((!this.equals(panel) && new Rectangle((int)x, (int)y, (int)width, (int)height).intersects(new Rectangle((int)panel.getX(), (int)panel.getY(), (int)panel.getWidth(), (int)panel.getHeight())))
                 && (rigid.equals(Rigid.YES) || panel.rigid.equals(Rigid.YES)))
@@ -343,6 +343,16 @@ public class PanelModel implements Movable {
                 break;
             }
         }
+    }
+    public boolean moveToCenter() {
+        Point2D frameCenter = new Point2D.Double(Constants.GLASS_FRAME_DIMENSION.width / 2.0, Constants.GLASS_FRAME_DIMENSION.height / 2.0);
+        if (Utils.pointsApproxEqual(frameCenter, this.center)) return true;
+
+        Point2D delta = new Point2D.Double(frameCenter.getX() - this.center.getX(), frameCenter.getY() - this.center.getY());
+        Direction toPoint = new Direction(delta);
+        this.setDirection(new Direction(toPoint.getDirectionVector()));
+        this.setSpeed(2);
+        return false;
     }
     @Override
     public boolean equals(Object o) {
