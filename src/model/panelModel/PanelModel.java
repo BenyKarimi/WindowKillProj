@@ -223,7 +223,6 @@ public class PanelModel implements Movable {
             downAccel.add(-Constants.ACCELERATION_MAX_VAL);
         }
     }
-
     public void setLeftSpeed(double leftSpeed) {
         this.leftSpeed = leftSpeed;
     }

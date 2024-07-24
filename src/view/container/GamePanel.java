@@ -114,6 +114,7 @@ public class GamePanel extends JPanel {
         drawNonRigidBullet((Graphics2D) g);
     }
     private void drawEpsilon(Graphics2D g) {
+        if (EpsilonView.epsilonViewsList.isEmpty()) return;
         EpsilonView epsilonView = EpsilonView.epsilonViewsList.get(0);
         Image epsilonImage = new ImageIcon("resources/Epsilon.png").getImage();
         g.drawImage(epsilonImage

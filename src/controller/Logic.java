@@ -25,6 +25,7 @@ import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
 import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
+import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
 import view.collectibleView.CollectibleView;
 import view.container.FinishPanel;
@@ -141,8 +142,12 @@ public class Logic {
         if (epsilon.getHp() <= 0) {
             Constants.gameOver.play();
             int finishXP = epsilon.getXp();
+            int bulletFired = GameValues.bulletFired;
+            int successfulBullet = GameValues.successfulBullet;
+            int enemyKilled = GameValues.enemyKilled;
+            String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
             deleteAllInfo(true);
-            new FinishPanel(finishXP);
+            new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
         }
         else if (!GameValues.firstRoundFinish) {
             Constants.INITIAL_HP = epsilon.getHp();
@@ -172,8 +177,12 @@ public class Logic {
         else {
             Constants.winGame.play();
             int finishXP = epsilon.getXp();
+            int bulletFired = GameValues.bulletFired;
+            int successfulBullet = GameValues.successfulBullet;
+            int enemyKilled = GameValues.enemyKilled;
+            String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
             deleteAllInfo(true);
-            new FinishPanel(finishXP);
+            new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
         }
     }
     private void deleteAllInfo(boolean end) {
@@ -189,6 +198,9 @@ public class Logic {
             Constants.EPSILON_REDUCE_HP = 10;
             Constants.BULLET_REDUCE_HP = 5;
             GameValues.waveNumber = 0;
+            GameValues.bulletFired = 0;
+            GameValues.successfulBullet = 0;
+            GameValues.enemyKilled = 0;
             GameValues.firstRoundFinish = false;
             GameValues.secondRoundFinish = false;
             GameValues.temporaryEnemyKilledNumber = 0;
@@ -223,6 +235,7 @@ public class Logic {
         BossHead.bossHeadsList.clear();
         BossLeftHand.bossLeftHandsList.clear();
         BossRightHand.bossRightHandsList.clear();
+        BossPunch.bossPunchesList.clear();
         Collectible.collectibleList.clear();
 
         BulletView.bulletViewList.clear();
@@ -240,6 +253,7 @@ public class Logic {
         BossHeadView.bossHeadViewsList.clear();
         BossRightHandView.bossRightHandViewsList.clear();
         BossLeftHandView.bossLeftHandViewsList.clear();
+        BossPunchView.bossPunchViewsList.clear();
 
         Collidable.collidables.clear();
         Movable.movable.clear();

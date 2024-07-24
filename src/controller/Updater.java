@@ -366,6 +366,7 @@ public class Updater {
                     else if ((first instanceof RigidBulletModel || first instanceof NonRigidBulletModel) && second instanceof Enemy) {
                         impactLevel = 5;
                         if (first instanceof RigidBulletModel && !second.getId().equals(((RigidBulletModel) first).getShooterEntity())) {
+                            if (((RigidBulletModel) first).getShooterEntity().equals(epsilon.getId())) GameValues.successfulBullet++;
                             enemyHealthReduction((Enemy) second, ((RigidBulletModel) first).getReduceHp());
                             RigidBulletModel.removeFromAllList(first.getId());
                         }
@@ -411,6 +412,7 @@ public class Updater {
     private boolean enemyHealthReduction(Enemy enemy, int reduceHp) {
         enemy.setHp(enemy.getHp() - reduceHp);
         if (enemy.getHp() <= 0) {
+            GameValues.enemyKilled++;
             enemyDeath.play();
             GameValues.temporaryEnemyKilledNumber++;
             Controller.getINSTANCE().logic.createCollectible(enemy.getCollectibleNumber(), enemy.getCollectibleXp(), enemy.getCenter(), enemy.getSize());

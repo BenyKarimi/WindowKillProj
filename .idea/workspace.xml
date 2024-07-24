@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Starting to implement boss &#10;Adding boss handle and boss updater &#10;Adding boss head and hand view and model classes">
-      <change afterPath="$PROJECT_DIR$/resources/BossPunch.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossPunch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossPunchView.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding punch for buss&#10;Adding first three boss attacks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/GameValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/GameValues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossAttackType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossAttackType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossHead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossLeftHand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossLeftHand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossRightHand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossRightHand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossHeadView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossHeadView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/FinishPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/FinishPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,25 +49,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/benya/Desktop/BrickBreaker_Project",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Desktop/BrickBreaker_Project&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\benya\Documents\GitHub\WindowKillProj\resources" />
@@ -135,7 +132,8 @@
       <workItem from="1721640216136" duration="6468000" />
       <workItem from="1721666860720" duration="427000" />
       <workItem from="1721720308030" duration="1212000" />
-      <workItem from="1721721541100" duration="26025000" />
+      <workItem from="1721721541100" duration="26359000" />
+      <workItem from="1721808951376" duration="10209000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -270,7 +268,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721733425456</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Adding punch for buss&#10;Adding first three boss attacks">
+      <created>1721754417253</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1721754417253</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -308,7 +313,8 @@
     <MESSAGE value="Implementing new Spawn logic" />
     <MESSAGE value="Implementing new Shop Items" />
     <MESSAGE value="Starting to implement boss &#10;Adding boss handle and boss updater &#10;Adding boss head and hand view and model classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Starting to implement boss &#10;Adding boss handle and boss updater &#10;Adding boss head and hand view and model classes" />
+    <MESSAGE value="Adding punch for buss&#10;Adding first three boss attacks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding punch for buss&#10;Adding first three boss attacks" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

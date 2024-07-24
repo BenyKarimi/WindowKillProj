@@ -19,7 +19,7 @@ public class Constants {
     public static final Dimension GAME_PANEL_END_SIZE = new Dimension(15, 15);
     public static final Dimension GAME_PANEL_MIN_DIMENSION = new Dimension(300, 300);
     public static final Dimension GAME_PANEL_START_DIMENSION_ERROR = new Dimension(430, 430);
-    public static int BULLET_REDUCE_HP = 100;
+    public static int BULLET_REDUCE_HP = 5;
     public static int HOT_BULLET_REDUCE_HP = 50;
     public static int EPSILON_REDUCE_HP = 10;
     public static int INITIAL_XP = 1000;
@@ -64,13 +64,15 @@ public class Constants {
     public static final double NECROPICK_EPSILON_MIN_DISTANCE = 5 * EPSILON_RADIUS;
     public static final double WYRM_EPSILON_MIN_DISTANCE = 10 * EPSILON_RADIUS;
     public static final int NECROPICK_RANGE_ATTACK_REDUCE_HP = 5;
+    public static final int BOSS_RAPID_FIRE_ATTACK_REDUCE_HP = 10;
     public static final int NECROPICK_RANGE_ATTACK_NUMBER = 8;
+    public static final int BOSS_RAPID_FIRE_ATTACK_NUMBER = 10;
     public static final int COLLECTIBLE_EXISTENCE = 4000;
     public static final int COLLECTIBLE_SIZE = 10;
     public static final int IMPACT_RADIUS = 250;
     public static final double ENEMY_SPEED_EASY_LEVEL = 1;
     public static final double ENEMY_SIZE_EASY_LEVEL = 60;
-    public static final int END_SECOND_SPAWN_KILLED_EASY = 0;
+    public static final int END_SECOND_SPAWN_KILLED_EASY = 4;
     public static final int END_SECOND_SPAWN_KILLED_MEDIUM = 6;
     public static final int END_SECOND_SPAWN_KILLED_HARD = 8;
     public static final Color SHOW_COLOR = new Color(28, 112, 49);

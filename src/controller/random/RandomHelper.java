@@ -29,6 +29,17 @@ public class RandomHelper {
         if (type == 0) return BossAttackType.SQUEEZE;
         return BossAttackType.PROJECTILE;
     }
+    public static BossAttackType makeSecondRoundBossAttack(int start, int end) {
+        int type = random.nextInt(start, end + 1);
+        if (type == 0) return BossAttackType.SQUEEZE;
+        if (type == 1) return BossAttackType.PROJECTILE;
+        if (type == 2) return BossAttackType.VOMIT;
+        if (type == 3) return BossAttackType.POWER_PUNCH;
+        if (type == 4) return BossAttackType.QUAKE;
+        if (type == 5) return BossAttackType.RAPID_FIRE;
+        if (type == 6) return BossAttackType.SLAP;
+        else return null;
+    }
     public static ArrayList<Point2D> bossAoeRandomCenters(double x, double y, double width, double height) {
         ArrayList<Point2D> out = new ArrayList<>();
         int num = random.nextInt(BOSS_AOE_CENTER_NUMBERS, BOSS_AOE_CENTER_NUMBERS * 2 + 1);

@@ -4,6 +4,8 @@ import controller.Controller;
 import controller.Pair;
 import controller.Utils;
 import controller.constant.Constants;
+import model.bulletModel.NonRigidBulletModel;
+import model.bulletModel.RigidBulletModel;
 import model.charactersModel.Enemy;
 import model.charactersModel.EpsilonModel;
 import model.collision.Collidable;
@@ -17,6 +19,8 @@ import view.charecterViews.bossView.BossRightHandView;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+
+import static controller.constant.Constants.*;
 
 public class BossHead implements Movable, Collidable {
     private final String id;
@@ -61,6 +65,14 @@ public class BossHead implements Movable, Collidable {
 
     private void makePanel() {
         headPanel = new PanelModel(vertices.get(0).getX(), vertices.get(0).getY(), size, size, Isometric.NO, Rigid.NO);
+    }
+
+    public void shootBullets() {
+        ArrayList<Point2D> targets = Utils.circlePartition(center, size, BOSS_RAPID_FIRE_ATTACK_NUMBER);
+        for (Point2D target : targets) {
+            Direction bulletDir = new Direction(new Point2D.Double(target.getX() - center.getX(), target.getY() - center.getY()));
+            new NonRigidBulletModel(target, bulletDir, BOSS_RAPID_FIRE_ATTACK_REDUCE_HP, id);
+        }
     }
 
     public void updateEpsilonInsideAoe(int time) {

@@ -61,10 +61,7 @@ public class NecropickEnemy extends Enemy {
     private void shootBullets() {
         ArrayList<Point2D> targets = Utils.circlePartition(super.getCenter(), super.getSize(), NECROPICK_RANGE_ATTACK_NUMBER);
         for (Point2D target : targets) {
-                Direction bulletDir = new Direction(new Point2D.Double(target.getX() - super.getCenter().getX(), target.getY() - super.getCenter().getY()));
-            if (bulletDir.getDirectionVector().equals(new Point2D.Double(0, 0))) {
-                System.out.println((target.getX() - super.getCenter().getX() )+ " " + (target.getY() - super.getCenter().getY()));
-            }
+            Direction bulletDir = new Direction(new Point2D.Double(target.getX() - super.getCenter().getX(), target.getY() - super.getCenter().getY()));
             new RigidBulletModel(target, bulletDir, NECROPICK_RANGE_ATTACK_REDUCE_HP, super.getId(), 3);
         }
     }

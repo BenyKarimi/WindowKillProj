@@ -14,6 +14,8 @@ import java.awt.geom.Point2D;
 public class MouseClickedActionHandled {
     public static void leftClicked(Point2D clickedPoint) {
         if (GameValues.secondRoundFinish && !GameValues.bossFightStart) return;
+        if (GameValues.isBossQuakeAttack) return;
+        GameValues.bulletFired++;
         EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;
         Point2D center = Utils.aimAndBulletDrawerCalculator(clickedPoint, epsilon.getCenter(), epsilon.getRadius());
         if (StoreActionHandle.isHotBullet()) {

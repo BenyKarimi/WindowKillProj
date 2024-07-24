@@ -227,7 +227,10 @@ public class BossUpdater {
                         impactLevel = 5;
                     }
                     else if (first instanceof RigidBulletModel && second instanceof BossHead) {
-                        if (!((BossHead) second).isCanInjure()) continue;
+                        if (!((BossHead) second).isCanInjure()) {
+                            RigidBulletModel.removeFromAllList(first.getId());
+                            continue;
+                        }
                         ((BossHead) second).setHp(((BossHead) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                         if (((BossHead) second).getHp() <= 0) {
                             secondBossAttackFinished = true;
@@ -239,21 +242,28 @@ public class BossUpdater {
                         }
                         else if (((BossHead) second).getHp() < (2 * BOSS_HEAD_HP) / 3) {
                             bossPunch = new BossPunch(new Point2D.Double(GLASS_FRAME_DIMENSION.width / 2.0, GLASS_FRAME_DIMENSION.height - BOSS_SIZE / 2.0), BOSS_SIZE);
+                            bossHandler.setBossPunch(bossPunch);
                             firstBossAttackFinished = true;
                         }
                         RigidBulletModel.removeFromAllList(first.getId());
                         impactLevel = 5;
                     }
-                    else if (first instanceof RigidBulletModel && (second instanceof BossLeftHand || second instanceof BossRightHand)) {
+                    else if (first instanceof RigidBulletModel && (second instanceof BossLeftHand || second instanceof BossRightHand || second instanceof BossPunch)) {
                         if (second instanceof BossLeftHand) {
-                            if (!((BossLeftHand) second).isCanInjure()) continue;
+                            if (!((BossLeftHand) second).isCanInjure()) {
+                                RigidBulletModel.removeFromAllList(first.getId());
+                                continue;
+                            }
                             ((BossLeftHand) second).setHp(((BossLeftHand) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                             if (((BossLeftHand) second).getHp() <= 0) {
                                 removeLeftHand();
                             }
                         }
-                        else {
-                            if (!((BossRightHand) second).isCanInjure()) continue;
+                        else if (second instanceof BossRightHand) {
+                            if (!((BossRightHand) second).isCanInjure()) {
+                                RigidBulletModel.removeFromAllList(first.getId());
+                                continue;
+                            }
                             ((BossRightHand) second).setHp(((BossRightHand) second).getHp() - ((RigidBulletModel) first).getReduceHp());
                             if (((BossRightHand) second).getHp() <= 0) {
                                 removeRightHand();
