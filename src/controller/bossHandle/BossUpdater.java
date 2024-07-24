@@ -369,6 +369,7 @@ public class BossUpdater {
             ptr.setCurrentHp(tmp.getHp());
             ptr.setCurrentVertices(tmp.getVertices());
             ptr.setCurrentRadius(tmp.getRadius());
+            ptr.setAoeCenters(tmp.getAoeCenters());
         }
     }
     private void updateBulletView() {

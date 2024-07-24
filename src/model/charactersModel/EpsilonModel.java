@@ -1,6 +1,7 @@
 package model.charactersModel;
 
 import controller.Controller;
+import controller.Pair;
 import controller.Utils;
 import controller.constant.Constants;
 import model.collision.Collidable;
@@ -26,6 +27,9 @@ public class EpsilonModel implements Collidable, Movable {
     private ArrayList<PanelModel> mainPanels;
     private Direction direction;
     private ArrayList<Point2D> vertices;
+    private ArrayList<Point2D> aoeCenters;
+    private ArrayList<Enemy> enemiesInsideAoe;
+    private int lastAoeAttack;
     public static ArrayList<EpsilonModel> epsilonModelsList = new ArrayList<>();
 
     public EpsilonModel(Point2D center) {
@@ -37,9 +41,12 @@ public class EpsilonModel implements Collidable, Movable {
         yVelocity = 0;
         verticesNumber = 0;
         speed = 2;
+        lastAoeAttack = 0;
         direction = new Direction(new Point2D.Double(0, 0));
         radius = EPSILON_RADIUS;
         vertices = new ArrayList<>();
+        aoeCenters = new ArrayList<>();
+        enemiesInsideAoe = new ArrayList<>();
         Controller.getINSTANCE().createEpsilonView(this.id, this.center);
         Collidable.collidables.add(this);
         Movable.movable.add(this);
@@ -63,11 +70,45 @@ public class EpsilonModel implements Collidable, Movable {
 
     public void updateVertices() {
         vertices.clear();
-        vertices = Utils.circlePartition(center, radius, verticesNumber);
+        vertices.addAll(Utils.circlePartition(center, radius + 5, verticesNumber));
     }
     public void updateMainPanels(ArrayList<PanelModel> panelModels) {
         mainPanels = Utils.coveringPanels(panelModels, center, radius);
     }
+    public void updateAoeAttack() {
+        aoeCenters.clear();
+        aoeCenters.addAll(Utils.circlePartition(center, 2 * radius, 3));
+
+        for (Enemy enemy : Enemy.enemiesList) {
+            boolean inside = false;
+            for (Point2D aoeCenter : aoeCenters) {
+                if (Utils.isPolygonInside(Utils.makePolygonWithVertices(Utils.circlePartition(aoeCenter, radius / 2, 36)), Utils.makePolygonWithVertices(enemy.getVertices()))) {
+                    inside = true;
+                }
+            }
+            if (inside) {
+                enemiesInsideAoe.add(enemy);
+            }
+            else enemiesInsideAoe.remove(enemy);
+        }
+    }
+
+    public ArrayList<Point2D> getAoeCenters() {
+        return aoeCenters;
+    }
+
+    public ArrayList<Enemy> getEnemiesInsideAoe() {
+        return enemiesInsideAoe;
+    }
+
+    public int getLastAoeAttack() {
+        return lastAoeAttack;
+    }
+
+    public void setLastAoeAttack(int lastAoeAttack) {
+        this.lastAoeAttack = lastAoeAttack;
+    }
+
     @Override
     public boolean isCircular() {
         return true;

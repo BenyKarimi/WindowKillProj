@@ -124,7 +124,12 @@ public class GamePanel extends JPanel {
 
         g.setColor(new Color(255, 133, 0));
         for (Point2D ptr : epsilonView.getCurrentVertices()) {
-            g.fillOval((int) (ptr.getX() - upLeftX), (int) (ptr.getY() - upLeftY), 10, 10);
+            g.fillOval((int) (ptr.getX() - upLeftX - 5), (int) (ptr.getY() - upLeftY - 5), 10, 10);
+        }
+        g.setColor(new Color(255, 70, 70));
+        for (Point2D ptr : epsilonView.getAoeCenters()) {
+            g.fillOval((int) (ptr.getX() - upLeftX - epsilonView.getCurrentRadius() / 2),
+                    (int) (ptr.getY() - upLeftY - epsilonView.getCurrentRadius() / 2), (int) (epsilonView.getCurrentRadius()), (int) (epsilonView.getCurrentRadius()));
         }
     }
     private void drawAim(Graphics2D g) {

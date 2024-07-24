@@ -22,8 +22,11 @@ public class Constants {
     public static int BULLET_REDUCE_HP = 5;
     public static int HOT_BULLET_REDUCE_HP = 50;
     public static int EPSILON_REDUCE_HP = 10;
-    public static int INITIAL_XP = 1000;
+    public static int INITIAL_XP = 10000;
     public static int INITIAL_HP = 100;
+    public static int SKILL_TREE_ASTRAPE_DAMAGE = 2;
+    public static int SKILL_TREE_CERBERUS_DAMAGE = 10;
+    public static int SKILL_TREE_CHIRON_ADD_HP = 3;
     public static final Dimension GAME_PANEL_START_DIMENSION = new Dimension(400, 400);
     public static final int TRIANGLE_ENEMY_HP = 15;
     public static final int TRIANGLE_ENEMY_REDUCER_HP = 10;

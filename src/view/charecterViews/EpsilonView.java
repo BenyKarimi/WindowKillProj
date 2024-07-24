@@ -12,6 +12,7 @@ public class EpsilonView {
     private int currentXp, currentHp;
     private double currentRadius;
     private ArrayList<Point2D> currentVertices;
+    private ArrayList<Point2D> aoeCenters;
     public static ArrayList<EpsilonView> epsilonViewsList = new ArrayList<>();
     public EpsilonView(String id, Point2D currentCenter) {
         this.id = id;
@@ -19,6 +20,7 @@ public class EpsilonView {
         this.currentCenter = currentCenter;
         currentRadius = EPSILON_RADIUS;
         currentVertices = new ArrayList<>();
+        aoeCenters = new ArrayList<>();
         epsilonViewsList.add(this);
     }
 
@@ -63,5 +65,13 @@ public class EpsilonView {
 
     public void setCurrentVertices(ArrayList<Point2D> currentVertices) {
         this.currentVertices = currentVertices;
+    }
+
+    public ArrayList<Point2D> getAoeCenters() {
+        return aoeCenters;
+    }
+
+    public void setAoeCenters(ArrayList<Point2D> aoeCenters) {
+        this.aoeCenters = aoeCenters;
     }
 }

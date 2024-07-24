@@ -5,6 +5,7 @@ import controller.constant.GameValues;
 import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandle;
 import controller.handeler.TypedActionHandle;
+import controller.random.RandomHelper;
 import model.bulletModel.RigidBulletModel;
 import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.*;
@@ -74,6 +75,7 @@ public class Updater {
         epsilon = EpsilonModel.epsilonModelsList.get(0);
         GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
         updateEpsilonModel();
+        reduceHealthByEpsilonAoe();
         updatePanelModel();
         SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
@@ -111,6 +113,7 @@ public class Updater {
                     if (PanelModel.panelModelList.get(0).moveToCenter()) {
                         PanelModel.panelModelList.get(0).setDirection(new Direction(new Point2D.Double(0, 0)));
                         PanelModel.panelModelList.get(0).setSpeed(0);
+                        epsilon.getAoeCenters().clear();
                         Controller.getINSTANCE().logic.showFinishGame();
                     }
                     return;
@@ -126,6 +129,7 @@ public class Updater {
     private void updateEpsilonModel() {
         epsilon.updateVertices();
         epsilon.updateMainPanels(PanelModel.panelModelList);
+        if (SkillTreeHandled.cerberusAttack) epsilon.updateAoeAttack();
 
         if (epsilonGoesBigger) {
             PanelModel firstMainPanel = PanelModel.panelModelList.get(0);
@@ -144,6 +148,15 @@ public class Updater {
         epsilon.adjustLocation(PanelModel.panelModelList);
         if (epsilon.getSpeed() > 0) {
             epsilon.setSpeed(epsilon.getSpeed() - (epsilon.getSpeed() / 10));
+        }
+    }
+    private void reduceHealthByEpsilonAoe() {
+        if (gameTimer.getSeconds() - epsilon.getLastAoeAttack() > 15 || epsilon.getLastAoeAttack() == 0) {
+            ArrayList<Enemy> tmp = epsilon.getEnemiesInsideAoe();
+            for (int i = 0; i < tmp.size(); i++) {
+                enemyHealthReduction(tmp.get(i), SKILL_TREE_CERBERUS_DAMAGE);
+            }
+            epsilon.setLastAoeAttack(gameTimer.getSeconds());
         }
     }
     private void updatePanelModel() {
@@ -349,6 +362,9 @@ public class Updater {
                         }
                     }
                     if (first instanceof EpsilonModel && second instanceof Enemy) {
+                        if (SkillTreeHandled.astrapeAttack) {
+                            enemyHealthReduction((Enemy) second, SKILL_TREE_ASTRAPE_DAMAGE);
+                        }
                         boolean firstVer = false;
                         boolean secondVer = false;
                         for (Point2D ptr : first.getVertices()) {
@@ -356,17 +372,25 @@ public class Updater {
                         }
                         for (Point2D ptr : second.getVertices()) if (ptr.equals(point)) secondVer = true;
                         if (firstVer && !secondVer) {
-                            if (!(second instanceof ArchmireEnemy) && !(second instanceof WyrmEnemy)) enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
+                            if (!(second instanceof ArchmireEnemy) && !(second instanceof WyrmEnemy)) {
+                                if (SkillTreeHandled.chironAttack) epsilon.setHp(epsilon.getHp() + SKILL_TREE_CHIRON_ADD_HP);
+                                enemyHealthReduction((Enemy) second, EPSILON_REDUCE_HP);
+                            }
                         }
                         else if (secondVer && !firstVer) {
-                            epsilonHealthReduction(epsilon, ((Enemy) second).getReducerHp());
+                            boolean canDamage = true;
+                            if (SkillTreeHandled.melampusAttack) canDamage = RandomHelper.melampusRandom();
+                            if (canDamage) epsilonHealthReduction(epsilon, ((Enemy) second).getReducerHp());
                         }
                         impactLevel = 5;
                     }
                     else if ((first instanceof RigidBulletModel || first instanceof NonRigidBulletModel) && second instanceof Enemy) {
                         impactLevel = 5;
                         if (first instanceof RigidBulletModel && !second.getId().equals(((RigidBulletModel) first).getShooterEntity())) {
-                            if (((RigidBulletModel) first).getShooterEntity().equals(epsilon.getId())) GameValues.successfulBullet++;
+                            if (((RigidBulletModel) first).getShooterEntity().equals(epsilon.getId())) {
+                                if (SkillTreeHandled.chironAttack) epsilon.setHp(epsilon.getHp() + SKILL_TREE_CHIRON_ADD_HP);
+                                GameValues.successfulBullet++;
+                            }
                             enemyHealthReduction((Enemy) second, ((RigidBulletModel) first).getReduceHp());
                             RigidBulletModel.removeFromAllList(first.getId());
                         }
@@ -508,6 +532,7 @@ public class Updater {
             ptr.setCurrentHp(tmp.getHp());
             ptr.setCurrentVertices(tmp.getVertices());
             ptr.setCurrentRadius(tmp.getRadius());
+            ptr.setAoeCenters(tmp.getAoeCenters());
         }
     }
     private void updateTriangleEnemyView() {

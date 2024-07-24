@@ -40,6 +40,21 @@ public class RandomHelper {
         if (type == 6) return BossAttackType.SLAP;
         else return null;
     }
+    public static boolean melampusRandom() {
+        int num = random.nextInt(1, 101);
+        return num >= 6;
+    }
+    public static Pair<Integer, Integer> makeDolusRandom(int size) {
+        int first = random.nextInt(0, size);
+        int second;
+
+        while (true) {
+            second = random.nextInt(0, size);
+            if (second != first) break;
+        }
+
+        return new Pair<>(first, second);
+    }
     public static ArrayList<Point2D> bossAoeRandomCenters(double x, double y, double width, double height) {
         ArrayList<Point2D> out = new ArrayList<>();
         int num = random.nextInt(BOSS_AOE_CENTER_NUMBERS, BOSS_AOE_CENTER_NUMBERS * 2 + 1);

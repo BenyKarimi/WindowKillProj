@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding punch for buss&#10;Adding first three boss attacks">
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finish Boss Attack after adding four more attacks&#10;update finishing panel with more information">
+      <change afterPath="$PROJECT_DIR$/src/controller/handeler/SkillTreeAttackType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/handeler/SkillTreeDefenceType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/handeler/SkillTreeTransformationType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/constant/GameValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/GameValues.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/SkillTreeHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/handeler/SkillTreeHandled.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossAttackType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossAttackType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/boss/BossHead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/container/FinishPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/FinishPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/EpsilonView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/charecterViews/EpsilonView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/SkillTreePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/SkillTreePanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +25,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -133,7 +131,8 @@
       <workItem from="1721666860720" duration="427000" />
       <workItem from="1721720308030" duration="1212000" />
       <workItem from="1721721541100" duration="26359000" />
-      <workItem from="1721808951376" duration="10209000" />
+      <workItem from="1721808951376" duration="10603000" />
+      <workItem from="1721820192967" duration="9985000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -275,7 +274,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721754417253</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Finish Boss Attack after adding four more attacks&#10;update finishing panel with more information">
+      <created>1721819605164</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1721819605164</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +320,8 @@
     <MESSAGE value="Implementing new Shop Items" />
     <MESSAGE value="Starting to implement boss &#10;Adding boss handle and boss updater &#10;Adding boss head and hand view and model classes" />
     <MESSAGE value="Adding punch for buss&#10;Adding first three boss attacks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding punch for buss&#10;Adding first three boss attacks" />
+    <MESSAGE value="Finish Boss Attack after adding four more attacks&#10;update finishing panel with more information" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finish Boss Attack after adding four more attacks&#10;update finishing panel with more information" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
