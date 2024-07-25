@@ -90,6 +90,7 @@ public class BlackOrbMiniBoss {
                 break;
             }
         }
+        if (orbEnemies.isEmpty()) removeFromAllList(id);
     }
     private void removeLasers(int ind) {
         for (int i = 0; i < orbsLocation.size(); i++) {

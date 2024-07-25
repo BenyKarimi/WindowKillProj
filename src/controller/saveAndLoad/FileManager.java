@@ -65,7 +65,8 @@ public class FileManager {
             writer.write(waveNumber + "#" + bulletFired + "#" + successfulBullet + "#" + enemyKilled + "#" +
                     firstRoundFinish + "#" + temporaryEnemyKilledNumber + "#" + waveStartTime + "#" + waveLengthTime + "#"
                     + secondRoundFinish + "#" + bossFightStart + "#" + GlassFrame.getINSTANCE().getTimer().getSeconds()
-                    + "#" + GlassFrame.getINSTANCE().getTimer().getMiliSecond() + "#" + totalProgressTime);
+                    + "#" + GlassFrame.getINSTANCE().getTimer().getMiliSecond() + "#" + totalProgressTime + "#" + lastAttackUpdate
+                    + "#" + lastSaveTime + "#" + canSpawn + "#" + lastCheckPointMade);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -231,7 +232,7 @@ public class FileManager {
         String toAdd = (checkPoint ? "CheckPoint.txt" : ".txt");
 
         loadValues(path + "/values" + toAdd);
-        loadEpsilonAndPanel(path + "/Epsilon" + toAdd);
+        loadEpsilonAndPanel(path + "/Epsilon" + toAdd, checkPoint);
         loadRigid(path + "/Rigid" + toAdd);
         loadNonRigid(path + "/NonRigid" + toAdd);
         loadArchmire(path + "/Archmire" + toAdd);
@@ -307,6 +308,10 @@ public class FileManager {
             GlassFrame.getINSTANCE().getTimer().setSeconds(Integer.parseInt(strings[10]));
             GlassFrame.getINSTANCE().getTimer().setMiliSeconds(Integer.parseInt(strings[11]));
             totalProgressTime = Integer.parseInt(strings[12]);
+            lastAttackUpdate = Integer.parseInt(strings[13]);
+            lastSaveTime = Integer.parseInt(strings[14]);
+            canSpawn = Boolean.parseBoolean(strings[15]);
+            lastCheckPointMade = Integer.parseInt(strings[16]);
 
             bufferedReader.close();
             fileReader.close();
@@ -315,7 +320,7 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-    private static void loadEpsilonAndPanel(String path) {
+    private static void loadEpsilonAndPanel(String path, boolean checkPoint) {
         File epsilonFile = new File(path);
         try {
             FileReader fileReader = new FileReader(epsilonFile);
@@ -327,8 +332,13 @@ public class FileManager {
             Point2D center = new Point2D.Double(Double.parseDouble(strings[0]), Double.parseDouble(strings[1]));
             EpsilonModel epsilonModel = new EpsilonModel(center, strings[5]);
             epsilonModel.setXp(Integer.parseInt(strings[2]));
-            epsilonModel.setHp(Integer.parseInt(strings[3]));
+            if (!checkPoint) epsilonModel.setHp(Integer.parseInt(strings[3]));
+            else {
+                epsilonModel.setHp(10);
+            }
             epsilonModel.setVerticesNumber(Integer.parseInt(strings[4]));
+
+            if (Controller.getINSTANCE().logic != null) Controller.getINSTANCE().logic.setEpsilon(epsilonModel);
 
             line = bufferedReader.readLine();
             String[] strings1 = line.split("#");

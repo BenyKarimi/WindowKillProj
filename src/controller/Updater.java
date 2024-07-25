@@ -6,9 +6,11 @@ import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandle;
 import controller.handeler.TypedActionHandle;
 import controller.random.RandomHelper;
+import controller.saveAndLoad.FileManager;
 import model.bulletModel.RigidBulletModel;
 import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.*;
+import model.checkPointModel.CheckPointModel;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.collision.CollisionPoint;
@@ -20,6 +22,7 @@ import model.panelModel.WallSideIndicator;
 import view.bulletView.BulletView;
 import view.bulletView.EnemyNonRigidBulletView;
 import view.charecterViews.*;
+import view.checkPointView.CheckPointView;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 import view.container.GlassFrame;
@@ -64,6 +67,7 @@ public class Updater {
         updateBulletView();
         updateNonRigidBulletView();
         updatePanelView();
+        updateCheckPointView();
         for (GamePanel panel : GamePanel.gamePanelList) {
             panel.repaint();
         }
@@ -79,6 +83,7 @@ public class Updater {
         updatePanelModel();
         SkillTreeHandled.addHpByTime();
         updateEnemiesModel();
+        updateCheckPointModel();
         updateCollectibleModel();
         reduceHealthByBlackOrb();
         reduceHealthByArchmire();
@@ -86,12 +91,18 @@ public class Updater {
         checkCollisionBulletAndPanels();
         moveAllModels();
         Controller.getINSTANCE().logic.updateLocalSave(gameTimer.getMiliSecond());
-        Controller.getINSTANCE().logic.checkGameOver();
+        updateCheckPointMaking();
         updateWave();
+        Controller.getINSTANCE().logic.checkGameOver();
     }
     private void updateGameValues() {
         GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
         GameValues.progressRate = 10 * (epsilon.getXp() * (GameValues.totalProgressTime + GameValues.waveNumber * GameValues.waveLengthTime / 1000) / epsilon.getHp());
+    }
+    private void updateCheckPointMaking() {
+        if (!startGame) return;
+        PanelModel pm = PanelModel.panelModelList.get(0);
+        Controller.getINSTANCE().logic.updateCheckPointMaking(gameTimer.getMiliSecond(), pm.getX(), pm.getY(), pm.getWidth(), pm.getHeight());
     }
     /// model functions
     private void updateWave() {
@@ -102,7 +113,7 @@ public class Updater {
             if (!GameValues.firstRoundFinish && !epsilonGoesBigger) {
                 PanelModel pm = PanelModel.panelModelList.get(0);
                 isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
-                if (GameValues.waveNumber + 1 == 2 && isWave) {
+                if (GameValues.waveNumber + 1 == 4 && isWave) {
                     epsilonGoesBigger = true;
                     epsilonGoesBiggerTime = gameTimer.getSeconds();
                 }
@@ -114,7 +125,7 @@ public class Updater {
             }
             else if (GameValues.firstRoundFinish) {
                 isWave = Controller.getINSTANCE().logic.checkCanMakeWave();
-                if (GameValues.waveNumber + 1 == 5 && isWave) {
+                if (GameValues.waveNumber + 1 == 9 && isWave) {
                     if (PanelModel.panelModelList.get(0).moveToCenter()) {
                         PanelModel.panelModelList.get(0).setDirection(new Direction(new Point2D.Double(0, 0)));
                         PanelModel.panelModelList.get(0).setSpeed(0);
@@ -319,6 +330,37 @@ public class Updater {
                         break;
                     }
                 }
+            }
+        }
+    }
+    private void updateCheckPointModel() {
+        Rectangle epsilonRect = new Rectangle((int)(epsilon.getCenter().getX() - epsilon.getRadius())
+                , (int)(epsilon.getCenter().getY() - epsilon.getRadius())
+                , (int)(2 * epsilon.getRadius()), (int)(2 * epsilon.getRadius()));
+
+        for (int i = 0; i < CheckPointModel.checkPointModelsList.size(); i++) {
+            CheckPointModel now = CheckPointModel.checkPointModelsList.get(i);
+            boolean hasIntersect = epsilonRect.intersects(new Rectangle((int)(now.getCenter().getX() - (now.getSize()) / 2),
+                    (int)(now.getCenter().getY() - (now.getSize()) / 2), (int)now.getSize(), (int)now.getSize()));
+            if (hasIntersect && !epsilonGoesBigger) {
+                if (epsilon.getXp() >= GameValues.progressRate) {
+                    int response = JOptionPane.showConfirmDialog(GlassFrame.getINSTANCE(), "Do you want to save in this checkpoint", "Confirm",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (response == JOptionPane.YES_OPTION) {
+                        epsilon.setXp(epsilon.getXp() - GameValues.progressRate);
+                        epsilon.setHp(epsilon.getHp() + 10);
+                        FileManager.saveGame(true);
+                    }
+                    else epsilon.setXp(epsilon.getXp() + GameValues.progressRate / 10);
+                }
+                else epsilon.setXp(epsilon.getXp() + GameValues.progressRate / 10);
+
+                i--;
+                CheckPointModel.removeFromAllList(now.getId());
+            }
+            else if (gameTimer.getMiliSecond() - now.getTimeMade() >= 5000) {
+                i--;
+                CheckPointModel.removeFromAllList(now.getId());
             }
         }
     }
@@ -628,6 +670,13 @@ public class Updater {
             ptr.setWidth(tmp.getWidth());
             ptr.setHeight(tmp.getHeight());
             ptr.updateBound();
+        }
+    }
+    private void updateCheckPointView() {
+        for (CheckPointView ptr : CheckPointView.checkPointViewsList) {
+            CheckPointModel tmp = Controller.getINSTANCE().logic.findCheckPointModel(ptr.getId());
+            ptr.setCurrentCenter(tmp.getCenter());
+            ptr.setCurrentSize(tmp.getSize());
         }
     }
 

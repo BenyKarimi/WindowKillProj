@@ -55,6 +55,9 @@ public class RandomHelper {
 
         return new Pair<>(first, second);
     }
+    public static Point2D makeCheckPointCenter(double x, double y, double width, double height) {
+        return new Point2D.Double(random.nextDouble(x, x + width), random.nextDouble(y, y + height));
+    }
     public static ArrayList<Point2D> bossAoeRandomCenters(double x, double y, double width, double height) {
         ArrayList<Point2D> out = new ArrayList<>();
         int num = random.nextInt(BOSS_AOE_CENTER_NUMBERS, BOSS_AOE_CENTER_NUMBERS * 2 + 1);
@@ -71,18 +74,18 @@ public class RandomHelper {
     public static int randomFirstWaveEnemyType() {
         return random.nextInt(0, 2);
     }
-    private static int randomSecondWaveEnemyType() {
+    private static int randomSecondWaveEnemyType(int barricadosCnt, int blackOrbCnt) {
         int type = 0;
         while (true) {
             if (GameValues.waveNumber < 7) {
                 type = random.nextInt(1, 7);
             }
             else {
-                if (BarricadosEnemy.barricadosEnemiesList.isEmpty()) {
+                if (barricadosCnt == 0 && BarricadosEnemy.barricadosEnemiesList.isEmpty()) {
                     type = 7;
                     break;
                 }
-                if (BlackOrbMiniBoss.blackOrbMiniBossesList.isEmpty()) {
+                if (blackOrbCnt == 0 && BlackOrbMiniBoss.blackOrbMiniBossesList.isEmpty()) {
                     type = 8;
                     break;
                 }
@@ -156,14 +159,23 @@ public class RandomHelper {
         else if (GameValues.level.equals(Level.MEDIUM)) tmp = 1.5;
         else tmp = 2;
 
-        int num = (int) random.nextDouble((tmp * (GameValues.waveNumber - 3)) + GameValues.waveLengthTime / 30000.0, (tmp * (GameValues.waveNumber - 3)) + GameValues.waveLengthTime / 30000.0 + 2);
+        int num = (int) random.nextDouble(tmp + GameValues.waveLengthTime / 30000.0, tmp + GameValues.waveLengthTime / 30000.0 + 2);
         ArrayList<Integer> indices = randomArrayListIndices(num, candidate.size());
 
         ArrayList<Pair<Point2D, Integer>> out = new ArrayList<>();
+
+        int barricadosCnt = 0;
+        int blackOrnCnt = 0;
+
         for (Integer ptr : indices) {
             Point2D center = new Point2D.Double(random.nextDouble(candidate.get(ptr).getX(), candidate.get(ptr).getX() + candidate.get(ptr).getWidth()),
                     random.nextDouble(candidate.get(ptr).getY(), candidate.get(ptr).getY() + candidate.get(ptr).getHeight()));
-            out.add(new Pair<>(center, randomSecondWaveEnemyType()));
+
+            int type =  randomSecondWaveEnemyType(barricadosCnt, blackOrnCnt);
+            if (type == 7) barricadosCnt++;
+            if (type == 8) blackOrnCnt++;
+
+            out.add(new Pair<>(center, type));
         }
         return out;
     }

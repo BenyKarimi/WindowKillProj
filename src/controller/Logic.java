@@ -15,6 +15,7 @@ import model.charactersModel.boss.BossHead;
 import model.charactersModel.boss.BossLeftHand;
 import model.charactersModel.boss.BossPunch;
 import model.charactersModel.boss.BossRightHand;
+import model.checkPointModel.CheckPointModel;
 import model.collectibleModel.Collectible;
 import model.collision.Collidable;
 import model.movement.Movable;
@@ -28,6 +29,7 @@ import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
 import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
+import view.checkPointView.CheckPointView;
 import view.collectibleView.CollectibleView;
 import view.container.FinishPanel;
 import view.container.GamePanel;
@@ -40,9 +42,6 @@ import java.util.ArrayList;
 import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class Logic {
-    private int lastAttackUpdate;
-    private int lastSaveTime;
-    private boolean canSpawn;
     private EpsilonModel epsilon;
     private BossUpdater bossUpdater;
     public Logic (boolean load) {
@@ -51,7 +50,7 @@ public class Logic {
             FileManager.loadGame(false);
             epsilon = EpsilonModel.epsilonModelsList.get(0);
         }
-        canSpawn = false;
+        GameValues.canSpawn = false;
     }
     private void createEpsilon(double panelX, double panelY) {
         epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY), Utils.processRandomId());
@@ -127,7 +126,7 @@ public class Logic {
                 GameValues.totalProgressTime += (GameValues.waveNumber * GameValues.waveLengthTime / 1000);
                 GameValues.waveNumber++;
             }
-            canSpawn = true;
+            GameValues.canSpawn = true;
             GameValues.waveStartTime = time;
             GameValues.temporaryEnemyKilledNumber = 0;
             doSpawn();
@@ -135,19 +134,25 @@ public class Logic {
     }
     public void updateSpawn(int time) {
         if (GameValues.temporaryEnemyKilledNumber >= Utils.getMinimumKilled(GameValues.level)) {
-            canSpawn = false;
+            GameValues.canSpawn = false;
         }
 
-        if (canSpawn && time - lastAttackUpdate >= 5000) {
-            lastAttackUpdate = time;
+        if (GameValues.canSpawn && time - GameValues.lastAttackUpdate >= 5000) {
+            GameValues.lastAttackUpdate = time;
             doSpawn();
         }
     }
 
     public void updateLocalSave(int time) {
-        if (time - lastSaveTime > 1000 || lastSaveTime == 0) {
+        if (time - GameValues.lastSaveTime > 1000 || GameValues.lastSaveTime == 0) {
             FileManager.saveGame(false);
-            lastSaveTime = time;
+            GameValues.lastSaveTime = time;
+        }
+    }
+    public void updateCheckPointMaking(int time, double x, double y, double width, double height) {
+        if (time - GameValues.lastCheckPointMade >= 20000 || GameValues.lastCheckPointMade == 0) {
+            new CheckPointModel(RandomHelper.makeCheckPointCenter(x, y, width, height));
+            GameValues.lastCheckPointMade = time;
         }
     }
 
@@ -158,14 +163,22 @@ public class Logic {
     }
     public void showFinishGame() {
         if (epsilon.getHp() <= 0) {
-            Constants.gameOver.play();
-            int finishXP = epsilon.getXp();
-            int bulletFired = GameValues.bulletFired;
-            int successfulBullet = GameValues.successfulBullet;
-            int enemyKilled = GameValues.enemyKilled;
-            String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
-            deleteAllInfo(true, false);
-            new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
+            if (FileManager.canLoad(true)) {
+                deleteAllInfo(true, true);
+                FileManager.loadGame(true);
+                Controller.getINSTANCE().updater.modelUpdater.start();
+                Controller.getINSTANCE().updater.viewUpdater.start();
+            }
+            else {
+                Constants.gameOver.play();
+                int finishXP = epsilon.getXp();
+                int bulletFired = GameValues.bulletFired;
+                int successfulBullet = GameValues.successfulBullet;
+                int enemyKilled = GameValues.enemyKilled;
+                String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
+                deleteAllInfo(true, false);
+                new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
+            }
         }
         else if (!GameValues.firstRoundFinish) {
             Constants.INITIAL_HP = epsilon.getHp();
@@ -181,10 +194,12 @@ public class Logic {
             RigidBulletModel.rigidBulletModelList.clear();
             NonRigidBulletModel.nonRigidBulletModelsList.clear();
             Collectible.collectibleList.clear();
+            CheckPointModel.checkPointModelsList.clear();
 
             BulletView.bulletViewList.clear();
             EnemyNonRigidBulletView.nonRigidBulletViewsList.clear();
             CollectibleView.collectibleViewList.clear();
+            CheckPointView.checkPointViewsList.clear();
 
 
             GameValues.secondRoundFinish = true;
@@ -219,6 +234,10 @@ public class Logic {
             GameValues.bulletFired = 0;
             GameValues.successfulBullet = 0;
             GameValues.enemyKilled = 0;
+            GameValues.lastAttackUpdate = 0;
+            GameValues.lastSaveTime = 0;
+            GameValues.canSpawn = false;
+            GameValues.lastCheckPointMade = 0;
             GameValues.totalProgressTime = 0;
             GameValues.firstRoundFinish = false;
             GameValues.secondRoundFinish = false;
@@ -243,6 +262,7 @@ public class Logic {
         RigidBulletModel.rigidBulletModelList.clear();
         NonRigidBulletModel.nonRigidBulletModelsList.clear();
         Enemy.enemiesList.clear();
+        CheckPointModel.checkPointModelsList.clear();
         SquareEnemy.squareEnemyList.clear();
         TriangleEnemy.triangleEnemyList.clear();
         OmenoctEnemy.omenoctEnemyList.clear();
@@ -274,6 +294,7 @@ public class Logic {
         BossRightHandView.bossRightHandViewsList.clear();
         BossLeftHandView.bossLeftHandViewsList.clear();
         BossPunchView.bossPunchViewsList.clear();
+        CheckPointView.checkPointViewsList.clear();
 
         Collidable.collidables.clear();
         Movable.movable.clear();
@@ -384,6 +405,12 @@ public class Logic {
     }
     public BossPunch findBossPunchModel(String id) {
         for (BossPunch ptr : BossPunch.bossPunchesList) {
+            if (ptr.getId().equals(id)) return ptr;
+        }
+        return null;
+    }
+    public CheckPointModel findCheckPointModel(String id) {
+        for (CheckPointModel ptr : CheckPointModel.checkPointModelsList) {
             if (ptr.getId().equals(id)) return ptr;
         }
         return null;

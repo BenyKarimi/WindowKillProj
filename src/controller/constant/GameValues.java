@@ -12,6 +12,10 @@ public class GameValues {
     public static int waveLengthTime = 0;
     public static int totalProgressTime = 0;
     public static int progressRate = 0;
+    public static int lastAttackUpdate = 0;
+    public static int lastSaveTime = 0;
+    public static boolean canSpawn = false;
+    public static int lastCheckPointMade = 0;
     public static boolean secondRoundFinish = false;
     public static boolean bossFightStart = false;
     public static boolean isBossQuakeAttack = false;

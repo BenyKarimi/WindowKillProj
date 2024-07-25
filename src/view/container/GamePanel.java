@@ -14,6 +14,7 @@ import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
 import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
+import view.checkPointView.CheckPointView;
 import view.collectibleView.CollectibleView;
 import view.gameTimerView.GameTimer;
 
@@ -99,6 +100,7 @@ public class GamePanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawBoss((Graphics2D) g);
+        drawCheckPoint((Graphics2D) g);
         drawEpsilon((Graphics2D) g);
         drawAim((Graphics2D) g);
         drawCollectibleView((Graphics2D) g);
@@ -297,6 +299,14 @@ public class GamePanel extends JPanel {
         Image bossPunchImage = new ImageIcon("resources/BossPunch.png").getImage();
         for (BossPunchView ptr : BossPunchView.bossPunchViewsList) {
             g.drawImage(bossPunchImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
+                    , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
+                    , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
+        }
+    }
+    private void drawCheckPoint(Graphics2D g) {
+        Image checkPointImage = new ImageIcon("resources/CheckPoint.png").getImage();
+        for (CheckPointView ptr : CheckPointView.checkPointViewsList) {
+            g.drawImage(checkPointImage, (int) (ptr.getCurrentCenter().getX() - (ptr.getCurrentSize() / 2) - upLeftX)
                     , (int) (ptr.getCurrentCenter().getY() - (ptr.getCurrentSize() / 2) - upLeftY)
                     , (int) (ptr.getCurrentSize()), (int) (ptr.getCurrentSize()), null);
         }

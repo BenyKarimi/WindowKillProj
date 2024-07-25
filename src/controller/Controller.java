@@ -8,6 +8,7 @@ import view.charecterViews.bossView.BossHeadView;
 import view.charecterViews.bossView.BossLeftHandView;
 import view.charecterViews.bossView.BossPunchView;
 import view.charecterViews.bossView.BossRightHandView;
+import view.checkPointView.CheckPointView;
 import view.collectibleView.CollectibleView;
 import view.container.GamePanel;
 
@@ -73,6 +74,9 @@ public class Controller {
     }
     public void createBossPunchView(String id) {
         new BossPunchView(id);
+    }
+    public void createCheckPointView(String id) {
+        new CheckPointView(id);
     }
     public static Controller getINSTANCE() {
 //        if (INSTANCE == null) INSTANCE = new Controller();
