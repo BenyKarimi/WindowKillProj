@@ -22,7 +22,7 @@ public class Constants {
     public static int BULLET_REDUCE_HP = 5;
     public static int HOT_BULLET_REDUCE_HP = 50;
     public static int EPSILON_REDUCE_HP = 10;
-    public static int INITIAL_XP = 10000;
+    public static int INITIAL_XP = 1000;
     public static int INITIAL_HP = 100;
     public static int SKILL_TREE_ASTRAPE_DAMAGE = 2;
     public static int SKILL_TREE_CERBERUS_DAMAGE = 10;

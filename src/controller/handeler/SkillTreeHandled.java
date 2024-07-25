@@ -42,7 +42,7 @@ public class SkillTreeHandled {
     private static EpsilonModel epsilon;
     public SkillTreeHandled() {
         timer = GlassFrame.getINSTANCE().getTimer();
-        epsilon = Controller.getINSTANCE().logic.epsilon;
+        epsilon = EpsilonModel.epsilonModelsList.get(0);
     }
     public static void handlePressedKeys(int keyKode) {
         if (epsilon.getXp() < 100) return;

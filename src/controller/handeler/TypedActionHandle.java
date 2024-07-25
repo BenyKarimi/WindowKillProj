@@ -49,7 +49,7 @@ public class TypedActionHandle {
         }
     }
     public static void handleReleasedKey(int keyCode) {
-        EpsilonModel model = Controller.getINSTANCE().logic.epsilon;
+        EpsilonModel model = EpsilonModel.epsilonModelsList.get(0);
         if (keyCode == KeyActions.UP) {
             up = false;
             model.setyVelocity(0);
@@ -68,7 +68,7 @@ public class TypedActionHandle {
         }
     }
     public static void doMove() {
-        EpsilonModel model = Controller.getINSTANCE().logic.epsilon;
+        EpsilonModel model = EpsilonModel.epsilonModelsList.get(0);
         int yMove = (down ? 1 : 0) - (up ? 1 : 0);
         int xMove = (right ? 1 : 0) - (left ? 1 : 0);
         model.moveWithKeys(xMove, yMove);

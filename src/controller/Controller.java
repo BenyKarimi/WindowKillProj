@@ -17,9 +17,9 @@ public class Controller {
     private static Controller INSTANCE;
     public Updater updater;
     public Logic logic;
-    public Controller() {
+    public Controller(boolean load) {
         INSTANCE = this;
-        logic = new Logic();
+        logic = new Logic(load);
         updater = new Updater();
 //        updater.epsilon = logic.epsilon;
     }

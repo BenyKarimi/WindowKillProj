@@ -3,6 +3,7 @@ package view.container;
 import controller.Controller;
 import controller.constant.Constants;
 import controller.handeler.SkillTreeHandled;
+import controller.saveAndLoad.FileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,13 @@ public class MainMenuPanel extends JPanel {
         startGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                boolean load = false;
+                if (FileManager.canLoad(false)) {
+                    int response = JOptionPane.showConfirmDialog(GlassFrame.getINSTANCE(), "Do you want to start the game from the dropped point?", "Confirm",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (response == JOptionPane.YES_OPTION) load = true;
+                }
+
                 try {
                     Robot robot = new Robot();
                     robot.keyPress(KeyEvent.VK_WINDOWS);
@@ -56,7 +64,7 @@ public class MainMenuPanel extends JPanel {
                     throw new RuntimeException(ex);
                 }
                 GlassFrame.getINSTANCE().remove(INSTANCE);
-                Controller controller = new Controller();
+                Controller controller = new Controller(load);
                 new SkillTreeHandled();
                 GlassFrame.getINSTANCE().setExtendedState(JFrame.MAXIMIZED_BOTH);
                 GlassFrame.getINSTANCE().revalidate();

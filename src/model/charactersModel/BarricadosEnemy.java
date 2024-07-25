@@ -117,4 +117,12 @@ public class BarricadosEnemy extends Enemy {
     public boolean isStationed() {
         return true;
     }
+
+    public boolean isPanelRigid() {
+        return panelRigid;
+    }
+
+    public int getTimeMade() {
+        return timeMade;
+    }
 }

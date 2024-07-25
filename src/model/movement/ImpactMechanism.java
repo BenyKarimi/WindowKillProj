@@ -13,7 +13,7 @@ public class ImpactMechanism {
     public static void applyImpact(Point2D collisionPoint, double impactLevel) {
         /// epsilon
         {
-            EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;
+            EpsilonModel epsilon = EpsilonModel.epsilonModelsList.get(0);
             Direction direction = getNewDirection(collisionPoint, epsilon.getCenter());
             if (direction != null) {
                 epsilon.setDirection(direction);

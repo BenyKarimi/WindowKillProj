@@ -53,5 +53,11 @@ public class GameTimer {
     public int getMiliSecond() {
         return miliSecondRunnable.getSeconds();
     }
+    public void setSeconds(int time) {
+        secondRunnable.setSeconds(time);
+    }
+    public void setMiliSeconds(int time) {
+        miliSecondRunnable.setSeconds(time);
+    }
 }
 

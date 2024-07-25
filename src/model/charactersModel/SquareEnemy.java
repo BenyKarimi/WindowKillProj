@@ -112,4 +112,12 @@ public class SquareEnemy extends Enemy {
     public boolean isStationed() {
         return false;
     }
+
+    public boolean isDash() {
+        return isDash;
+    }
+
+    public void setDash(boolean dash) {
+        isDash = dash;
+    }
 }

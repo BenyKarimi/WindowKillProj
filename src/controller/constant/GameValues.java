@@ -10,6 +10,8 @@ public class GameValues {
     public static int temporaryEnemyKilledNumber = 0;
     public static int waveStartTime = 0;
     public static int waveLengthTime = 0;
+    public static int totalProgressTime = 0;
+    public static int progressRate = 0;
     public static boolean secondRoundFinish = false;
     public static boolean bossFightStart = false;
     public static boolean isBossQuakeAttack = false;

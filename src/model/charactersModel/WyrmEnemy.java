@@ -24,9 +24,10 @@ public class WyrmEnemy extends Enemy {
     private int lastAttackTime;
     public static ArrayList<WyrmEnemy> wyrmEnemiesList = new ArrayList<>();
 
-    public WyrmEnemy(Point2D center, double size, double speed) {
+    public WyrmEnemy(Point2D center, double size, double speed, boolean clockWise) {
         super(Utils.processRandomId(), size, speed, speed, false, WYRM_ENEMY_HP, WYRM_ENEMY_REDUCER_HP, WYRM_ENEMY_COLLECTIBLE_NUMBER, WYRM_ENEMY_COLLECTIBLE_XP,
                 center, new Direction(new Point2D.Double(0, 0)), new ArrayList<>());
+        this.clockWise = clockWise;
         calculateVertices();
         makePanel();
         Controller.getINSTANCE().createWyrmEnemyView(super.getId());
@@ -111,6 +112,10 @@ public class WyrmEnemy extends Enemy {
             clockWise = !clockWise;
             lastUpdate = time;
         }
+    }
+
+    public boolean isClockWise() {
+        return clockWise;
     }
 
     public static void removeFromAllList(String id) {

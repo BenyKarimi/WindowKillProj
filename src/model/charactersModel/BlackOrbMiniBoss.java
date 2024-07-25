@@ -150,4 +150,12 @@ public class BlackOrbMiniBoss {
     public double getOrbRadius() {
         return orbRadius;
     }
+
+    public Point2D getCenter() {
+        return center;
+    }
+
+    public double getSize() {
+        return size;
+    }
 }

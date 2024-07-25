@@ -18,7 +18,7 @@ public class StorePanel extends JPanel {
     private static StorePanel now;
     public StorePanel() {
         now = this;
-        epsilon = Controller.getINSTANCE().logic.epsilon;
+        epsilon = EpsilonModel.epsilonModelsList.get(0);
 
         addButtons();
         addLabels();

@@ -73,7 +73,7 @@ public class Updater {
     }
     public void updateModel() {
         epsilon = EpsilonModel.epsilonModelsList.get(0);
-        GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
+        updateGameValues();
         updateEpsilonModel();
         reduceHealthByEpsilonAoe();
         updatePanelModel();
@@ -85,8 +85,13 @@ public class Updater {
         updateCollisionAndImpact();
         checkCollisionBulletAndPanels();
         moveAllModels();
+        Controller.getINSTANCE().logic.updateLocalSave(gameTimer.getMiliSecond());
         Controller.getINSTANCE().logic.checkGameOver();
         updateWave();
+    }
+    private void updateGameValues() {
+        GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
+        GameValues.progressRate = 10 * (epsilon.getXp() * (GameValues.totalProgressTime + GameValues.waveNumber * GameValues.waveLengthTime / 1000) / epsilon.getHp());
     }
     /// model functions
     private void updateWave() {

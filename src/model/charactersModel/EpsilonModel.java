@@ -32,9 +32,9 @@ public class EpsilonModel implements Collidable, Movable {
     private int lastAoeAttack;
     public static ArrayList<EpsilonModel> epsilonModelsList = new ArrayList<>();
 
-    public EpsilonModel(Point2D center) {
+    public EpsilonModel(Point2D center, String id) {
         this.center = center;
-        this.id = Utils.processRandomId();
+        this.id = id;
         xp = INITIAL_XP;
         hp = INITIAL_HP;
         xVelocity = 0;
@@ -92,7 +92,6 @@ public class EpsilonModel implements Collidable, Movable {
             else enemiesInsideAoe.remove(enemy);
         }
     }
-
     public ArrayList<Point2D> getAoeCenters() {
         return aoeCenters;
     }

@@ -5,6 +5,7 @@ import controller.Utils;
 import controller.constant.Constants;
 import model.bulletModel.RigidBulletModel;
 import model.charactersModel.Enemy;
+import model.charactersModel.EpsilonModel;
 import model.collision.Collidable;
 import model.movement.Direction;
 import model.movement.Movable;
@@ -110,7 +111,7 @@ public class PanelModel implements Movable {
         upSpeed = ((height - Constants.GAME_PANEL_MIN_DIMENSION.height) / Constants.SHRINK_DECELERATION);
         downSpeed = ((height - Constants.GAME_PANEL_MIN_DIMENSION.height) / Constants.SHRINK_DECELERATION);
 
-        changeShrinkByCircle(Controller.getINSTANCE().logic.epsilon.getCenter(), Controller.getINSTANCE().logic.epsilon.getRadius());
+        changeShrinkByCircle(EpsilonModel.epsilonModelsList.get(0).getCenter(), EpsilonModel.epsilonModelsList.get(0).getRadius());
 
         for(RigidBulletModel bullet : RigidBulletModel.rigidBulletModelList)
             changeShrinkByCircle(bullet.getCenter(), bullet.getRadius());

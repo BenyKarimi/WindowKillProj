@@ -1,6 +1,7 @@
 package model.collectibleModel;
 
 import controller.Controller;
+import controller.Utils;
 import controller.constant.Constants;
 import view.collectibleView.CollectibleView;
 
@@ -21,7 +22,7 @@ public class Collectible {
         this.addedXp = addedXp;
         existence = Constants.COLLECTIBLE_EXISTENCE;
         size = Constants.COLLECTIBLE_SIZE;
-        id = UUID.randomUUID().toString();
+        id = Utils.processRandomId();
         collectibleList.add(this);
         Controller.getINSTANCE().createCollectibleView(id);
     }

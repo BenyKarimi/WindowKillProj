@@ -7,6 +7,7 @@ import controller.handeler.SkillTreeHandled;
 import controller.handeler.StoreActionHandle;
 import controller.handeler.TypedActionHandle;
 import controller.random.RandomHelper;
+import controller.saveAndLoad.FileManager;
 import model.bulletModel.RigidBulletModel;
 import model.bulletModel.NonRigidBulletModel;
 import model.charactersModel.*;
@@ -40,16 +41,20 @@ import static controller.constant.Constants.EPSILON_RADIUS;
 
 public class Logic {
     private int lastAttackUpdate;
+    private int lastSaveTime;
     private boolean canSpawn;
-    public EpsilonModel epsilon;
+    private EpsilonModel epsilon;
     private BossUpdater bossUpdater;
-    public Logic() {
-        createInitialPanel();
+    public Logic (boolean load) {
+        if (!load) createInitialPanel();
+        else {
+            FileManager.loadGame(false);
+            epsilon = EpsilonModel.epsilonModelsList.get(0);
+        }
         canSpawn = false;
-//        makeThread();
     }
     private void createEpsilon(double panelX, double panelY) {
-        epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY));
+        epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY), Utils.processRandomId());
     }
     private void createInitialPanel() {
         PanelModel panelModel = new PanelModel(Constants.GAME_PANEL_INITIAL_DIMENSION, Isometric.NO, Rigid.NO);
@@ -71,7 +76,10 @@ public class Logic {
         return Enemy.enemiesList.isEmpty();
     }
     public void makeFirstRoundWave(double x, double y, double width, double height) {
-        if (GameValues.waveNumber + 1 < 4) GameValues.waveNumber++;
+        if (GameValues.waveNumber + 1 < 4) {
+            GameValues.totalProgressTime += (GameValues.waveNumber * GameValues.waveLengthTime / 1000);
+            GameValues.waveNumber++;
+        }
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomFirstWaveEnemyCenters(x, y, width, height);
         for (Point2D ptr : enemiesCenter) {
             if (RandomHelper.randomFirstWaveEnemyType() == 0) {
@@ -103,7 +111,7 @@ public class Logic {
                 new ArchmireEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
             }
             else if (centerAndTime.getSecond() == 6) {
-                new WyrmEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+                new WyrmEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed(), false);
             }
             else if (centerAndTime.getSecond() == 7) {
                 new BarricadosEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize() * 1.5, RandomHelper.barricadosType(), GlassFrame.getINSTANCE().getTimer().getMiliSecond());
@@ -115,11 +123,14 @@ public class Logic {
     }
     public void updateSecondRoundWave(int time) {
         if (Enemy.enemiesList.isEmpty()) {
+            if (GameValues.waveNumber < 9) {
+                GameValues.totalProgressTime += (GameValues.waveNumber * GameValues.waveLengthTime / 1000);
+                GameValues.waveNumber++;
+            }
             canSpawn = true;
             GameValues.waveStartTime = time;
             GameValues.temporaryEnemyKilledNumber = 0;
             doSpawn();
-            if (GameValues.waveNumber < 9) GameValues.waveNumber++;
         }
     }
     public void updateSpawn(int time) {
@@ -130,6 +141,13 @@ public class Logic {
         if (canSpawn && time - lastAttackUpdate >= 5000) {
             lastAttackUpdate = time;
             doSpawn();
+        }
+    }
+
+    public void updateLocalSave(int time) {
+        if (time - lastSaveTime > 1000 || lastSaveTime == 0) {
+            FileManager.saveGame(false);
+            lastSaveTime = time;
         }
     }
 
@@ -146,13 +164,13 @@ public class Logic {
             int successfulBullet = GameValues.successfulBullet;
             int enemyKilled = GameValues.enemyKilled;
             String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
-            deleteAllInfo(true);
+            deleteAllInfo(true, false);
             new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
         }
         else if (!GameValues.firstRoundFinish) {
             Constants.INITIAL_HP = epsilon.getHp();
             GameValues.firstRoundFinish = true;
-            deleteAllInfo(false);
+            deleteAllInfo(false, false);
             GameValues.waveNumber += 2;
             createInitialPanel();
         }
@@ -181,11 +199,11 @@ public class Logic {
             int successfulBullet = GameValues.successfulBullet;
             int enemyKilled = GameValues.enemyKilled;
             String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
-            deleteAllInfo(true);
+            deleteAllInfo(true, false);
             new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
         }
     }
-    private void deleteAllInfo(boolean end) {
+    private void deleteAllInfo(boolean end, boolean checkPoint) {
         Constants.INITIAL_XP = epsilon.getXp();
         if (GameValues.secondRoundFinish) {
             bossUpdater.getModelUpdater().stop();
@@ -201,6 +219,7 @@ public class Logic {
             GameValues.bulletFired = 0;
             GameValues.successfulBullet = 0;
             GameValues.enemyKilled = 0;
+            GameValues.totalProgressTime = 0;
             GameValues.firstRoundFinish = false;
             GameValues.secondRoundFinish = false;
             GameValues.temporaryEnemyKilledNumber = 0;
@@ -208,9 +227,10 @@ public class Logic {
             GameValues.waveLengthTime = 0;
             GameValues.waveStartTime = 0;
             SkillTreeHandled.makeAllRestart();
-            GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
-            InformationPanel.setINSTANCE(null);
-            GameValues.firstRoundFinish = false;
+            if (!checkPoint) {
+                GlassFrame.getINSTANCE().remove(InformationPanel.getINSTANCE());
+                InformationPanel.setINSTANCE(null);
+            }
         }
         for (GamePanel panel : GamePanel.gamePanelList) {
             GlassFrame.getINSTANCE().remove(panel);
@@ -371,5 +391,9 @@ public class Logic {
 
     public BossUpdater getBossUpdater() {
         return bossUpdater;
+    }
+
+    public void setEpsilon(EpsilonModel epsilon) {
+        this.epsilon = epsilon;
     }
 }

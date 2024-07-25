@@ -31,7 +31,7 @@ public class StoreActionHandle {
         }
         GlassFrame.getINSTANCE().getTimer().Start();
 
-        EpsilonModel epsilon = Controller.getINSTANCE().logic.epsilon;
+        EpsilonModel epsilon = EpsilonModel.epsilonModelsList.get(0);
 
         if (doImpact) {
             ImpactMechanism.applyImpact(epsilon.getCenter(), 15);
