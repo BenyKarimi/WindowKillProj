@@ -353,7 +353,7 @@ public class Updater {
                     }
                     else epsilon.setXp(epsilon.getXp() + GameValues.progressRate / 10);
                 }
-                else epsilon.setXp(epsilon.getXp() + GameValues.progressRate / 10);
+                else epsilon.setXp(epsilon.getXp() + GameValues.progressRate / 100);
 
                 i--;
                 CheckPointModel.removeFromAllList(now.getId());

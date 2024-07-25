@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finishing save and load logic for on game saving">
-      <change afterPath="$PROJECT_DIR$/resources/CheckPoint.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Archmire.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Barricados.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/BlackOrb.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Collectible.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Epsilon.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Necropick.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/NonRigid.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Omenoct.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Rigid.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Square.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Triangle.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Wyrm.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/values.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/checkPointModel/CheckPointModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view/checkPointView/CheckPointView.java" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finishing save logic for checkpoint&#10;Adding checkpoint model and view classes &#10;Fixing some bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Archmire.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Archmire.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Barricados.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Barricados.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/BlackOrb.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/BlackOrb.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Collectible.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Collectible.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Epsilon.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Epsilon.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/NonRigid.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/NonRigid.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/values.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/values.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/constant/GameValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/GameValues.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/saveAndLoad/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/saveAndLoad/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/BlackOrbMiniBoss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/BlackOrbMiniBoss.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/container/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/BarricadosEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/BarricadosEnemy.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +134,7 @@
       <workItem from="1721808951376" duration="10603000" />
       <workItem from="1721820192967" duration="10268000" />
       <workItem from="1721890270249" duration="13816000" />
-      <workItem from="1721906241563" duration="8139000" />
+      <workItem from="1721906241563" duration="8816000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -310,7 +297,14 @@
       <option name="project" value="LOCAL" />
       <updated>1721906034282</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Finishing save logic for checkpoint&#10;Adding checkpoint model and view classes &#10;Fixing some bugs">
+      <created>1721915244176</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1721915244176</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -352,7 +346,8 @@
     <MESSAGE value="Finish Boss Attack after adding four more attacks&#10;update finishing panel with more information" />
     <MESSAGE value="Finishing new Skill tree skills logic" />
     <MESSAGE value="Finishing save and load logic for on game saving" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finishing save and load logic for on game saving" />
+    <MESSAGE value="Finishing save logic for checkpoint&#10;Adding checkpoint model and view classes &#10;Fixing some bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finishing save logic for checkpoint&#10;Adding checkpoint model and view classes &#10;Fixing some bugs" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

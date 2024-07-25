@@ -60,7 +60,7 @@ public class BarricadosEnemy extends Enemy {
         }
     }
     public boolean checkToRemove(int time) {
-        return time - timeMade >= 2000 * 60;
+        return time - timeMade >= 2000 * 30;
     }
     public static void removeFromAllList(String id) {
         for (int i = 0; i < barricadosEnemiesList.size(); i++) {

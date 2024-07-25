@@ -91,7 +91,7 @@ public class BossUpdater {
     }
     public void updateModel() {
         epsilon = EpsilonModel.epsilonModelsList.get(0);
-        GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
+        updateGameValues();
         updateEpsilonModel();
         updateBoss();
         updatePanelModel();
@@ -137,7 +137,10 @@ public class BossUpdater {
             }
         }
     }
-
+    private void updateGameValues() {
+        GameValues.waveLengthTime = gameTimer.getMiliSecond() - GameValues.waveStartTime;
+        GameValues.progressRate = 10 * (epsilon.getXp() * (GameValues.totalProgressTime + GameValues.waveNumber * GameValues.waveLengthTime / 1000) / epsilon.getHp());
+    }
     private void updateBoss() {
         bossHandler.setBossHead(bossHead);
         bossHandler.setBossLeftHand(bossLeftHand);

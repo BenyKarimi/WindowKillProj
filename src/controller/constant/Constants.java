@@ -19,7 +19,7 @@ public class Constants {
     public static final Dimension GAME_PANEL_END_SIZE = new Dimension(15, 15);
     public static final Dimension GAME_PANEL_MIN_DIMENSION = new Dimension(300, 300);
     public static final Dimension GAME_PANEL_START_DIMENSION_ERROR = new Dimension(430, 430);
-    public static int BULLET_REDUCE_HP = 100;
+    public static int BULLET_REDUCE_HP = 5;
     public static int HOT_BULLET_REDUCE_HP = 50;
     public static int EPSILON_REDUCE_HP = 10;
     public static int INITIAL_XP = 0;

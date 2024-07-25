@@ -184,7 +184,7 @@ public class Logic {
             Constants.INITIAL_HP = epsilon.getHp();
             GameValues.firstRoundFinish = true;
             deleteAllInfo(false, false);
-            GameValues.waveNumber += 2;
+            GameValues.waveNumber++;
             createInitialPanel();
         }
         else if (!GameValues.secondRoundFinish) {
