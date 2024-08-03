@@ -1,20 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Finishing save logic for checkpoint&#10;Adding checkpoint model and view classes &#10;Fixing some bugs">
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Fixing some bugs &#10;Completion of the second phase (if I don't implement positive points)">
+      <change afterPath="$PROJECT_DIR$/Phase 2.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/ClientState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/SquadState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/view/container/StartingPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/windowKillApplication/WindowKillApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/TcpServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/application/ServerApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/application/ServerMain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/dataBase/DataBase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/models/Squad.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/models/SquadState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/models/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/models/UserState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save/Archmire.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Archmire.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save/Barricados.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Barricados.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/save/BlackOrb.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/BlackOrb.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save/Collectible.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Collectible.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save/Epsilon.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Epsilon.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save/NonRigid.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/NonRigid.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Triangle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Triangle.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/save/values.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/values.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Logic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/Updater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller/constant/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/BarricadosEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/charactersModel/BarricadosEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/updater/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/updater/Logic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/updater/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Updater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/updater/Updater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/updater/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/bossHandle/BossHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/bossHandle/BossUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/bossHandle/BossUpdater.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/constant/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/GameValues.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/constant/GameValues.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/KeyActions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/constant/KeyActions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/constant/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/constant/Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/MouseClickedActionHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/MouseClickedActionHandled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/SkillTreeAttackType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/SkillTreeAttackType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/SkillTreeDefenceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/SkillTreeDefenceType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/SkillTreeHandled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/SkillTreeHandled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/SkillTreeTransformationType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/SkillTreeTransformationType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/StoreActionHandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/StoreActionHandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/handeler/TypedActionHandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/handeler/TypedActionHandle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/random/RandomHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/random/RandomHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller/saveAndLoad/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/saveAndLoad/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/bulletModel/NonRigidBulletModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/bulletModel/NonRigidBulletModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/bulletModel/RigidBulletModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/bulletModel/RigidBulletModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/ArchmireEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/ArchmireEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/BarricadosEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/BarricadosEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/BlackOrbMiniBoss.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/BlackOrbMiniBoss.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/EpsilonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/EpsilonModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/NecropickEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/NecropickEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/OmenoctEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/OmenoctEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/OrbEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/OrbEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/SquareEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/SquareEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/StationedType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/StationedType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/TriangleEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/TriangleEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/WyrmEnemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/WyrmEnemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossAttackType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/boss/BossAttackType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/boss/BossHead.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossLeftHand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/boss/BossLeftHand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossPunch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/boss/BossPunch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/charactersModel/boss/BossRightHand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/charactersModel/boss/BossRightHand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/checkPointModel/CheckPointModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/checkPointModel/CheckPointModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collectibleModel/Collectible.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/collectibleModel/Collectible.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collision/Collidable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/collision/Collidable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collision/CollisionPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/collision/CollisionPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/collision/Line.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/collision/Line.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/Direction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/movement/Direction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/ImpactMechanism.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/movement/ImpactMechanism.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/movement/Movable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/movement/Movable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/panelModel/Isometric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/panelModel/Isometric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/panelModel/PanelModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/panelModel/PanelModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/panelModel/Rigid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/panelModel/Rigid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/panelModel/WallSideIndicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/model/panelModel/WallSideIndicator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/bulletView/BulletView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/bulletView/BulletView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/bulletView/EnemyNonRigidBulletView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/bulletView/EnemyNonRigidBulletView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/ArchmireEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/ArchmireEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/BarricadosEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/BarricadosEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/BlackOrbMiniBossView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/BlackOrbMiniBossView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/EpsilonView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/EpsilonView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/NecropickEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/NecropickEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/OmenoctEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/OmenoctEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/SquareEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/SquareEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/TriangleEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/TriangleEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/WyrmEnemyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/WyrmEnemyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossHeadView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/bossView/BossHeadView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossLeftHandView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/bossView/BossLeftHandView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossPunchView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/bossView/BossPunchView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/charecterViews/bossView/BossRightHandView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/charecterViews/bossView/BossRightHandView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/checkPointView/CheckPointView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/checkPointView/CheckPointView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/collectibleView/CollectibleView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/collectibleView/CollectibleView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/CustomButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/CustomButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/FinishPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/FinishPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/GlassFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/GlassFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/InformationPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/InformationPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/SettingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SettingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/SkillTreePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SkillTreePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/StorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/StorePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/container/TutorialPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/TutorialPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/gameTimerView/GameTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/gameTimerView/GameTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/gameTimerView/GameTimerRunnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/gameTimerView/GameTimerRunnable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/soundManager/GameBackgroundSong.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/soundManager/GameBackgroundSong.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/soundManager/SoundPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/soundManager/SoundPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/windowKill/WindowKill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/windowKillApplication/WindowKill.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,12 +116,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -47,25 +143,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Desktop/tmp&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/benya/Desktop/BrickBreaker_Project",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\benya\Documents\GitHub\WindowKillProj\resources" />
@@ -78,17 +174,41 @@
       <recent name="controler.Constant" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="WindowKill" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="windowKill.WindowKill" />
+  <component name="RunManager" selected="Application.WindowKillApp">
+    <configuration name="ServerMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="server.application.ServerMain" />
       <module name="WindowKill" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="server.application.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="WindowKillApp" type="Application" factoryName="Application" activateToolWindowBeforeRun="false" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="client.windowKillApplication.WindowKillApp" />
+      <module name="WindowKill" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.windowKillApplication.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.ServerMain" />
+      <item itemvalue="Application.WindowKillApp" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.WindowKill" />
+        <item itemvalue="Application.WindowKillApp" />
+        <item itemvalue="Application.ServerMain" />
       </list>
     </recent_temporary>
   </component>
@@ -135,6 +255,8 @@
       <workItem from="1721820192967" duration="10268000" />
       <workItem from="1721890270249" duration="13816000" />
       <workItem from="1721906241563" duration="8816000" />
+      <workItem from="1722502426995" duration="1275000" />
+      <workItem from="1722679084618" duration="15725000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
