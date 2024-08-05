@@ -1,13 +1,16 @@
 package server;
 
 import server.clientHandler.TcpClientHandler;
-import server.dataBase.DataBase;
+import server.fileManager.DataBase;
+import server.models.Squad;
+import server.models.SquadState;
 import server.models.User;
 import server.models.UserState;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import static client.controller.constant.Constants.TCP_PORT;
 
@@ -46,12 +49,60 @@ public class TcpServer extends Thread {
         if (out != null) {
             out.setUserState(UserState.ONLINE);
             out.setClientHandler(clientHandler);
+            dataBase.saveUsers();
             return out;
         }
         else {
             User toAdd = new User(0, username, UserState.ONLINE, clientHandler);
             dataBase.addUser(toAdd);
+            dataBase.saveUsers();
             return toAdd;
+        }
+    }
+    public String handleSuadInfo(User user) {
+        StringBuilder out = new StringBuilder();
+        if (user.getSquadState().equals(SquadState.NO_SQUAD)) {
+            ArrayList<Squad> squads = dataBase.getSquadsList();
+            for (int i = 0; i < squads.size(); i++) {
+                out.append(squads.get(i).getName()).append("█").append(squads.get(i).getMembers().size()).append("░░");
+            }
+        }
+        else {
+            Squad userSquad = dataBase.getSquad(user.getSquadName());
+            ArrayList<User> mem = userSquad.getMembers();
+            for (int i = 0; i < mem.size(); i++) {
+                out.append(mem.get(i).getUsername()).append("█").append(mem.get(i).getXp()).append("█").append(mem.get(i).getUserState()).append("░░");
+            }
+        }
+        return out.toString();
+    }
+    public void handleMakingSquad(String name, User leader) {
+        Squad newSquad = new Squad(name);
+        newSquad.setLeader(leader);
+        newSquad.getMembers().add(leader);
+        leader.setSquadName(name);
+        leader.setSquadState(SquadState.LEADER);
+        dataBase.saveUsers();
+        dataBase.addSquad(newSquad);
+    }
+    public void handleAskJoiningSquad(String name, User applicator) {
+        Squad dest = dataBase.getSquad(name);
+        User destLeader = dest.getLeader();
+        destLeader.getClientHandler().handleMakeRequestForJoiningSquad(applicator.getUsername());
+    }
+    public void handleAnswerJoiningSquad(String res, String applicatorName, String squadName) {
+        User applicator = dataBase.getUser(applicatorName);
+        Squad destSquad = dataBase.getSquad(squadName);
+
+        if (res.equals("YES")) {
+            applicator.setSquadState(SquadState.MEMBER);
+            applicator.setSquadName(squadName);
+            destSquad.getMembers().add(applicator);
+            dataBase.saveUsers();
+            applicator.getClientHandler().handleSquadInfo();
+        }
+        else {
+            applicator.getClientHandler().handleRejectForJoiningSquad();
         }
     }
 }

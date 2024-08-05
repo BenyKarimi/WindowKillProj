@@ -1,5 +1,6 @@
 package client.view.container;
 
+import client.clientHandler.ClientState;
 import client.controller.updater.Controller;
 import client.controller.constant.Constants;
 import client.controller.handeler.SkillTreeHandled;
@@ -12,8 +13,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 import static client.controller.constant.Constants.BACKGROUND_IMAGE;
 import static client.controller.constant.Constants.SHOW_COLOR;
@@ -37,7 +36,7 @@ public class MainMenuPanel extends JPanel {
         CustomButton startGame = new CustomButton("Start new Game");
         startGame.setFont(new Font("akashi", Font.BOLD, 40));
         startGame.setForeground(SHOW_COLOR);
-        startGame.setBounds(200, 250, 450, 40);
+        startGame.setBounds(200, 175, 450, 40);
         startGame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -77,10 +76,40 @@ public class MainMenuPanel extends JPanel {
             }
         });
 
+
+        CustomButton leaderboard = new CustomButton("Leaderboard");
+        leaderboard.setFont(new Font("akashi", Font.BOLD, 40));
+        leaderboard.setForeground(SHOW_COLOR);
+        leaderboard.setBounds(235, 265, 375, 40);
+        leaderboard.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (WindowKill.client.getClientState().equals(ClientState.OFFLINE)) {
+                    JOptionPane.showMessageDialog(INSTANCE, "You are in offline mode!", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                GlassFrame.getINSTANCE().remove(INSTANCE);
+                GlassFrame.getINSTANCE().add(SkillTreePanel.getINSTANCE());
+                GlassFrame.getINSTANCE().revalidate();
+                GlassFrame.getINSTANCE().repaint();
+                leaderboard.setFont(new Font(leaderboard.getFont().getFontName(), Font.BOLD, 40));            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                leaderboard.setFont(new Font(leaderboard.getFont().getFontName(), Font.BOLD, 45));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                leaderboard.setFont(new Font(leaderboard.getFont().getFontName(), Font.BOLD, 40));
+            }
+        });
+
+
         CustomButton skillTree = new CustomButton("Skill Tree");
         skillTree.setFont(new Font("akashi", Font.BOLD, 40));
         skillTree.setForeground(SHOW_COLOR);
-        skillTree.setBounds(275, 350, 300, 40);
+        skillTree.setBounds(275, 355, 300, 40);
         skillTree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -104,7 +133,7 @@ public class MainMenuPanel extends JPanel {
         CustomButton tutorial = new CustomButton("Tutorial");
         tutorial.setFont(new Font("akashi", Font.BOLD, 40));
         tutorial.setForeground(SHOW_COLOR);
-        tutorial.setBounds(275, 450, 300, 40);
+        tutorial.setBounds(275, 445, 300, 40);
         tutorial.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -129,7 +158,7 @@ public class MainMenuPanel extends JPanel {
         CustomButton setting = new CustomButton("Setting");
         setting.setFont(new Font("akashi", Font.BOLD, 40));
         setting.setForeground(SHOW_COLOR);
-        setting.setBounds(275, 550, 300, 40);
+        setting.setBounds(275, 535, 300, 40);
         setting.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -151,10 +180,40 @@ public class MainMenuPanel extends JPanel {
             }
         });
 
+        CustomButton squad = new CustomButton("Squad");
+        squad.setFont(new Font("akashi", Font.BOLD, 40));
+        squad.setForeground(SHOW_COLOR);
+        squad.setBounds(275, 625, 300, 40);
+        squad.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (WindowKill.client.getClientState().equals(ClientState.OFFLINE)) {
+                    JOptionPane.showMessageDialog(INSTANCE, "You are in offline mode!", "WARNING", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                GlassFrame.getINSTANCE().remove(INSTANCE);
+                GlassFrame.getINSTANCE().add(SquadPanel.getINSTANCE());
+                SquadPanel.getINSTANCE().startTimer();
+                GlassFrame.getINSTANCE().revalidate();
+                GlassFrame.getINSTANCE().repaint();
+                squad.setFont(new Font(squad.getFont().getFontName(), Font.BOLD, 40));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                squad.setFont(new Font(squad.getFont().getFontName(), Font.BOLD, 45));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                squad.setFont(new Font(squad.getFont().getFontName(), Font.BOLD, 40));
+            }
+        });
+
         CustomButton exit = new CustomButton("Exit");
         exit.setFont(new Font("akashi", Font.BOLD, 40));
         exit.setForeground(SHOW_COLOR);
-        exit.setBounds(325, 650, 200, 40);
+        exit.setBounds(325, 715, 200, 40);
         exit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -173,9 +232,11 @@ public class MainMenuPanel extends JPanel {
         });
 
         this.add(startGame);
+        this.add(leaderboard);
         this.add(skillTree);
         this.add(tutorial);
         this.add(setting);
+        this.add(squad);
         this.add(exit);
     }
     private void addLabels() {

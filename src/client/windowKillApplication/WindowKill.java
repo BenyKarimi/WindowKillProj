@@ -1,7 +1,6 @@
 package client.windowKillApplication;
 
-import client.Client;
-import client.view.container.MainMenuPanel;
+import client.clientHandler.Client;
 import client.view.container.StartingPanel;
 import client.view.soundManager.GameBackgroundSong;
 

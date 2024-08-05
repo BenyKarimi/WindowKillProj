@@ -1,4 +1,4 @@
-package client;
+package client.clientHandler;
 
 public enum ClientState {
     ONLINE, OFFLINE

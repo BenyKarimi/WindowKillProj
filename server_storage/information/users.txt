@@ -1,0 +1,3 @@
+a░░0░░ONLINE░░LEADER░░aa
+b░░0░░OFFLINE░░MEMBER░░aa
+t░░0░░ONLINE░░NO_SQUAD░░null

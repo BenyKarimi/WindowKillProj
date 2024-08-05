@@ -1,7 +1,7 @@
 package client.view.container;
 
-import client.Client;
-import client.ClientState;
+import client.clientHandler.Client;
+import client.clientHandler.ClientState;
 import client.controller.constant.Constants;
 
 import javax.swing.*;
