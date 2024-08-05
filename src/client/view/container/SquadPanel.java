@@ -76,10 +76,72 @@ public class SquadPanel extends JPanel {
         }
     }
     private void addLeaderLabels() {
+        JLabel squadName = new JLabel("Name: " + WindowKill.client.getSquadName());
+        squadName.setFont(new Font("akashi", Font.BOLD, 25));
+        squadName.setForeground(SHOW_COLOR);
+        squadName.setBounds(325, 40, 300, 25);
 
+        this.add(squadName);
+
+        int w = this.getWidth() / 4;
+        int h = this.getHeight() / 10;
+
+        for (int i = 0; i < WindowKill.client.getSquadMembers().size(); i++) {
+            String[] parts = WindowKill.client.getSquadMembers().get(i).split("█");
+
+            JLabel name = new JLabel("Name: " + parts[0]);
+            name.setFont(new Font("akashi", Font.PLAIN, 25));
+            name.setForeground(SHOW_COLOR);
+            name.setBounds(25, h * (i + 1) + 40, 200, 40);
+
+            JLabel XP = new JLabel("XP: " + parts[1]);
+            XP.setFont(new Font("akashi", Font.PLAIN, 25));
+            XP.setForeground(SHOW_COLOR);
+            XP.setBounds(w + 50, h * (i + 1) + 40, 200, 40);
+
+            JLabel state = new JLabel("State: " + parts[2]);
+            state.setFont(new Font("akashi", Font.PLAIN, 25));
+            state.setForeground(SHOW_COLOR);
+            state.setBounds(2 * w, h * (i + 1) + 40, 200, 40);
+
+            this.add(name);
+            this.add(XP);
+            this.add(state);
+        }
     }
     private void addMemberLabels() {
+        JLabel squadName = new JLabel("Name: " + WindowKill.client.getSquadName());
+        squadName.setFont(new Font("akashi", Font.BOLD, 25));
+        squadName.setForeground(SHOW_COLOR);
+        squadName.setBounds(325, 40, 300, 25);
 
+        this.add(squadName);
+
+        int w = this.getWidth() / 3;
+        int h = this.getHeight() / 10;
+
+        for (int i = 0; i < WindowKill.client.getSquadMembers().size(); i++) {
+            String[] parts = WindowKill.client.getSquadMembers().get(i).split("█");
+
+            JLabel name = new JLabel("Name: " + parts[0]);
+            name.setFont(new Font("akashi", Font.PLAIN, 25));
+            name.setForeground(SHOW_COLOR);
+            name.setBounds(25, h * (i + 1) + 40, 200, 40);
+
+            JLabel XP = new JLabel("XP: " + parts[1]);
+            XP.setFont(new Font("akashi", Font.PLAIN, 25));
+            XP.setForeground(SHOW_COLOR);
+            XP.setBounds(w + 50, h * (i + 1) + 40, 200, 40);
+
+            JLabel state = new JLabel("State: " + parts[2]);
+            state.setFont(new Font("akashi", Font.PLAIN, 25));
+            state.setForeground(SHOW_COLOR);
+            state.setBounds(2 * w, h * (i + 1) + 40, 200, 40);
+
+            this.add(name);
+            this.add(XP);
+            this.add(state);
+        }
     }
 
 
@@ -168,11 +230,77 @@ public class SquadPanel extends JPanel {
             this.add(join);
         }
     }
-    private void addMemberButtons() {
-
-    }
     private void addLeaderButtons() {
+        CustomButton deleteSquad = new CustomButton("Delete Squad");
+        deleteSquad.setFont(new Font("akashi", Font.BOLD, 25));
+        deleteSquad.setForeground(new Color(255, 133, 0));
+        deleteSquad.setBounds(575, 40, 300, 25);
+        deleteSquad.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                deleteSquad.setFont(new Font(deleteSquad.getFont().getFontName(), Font.BOLD, 25));
+            }
 
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                deleteSquad.setFont(new Font(deleteSquad.getFont().getFontName(), Font.BOLD, 30));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                deleteSquad.setFont(new Font(deleteSquad.getFont().getFontName(), Font.BOLD, 25));
+            }
+        });
+        this.add(deleteSquad);
+
+        int h = this.getHeight() / 10;
+        for (int i = 1; i < WindowKill.client.getSquadMembers().size(); i++) {
+            CustomButton remove = new CustomButton("Remove");
+            remove.setFont(new Font("akashi", Font.BOLD, 25));
+            remove.setForeground(SHOW_COLOR);
+            remove.setBounds(this.getWidth() / 4 * 3, h * (i + 1) + 45, 250, 25);
+            remove.addMouseListener(new CustomMouseAdaptor(i) {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println(getPointer());
+                    remove.setFont(new Font(remove.getFont().getFontName(), Font.BOLD, 25));
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    remove.setFont(new Font(remove.getFont().getFontName(), Font.BOLD, 30));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    remove.setFont(new Font(remove.getFont().getFontName(), Font.BOLD, 25));
+                }
+            });
+            this.add(remove);
+        }
+    }
+    private void addMemberButtons() {
+        CustomButton leave = new CustomButton("Leave Squad");
+        leave.setFont(new Font("akashi", Font.BOLD, 25));
+        leave.setForeground(new Color(255, 133, 0));
+        leave.setBounds(575, 40, 300, 25);
+        leave.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                leave.setFont(new Font(leave.getFont().getFontName(), Font.BOLD, 25));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                leave.setFont(new Font(leave.getFont().getFontName(), Font.BOLD, 30));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                leave.setFont(new Font(leave.getFont().getFontName(), Font.BOLD, 25));
+            }
+        });
+        this.add(leave);
     }
 
 

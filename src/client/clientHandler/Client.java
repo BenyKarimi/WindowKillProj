@@ -130,4 +130,8 @@ public class Client extends Thread{
     public ArrayList<String> getSquadMembers() {
         return squadMembers;
     }
+
+    public String getSquadName() {
+        return squadName;
+    }
 }
