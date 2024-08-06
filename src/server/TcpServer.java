@@ -2,6 +2,7 @@ package server;
 
 import server.clientHandler.TcpClientHandler;
 import server.fileManager.DataBase;
+import server.fileManager.FileManager;
 import server.models.Squad;
 import server.models.SquadState;
 import server.models.User;
@@ -144,5 +145,22 @@ public class TcpServer extends Thread {
     public void handleChangeUserState(User user, UserState state) {
         user.setUserState(state);
         dataBase.saveUsers();
+    }
+    public void handleSavingData(String XP, String time, User user) {
+        user.setXp(Integer.parseInt(XP));
+        dataBase.saveUsers();
+
+        FileManager.saveInformationForUser(user.getUsername(), XP, time);
+    }
+    public String handleLeaderboardInfo() {
+        StringBuilder out = new StringBuilder();
+        ArrayList<User> users = dataBase.getUsersList();
+
+        for (int i = 0; i < users.size(); i++) {
+            String tmp = FileManager.loadInformationForUser(users.get(i).getUsername());
+            if (tmp != null) out.append(tmp).append("░░");
+        }
+
+        return out.toString();
     }
 }

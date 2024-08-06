@@ -1,13 +1,13 @@
 package client.view.container;
 
 import client.controller.constant.Constants;
+import client.view.customs.CustomButton;
+import client.view.customs.CustomMouseAdaptor;
 import client.windowKillApplication.WindowKill;
 import server.models.SquadState;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import static client.controller.constant.Constants.SHOW_COLOR;
 public class SquadPanel extends JPanel {
     private static SquadPanel INSTANCE;
     private ArrayList<String> squads;
-    private Timer updateTimer;
+    private final Timer updateTimer;
 
     public SquadPanel() {
         this.squads = new ArrayList<>();
@@ -56,7 +56,7 @@ public class SquadPanel extends JPanel {
     }
     private void addNoSquadLabels() {
         int w = this.getWidth() / 3;
-        int h = this.getHeight() / 10;
+        int h = this.getHeight() / 12;
 
         for (int i = 0; i < squads.size(); i++) {
             String[] parts = squads.get(i).split("█");
@@ -84,7 +84,7 @@ public class SquadPanel extends JPanel {
         this.add(squadName);
 
         int w = this.getWidth() / 4;
-        int h = this.getHeight() / 10;
+        int h = this.getHeight() / 12;
 
         for (int i = 0; i < WindowKill.client.getSquadMembers().size(); i++) {
             String[] parts = WindowKill.client.getSquadMembers().get(i).split("█");
@@ -118,7 +118,7 @@ public class SquadPanel extends JPanel {
         this.add(squadName);
 
         int w = this.getWidth() / 3;
-        int h = this.getHeight() / 10;
+        int h = this.getHeight() / 12;
 
         for (int i = 0; i < WindowKill.client.getSquadMembers().size(); i++) {
             String[] parts = WindowKill.client.getSquadMembers().get(i).split("█");
@@ -203,7 +203,7 @@ public class SquadPanel extends JPanel {
         });
         this.add(newSquad);
 
-        int h = this.getHeight() / 10;
+        int h = this.getHeight() / 12;
         for (int i = 0; i < squads.size(); i++) {
             CustomButton join = new CustomButton("Join");
             join.setFont(new Font("akashi", Font.BOLD, 25));
@@ -255,7 +255,7 @@ public class SquadPanel extends JPanel {
         });
         this.add(deleteSquad);
 
-        int h = this.getHeight() / 10;
+        int h = this.getHeight() / 12;
         for (int i = 1; i < WindowKill.client.getSquadMembers().size(); i++) {
             CustomButton remove = new CustomButton("Remove");
             remove.setFont(new Font("akashi", Font.BOLD, 25));

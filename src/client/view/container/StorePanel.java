@@ -3,6 +3,7 @@ package client.view.container;
 import client.controller.constant.Constants;
 import client.controller.handeler.StoreActionHandle;
 import client.model.charactersModel.EpsilonModel;
+import client.view.customs.CustomButton;
 
 import javax.swing.*;
 import java.awt.*;

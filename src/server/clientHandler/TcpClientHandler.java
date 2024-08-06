@@ -3,6 +3,7 @@ package server.clientHandler;
 import server.TcpServer;
 import server.models.User;
 import server.models.UserState;
+import server.util.HashUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,6 +50,8 @@ public class TcpClientHandler extends Thread {
                 else if (parts[0].equals("DELETE_SQUAD")) handleRemoveSquad();
                 else if (parts[0].equals("MAKE_BUSY")) handleMakeBusy();
                 else if (parts[0].equals("MAKE_ONLINE")) handleMakeOnline();
+                else if (parts[0].equals("SAVE_DATA")) handleSavingData(parts[1], parts[2], parts[3]);
+                else if (parts[0].equals("LEADERBOARD_INFO")) handleLeaderboardInfo();
             }
         } catch (IOException ignored) {}
         tcpServer.handleChangeUserState(user, UserState.OFFLINE);
@@ -68,8 +71,18 @@ public class TcpClientHandler extends Thread {
         String res = "SQUAD_INFO" + "░░" + user.getSquadState() + "░░" + user.getSquadName() + "░░" + tcpServer.handleSuadInfo(user);
         sendMessage(res);
     }
+    public void handleLeaderboardInfo() {
+        String res = "LEADERBOARD_INFO" + "░░" + tcpServer.handleLeaderboardInfo();
+        sendMessage(res);
+    }
     private void handleLeaveSquad() {
         tcpServer.handleRemoveFromSquad(user.getUsername());
+    }
+    private void handleSavingData(String hash, String XP, String time) {
+        String checkHash = HashUtil.generateHash(XP + "," + time);
+        if (hash.equals(checkHash)) {
+            tcpServer.handleSavingData(XP, time, user);
+        }
     }
     private void handleRemoveFromSquad(String username) {
         tcpServer.sendRemovedFromSquad(username);
@@ -109,7 +122,6 @@ public class TcpClientHandler extends Thread {
     }
 
     public void sendQueuedMessages() {
-        System.out.println(user.getMessageQueue().size());
         for (int i = 0; i < user.getMessageQueue().size(); i++) {
             sendMessage(user.getMessageQueue().get(i));
             user.getMessageQueue().remove(i--);

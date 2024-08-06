@@ -2,7 +2,9 @@ package client.clientHandler;
 
 import client.clientHandler.ClientState;
 import client.controller.constant.Constants;
+import client.controller.saveAndLoad.FileManager;
 import client.view.container.GlassFrame;
+import client.view.container.LeaderboardPanel;
 import client.view.container.SquadPanel;
 import server.models.SquadState;
 
@@ -23,7 +25,7 @@ public class Client extends Thread{
     private Socket tcpSocket;
     private BufferedReader tcpReader;
     private PrintWriter tcpWriter;
-    private String username;
+    private final String username;
     private ClientState clientState;
     private SquadState squadState;
     private String squadName;
@@ -45,6 +47,7 @@ public class Client extends Thread{
             initIOStreams();
             this.start();
             handleLogin();
+            handleOfflineSave();
             return true;
         } catch (IOException e) {
             return false;
@@ -63,6 +66,14 @@ public class Client extends Thread{
     private void handleLogin() {
         tcpWriter.println("LOGIN" + "░░" + username);
     }
+    private void handleOfflineSave() {
+        String tmp = FileManager.loadFinishGameInformation();
+
+        if (tmp != null) {
+            String[] parts = tmp.split("█");
+            handleSavingData(Integer.parseInt(parts[0]), parts[1]);
+        }
+    }
     private void handleLoggedIn(int xp, String squadType, String squadName) {
         Constants.INITIAL_XP = xp;
         squadState = getStateWithString(squadType);
@@ -70,6 +81,9 @@ public class Client extends Thread{
     }
     public void handleSquadRequest() {
         tcpWriter.println("SQUAD_INFO");
+    }
+    public void handleLeaderboardRequest() {
+        tcpWriter.println("LEADERBOARD_INFO");
     }
     private void handleSquadResponse(String[] parts) {
         squadState = getStateWithString(parts[1]);
@@ -82,6 +96,10 @@ public class Client extends Thread{
         else {
             squadMembers = new ArrayList<>(Arrays.asList(parts).subList(3, parts.length));
         }
+    }
+    private void handleLeaderboardResponse(String[] parts) {
+        ArrayList<String> info = new ArrayList<>(Arrays.asList(parts).subList(1, parts.length));
+        LeaderboardPanel.getINSTANCE().setInformation(info);
     }
     public void handleMakeSquad(String name) {
         tcpWriter.println("MAKE_SQUAD" + "░░" + name);
@@ -119,6 +137,12 @@ public class Client extends Thread{
     public void makeClientOnline() {
         tcpWriter.println("MAKE_ONLINE");
     }
+    public void handleSavingData(int XP, String time) {
+        String data = XP + "," + time;
+        String hash = HashUtil.generateHash(data);
+
+        tcpWriter.println("SAVE_DATA" + "░░" + hash + "░░" + XP + "░░" + time);
+    }
     @Override
     public void run() {
         String request;
@@ -132,6 +156,7 @@ public class Client extends Thread{
                 else if (parts[0].equals("REJECT_JOIN_SQUAD")) handleRejectJoiningSquad();
                 else if (parts[0].equals("REMOVED_FROM_SQUAD")) handleRemovedFromSquad();
                 else if (parts[0].equals("SQUAD_DELETED")) handleDeletedSquad();
+                else if (parts[0].equals("LEADERBOARD_INFO")) handleLeaderboardResponse(parts);
             }
         } catch (IOException ignored) {}
         clientState = ClientState.OFFLINE;

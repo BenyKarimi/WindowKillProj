@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Completing printing buttons and labels for squad panel depending on squad state">
-      <change afterPath="$PROJECT_DIR$/Phase 2.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Archmire.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Barricados.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/BlackOrb.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Collectible.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Epsilon.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Necropick.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/NonRigid.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Omenoct.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Rigid.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Square.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Triangle.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/Wyrm.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/save/values.txt" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Adding logic for leave and delete squad and delete members for squad &#10;making client busy when start to play game and make online when come back to main menu">
+      <change afterPath="$PROJECT_DIR$/server_storage/a/information.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server_storage/aaa/information.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server_storage/b/information.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/clientHandler/HashUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/view/container/LeaderboardPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/client/view/customs/CustomLeaderboardComparator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/util/HashUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Epsilon.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Epsilon.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/Triangle.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/Triangle.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/save/values.txt" beforeDir="false" afterPath="$PROJECT_DIR$/save/values.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server_storage/information/users.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server_storage/information/users.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/clientHandler/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/clientHandler/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/controller/constant/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/constant/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/controller/saveAndLoad/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller/saveAndLoad/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/CustomButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/customs/CustomButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/CustomMouseAdaptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/customs/CustomMouseAdaptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/view/container/FinishPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/FinishPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/view/container/MainMenuPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/MainMenuPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/SettingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SettingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/SkillTreePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SkillTreePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/StartingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/StartingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/StorePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/StorePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/view/container/TutorialPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/TutorialPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/TcpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/TcpServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/fileManager/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/fileManager/DataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,25 +68,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Desktop/tmp&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Downloaded.Files.Path.Enabled": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/benya/Desktop/tmp",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\benya\Documents\GitHub\WindowKillProj\resources" />
@@ -179,7 +184,7 @@
       <workItem from="1722679084618" duration="17176000" />
       <workItem from="1722768902208" duration="6982000" />
       <workItem from="1722849754863" duration="18675000" />
-      <workItem from="1722935904236" duration="5162000" />
+      <workItem from="1722935904236" duration="18673000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -370,7 +375,14 @@
       <option name="project" value="LOCAL" />
       <updated>1722879193778</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Adding logic for leave and delete squad and delete members for squad &#10;making client busy when start to play game and make online when come back to main menu">
+      <created>1722941310823</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1722941310823</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -389,7 +401,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Add update speed and removes and bullet &#10;All logic is finished" />
     <MESSAGE value="Adding store and menu with tutorial and setting panels" />
     <MESSAGE value="Finishing game over logic and Adding Finishing Panel" />
     <MESSAGE value="Finishing won game logic" />
@@ -414,7 +425,8 @@
     <MESSAGE value="Starting Phase-3 &#10;Adding server and client &#10;Adding MVC to client &#10;Adding new starting panel" />
     <MESSAGE value="Adding Logic for making squad and ask for join to squad" />
     <MESSAGE value="Completing printing buttons and labels for squad panel depending on squad state" />
-    <option name="LAST_COMMIT_MESSAGE" value="Completing printing buttons and labels for squad panel depending on squad state" />
+    <MESSAGE value="Adding logic for leave and delete squad and delete members for squad &#10;making client busy when start to play game and make online when come back to main menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding logic for leave and delete squad and delete members for squad &#10;making client busy when start to play game and make online when come back to main menu" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

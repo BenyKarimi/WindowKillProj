@@ -3,6 +3,7 @@ package client.view.container;
 import client.controller.constant.Constants;
 import client.controller.constant.GameValues;
 import client.controller.constant.Level;
+import client.view.customs.CustomButton;
 import client.windowKillApplication.*;
 
 import javax.swing.*;

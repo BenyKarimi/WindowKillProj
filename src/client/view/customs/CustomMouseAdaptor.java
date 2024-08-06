@@ -1,4 +1,4 @@
-package client.view.container;
+package client.view.customs;
 
 import java.awt.event.MouseAdapter;
 

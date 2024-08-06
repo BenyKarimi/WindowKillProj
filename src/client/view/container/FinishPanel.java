@@ -1,6 +1,9 @@
 package client.view.container;
 
+import client.clientHandler.ClientState;
 import client.controller.constant.Constants;
+import client.controller.saveAndLoad.FileManager;
+import client.view.customs.CustomButton;
 import client.windowKillApplication.WindowKill;
 
 import javax.swing.*;
@@ -33,6 +36,8 @@ public class FinishPanel extends JPanel {
 
         addLabels();
         addButtons();
+        if (!WindowKill.client.getClientState().equals(ClientState.OFFLINE)) WindowKill.client.handleSavingData(finishXp, totalTime);
+        else FileManager.saveFinishGameInformation(finishXp, totalTime);
 
         this.setVisible(true);
 
@@ -86,7 +91,7 @@ public class FinishPanel extends JPanel {
         backToMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                WindowKill.client.makeClientOnline();
+                if (!WindowKill.client.getClientState().equals(ClientState.OFFLINE)) WindowKill.client.makeClientOnline();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().add(MainMenuPanel.getINSTANCE());
                 GlassFrame.getINSTANCE().revalidate();

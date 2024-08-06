@@ -46,4 +46,8 @@ public class DataBase {
     public ArrayList<Squad> getSquadsList() {
         return squadsList;
     }
+
+    public ArrayList<User> getUsersList() {
+        return usersList;
+    }
 }

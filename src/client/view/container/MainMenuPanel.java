@@ -5,6 +5,7 @@ import client.controller.updater.Controller;
 import client.controller.constant.Constants;
 import client.controller.handeler.SkillTreeHandled;
 import client.controller.saveAndLoad.FileManager;
+import client.view.customs.CustomButton;
 import client.windowKillApplication.*;
 
 
@@ -56,7 +57,7 @@ public class MainMenuPanel extends JPanel {
                 } catch (AWTException ex) {
                     throw new RuntimeException(ex);
                 }
-                WindowKill.client.makeClientBusy();
+                if (WindowKill.client.getClientState().equals(ClientState.ONLINE)) WindowKill.client.makeClientBusy();
                 GlassFrame.getINSTANCE().remove(INSTANCE);
                 Controller controller = new Controller(load);
                 new SkillTreeHandled();
@@ -90,7 +91,8 @@ public class MainMenuPanel extends JPanel {
                     return;
                 }
                 GlassFrame.getINSTANCE().remove(INSTANCE);
-                GlassFrame.getINSTANCE().add(SkillTreePanel.getINSTANCE());
+                GlassFrame.getINSTANCE().add(LeaderboardPanel.getINSTANCE());
+                LeaderboardPanel.getINSTANCE().startTimer();
                 GlassFrame.getINSTANCE().revalidate();
                 GlassFrame.getINSTANCE().repaint();
                 leaderboard.setFont(new Font(leaderboard.getFont().getFontName(), Font.BOLD, 40));            }

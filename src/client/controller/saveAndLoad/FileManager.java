@@ -58,6 +58,16 @@ public class FileManager {
         saveWyrm(path + "/Wyrm" + toAdd);
         saveCollectible(path + "/Collectible" + toAdd);
     }
+    public static void saveFinishGameInformation(int XP, String time) {
+        File info = new File( "C:\\Users\\benya\\Documents\\GitHub\\WindowKillProj\\save/information.txt");
+
+        try (FileWriter writer = new FileWriter(info, false)) {
+            writer.write(XP + "█" + time);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private static void saveValues(String path) {
         File valueFile = new File(path);
         try (FileWriter writer = new FileWriter(valueFile, false)) {
@@ -283,6 +293,21 @@ public class FileManager {
 
             File collectible = new File(path + "/Collectible" + toAdd);
             collectible.delete();
+        }
+    }
+    public static String loadFinishGameInformation() {
+        File info = new File( "C:\\Users\\benya\\Documents\\GitHub\\WindowKillProj\\save/information.txt");
+
+        if (!info.exists()) return null;
+
+        try {
+            FileReader fileReader = new FileReader(info);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            return bufferedReader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
     private static void loadValues(String path) {
