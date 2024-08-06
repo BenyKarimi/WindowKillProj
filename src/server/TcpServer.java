@@ -105,4 +105,44 @@ public class TcpServer extends Thread {
             applicator.getClientHandler().handleRejectForJoiningSquad();
         }
     }
+    public void handleRemoveFromSquad(String username) {
+        User user = dataBase.getUser(username);
+        Squad userSquad = dataBase.getSquad(user.getSquadName());
+
+        for (int i = 0; i < userSquad.getMembers().size(); i++) {
+            if (userSquad.getMembers().get(i).equals(user)) {
+                userSquad.getMembers().remove(i);
+                break;
+            }
+        }
+
+        user.setSquadName(null);
+        user.setSquadState(SquadState.NO_SQUAD);
+        dataBase.saveUsers();
+        user.getClientHandler().handleSquadInfo();
+    }
+    public void sendRemovedFromSquad(String username) {
+        User user = dataBase.getUser(username);
+
+        user.getClientHandler().sendRemovedFromSquad();
+    }
+    public void handleRemoveSquad(String squadName) {
+        Squad squad = dataBase.getSquad(squadName);
+
+        for (int i = 0; i < squad.getMembers().size(); i++) {
+            User user = squad.getMembers().get(i);
+
+            user.setSquadName(null);
+            user.setSquadState(SquadState.NO_SQUAD);
+            dataBase.saveUsers();
+            user.getClientHandler().sendDeletedSquad();
+            user.getClientHandler().handleSquadInfo();
+        }
+
+        dataBase.deleteSquad(squad);
+    }
+    public void handleChangeUserState(User user, UserState state) {
+        user.setUserState(state);
+        dataBase.saveUsers();
+    }
 }

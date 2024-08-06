@@ -56,6 +56,7 @@ public class MainMenuPanel extends JPanel {
                 } catch (AWTException ex) {
                     throw new RuntimeException(ex);
                 }
+                WindowKill.client.makeClientBusy();
                 GlassFrame.getINSTANCE().remove(INSTANCE);
                 Controller controller = new Controller(load);
                 new SkillTreeHandled();

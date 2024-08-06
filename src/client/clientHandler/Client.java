@@ -96,7 +96,28 @@ public class Client extends Thread{
         else tcpWriter.println("RESPONSE_JOIN_SQUAD" + "░░" + "NO" + "░░" + applicatorName);
     }
     private void handleRejectJoiningSquad() {
-        JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "You have been rejected to join team by leader", "Rejection", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "You have been rejected to join squad by leader", "Rejection", JOptionPane.INFORMATION_MESSAGE);
+    }
+    private void handleRemovedFromSquad() {
+        JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "You have been removed from squad by leader", "Removed", JOptionPane.INFORMATION_MESSAGE);
+    }
+    private void handleDeletedSquad() {
+        JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "Your squad have been deleted by leader", "Squad Deleted", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void handleLeaveSquad() {
+        tcpWriter.println("LEAVE_SQUAD");
+    }
+    public void removeFromSquad(String name) {
+        tcpWriter.println("REMOVE_FROM_SQUAD" + "░░" + name);
+    }
+    public void handleDeleteSquad() {
+        tcpWriter.println("DELETE_SQUAD");
+    }
+    public void makeClientBusy() {
+        tcpWriter.println("MAKE_BUSY");
+    }
+    public void makeClientOnline() {
+        tcpWriter.println("MAKE_ONLINE");
     }
     @Override
     public void run() {
@@ -109,6 +130,8 @@ public class Client extends Thread{
                 else if (parts[0].equals("SQUAD_INFO")) handleSquadResponse(parts);
                 else if (parts[0].equals("DO_YOU_ACCEPT_JOINING")) handleRequestForJoiningSquad(parts[1]);
                 else if (parts[0].equals("REJECT_JOIN_SQUAD")) handleRejectJoiningSquad();
+                else if (parts[0].equals("REMOVED_FROM_SQUAD")) handleRemovedFromSquad();
+                else if (parts[0].equals("SQUAD_DELETED")) handleDeletedSquad();
             }
         } catch (IOException ignored) {}
         clientState = ClientState.OFFLINE;

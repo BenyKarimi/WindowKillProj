@@ -64,12 +64,12 @@ public class SquadPanel extends JPanel {
             JLabel name = new JLabel("Name: " + parts[0]);
             name.setFont(new Font("akashi", Font.PLAIN, 25));
             name.setForeground(SHOW_COLOR);
-            name.setBounds(25, h * (i + 1) + 40, 200, 40);
+            name.setBounds(25, h * (i + 1) + 40, 250, 40);
 
             JLabel cnt = new JLabel("Member: " + parts[1]);
             cnt.setFont(new Font("akashi", Font.PLAIN, 25));
             cnt.setForeground(SHOW_COLOR);
-            cnt.setBounds(w + 25, h * (i + 1) + 40, 200, 40);
+            cnt.setBounds(w + 50, h * (i + 1) + 40, 200, 40);
 
             this.add(name);
             this.add(cnt);
@@ -238,6 +238,8 @@ public class SquadPanel extends JPanel {
         deleteSquad.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                WindowKill.client.handleDeleteSquad();
+                updateView();
                 deleteSquad.setFont(new Font(deleteSquad.getFont().getFontName(), Font.BOLD, 25));
             }
 
@@ -262,7 +264,8 @@ public class SquadPanel extends JPanel {
             remove.addMouseListener(new CustomMouseAdaptor(i) {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println(getPointer());
+                    WindowKill.client.removeFromSquad(WindowKill.client.getSquadMembers().get(getPointer()).split("█")[0]);
+                    updateView();
                     remove.setFont(new Font(remove.getFont().getFontName(), Font.BOLD, 25));
                 }
 
@@ -287,6 +290,8 @@ public class SquadPanel extends JPanel {
         leave.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                WindowKill.client.handleLeaveSquad();
+                updateView();
                 leave.setFont(new Font(leave.getFont().getFontName(), Font.BOLD, 25));
             }
 

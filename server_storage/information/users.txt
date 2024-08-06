@@ -1,3 +1,2 @@
-beny░░0░░ONLINE░░LEADER░░team
-ali░░0░░ONLINE░░MEMBER░░team
-neda░░0░░OFFLINE░░NO_SQUAD░░null
+a░░0░░OFFLINE░░LEADER░░a
+s░░0░░OFFLINE░░NO_SQUAD░░null

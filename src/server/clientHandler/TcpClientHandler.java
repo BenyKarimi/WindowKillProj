@@ -44,9 +44,14 @@ public class TcpClientHandler extends Thread {
                 else if (parts[0].equals("MAKE_SQUAD")) handleMakingSquad(parts[1]);
                 else if (parts[0].equals("ASK_JOIN_SQUAD")) handleAskJoiningSquad(parts[1]);
                 else if (parts[0].equals("RESPONSE_JOIN_SQUAD")) handleResponseForJoiningSquad(parts[1], parts[2]);
+                else if (parts[0].equals("LEAVE_SQUAD")) handleLeaveSquad();
+                else if (parts[0].equals("REMOVE_FROM_SQUAD")) handleRemoveFromSquad(parts[1]);
+                else if (parts[0].equals("DELETE_SQUAD")) handleRemoveSquad();
+                else if (parts[0].equals("MAKE_BUSY")) handleMakeBusy();
+                else if (parts[0].equals("MAKE_ONLINE")) handleMakeOnline();
             }
         } catch (IOException ignored) {}
-        user.setUserState(UserState.OFFLINE);
+        tcpServer.handleChangeUserState(user, UserState.OFFLINE);
         try {
             socket.close();
         } catch (IOException e) {
@@ -62,6 +67,23 @@ public class TcpClientHandler extends Thread {
     public void handleSquadInfo() {
         String res = "SQUAD_INFO" + "░░" + user.getSquadState() + "░░" + user.getSquadName() + "░░" + tcpServer.handleSuadInfo(user);
         sendMessage(res);
+    }
+    private void handleLeaveSquad() {
+        tcpServer.handleRemoveFromSquad(user.getUsername());
+    }
+    private void handleRemoveFromSquad(String username) {
+        tcpServer.sendRemovedFromSquad(username);
+        tcpServer.handleRemoveFromSquad(username);
+    }
+    private void handleRemoveSquad() {
+        tcpServer.handleRemoveSquad(user.getSquadName());
+    }
+    private void handleMakeBusy() {
+        tcpServer.handleChangeUserState(user, UserState.BUSY);
+    }
+    private void handleMakeOnline() {
+        tcpServer.handleChangeUserState(user, UserState.ONLINE);
+        sendQueuedMessages();
     }
     private void handleMakingSquad(String name) {
         tcpServer.handleMakingSquad(name, user);
@@ -79,9 +101,15 @@ public class TcpClientHandler extends Thread {
     public void handleRejectForJoiningSquad() {
         sendMessage("REJECT_JOIN_SQUAD");
     }
-
+    public void sendRemovedFromSquad() {
+        sendMessage("REMOVED_FROM_SQUAD");
+    }
+    public void sendDeletedSquad() {
+        sendMessage("SQUAD_DELETED");
+    }
 
     public void sendQueuedMessages() {
+        System.out.println(user.getMessageQueue().size());
         for (int i = 0; i < user.getMessageQueue().size(); i++) {
             sendMessage(user.getMessageQueue().get(i));
             user.getMessageQueue().remove(i--);

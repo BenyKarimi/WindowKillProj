@@ -1,6 +1,7 @@
 package client.view.container;
 
 import client.controller.constant.Constants;
+import client.windowKillApplication.WindowKill;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,6 +86,7 @@ public class FinishPanel extends JPanel {
         backToMenu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                WindowKill.client.makeClientOnline();
                 GlassFrame.getINSTANCE().remove(now);
                 GlassFrame.getINSTANCE().add(MainMenuPanel.getINSTANCE());
                 GlassFrame.getINSTANCE().revalidate();

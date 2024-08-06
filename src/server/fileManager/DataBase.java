@@ -32,6 +32,14 @@ public class DataBase {
     public void addSquad(Squad squad) {
         squadsList.add(squad);
     }
+    public void deleteSquad(Squad squad) {
+        for (int i = 0; i < squadsList.size(); i++) {
+            if (squadsList.get(i).equals(squad)) {
+                squadsList.remove(i);
+                break;
+            }
+        }
+    }
     public void saveUsers() {
         FileManager.saveUsersInFile(usersList);
     }
