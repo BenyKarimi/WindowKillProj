@@ -1,5 +1,6 @@
 package client.model.charactersModel;
 
+import client.controller.random.RandomHelper;
 import client.controller.updater.Controller;
 import client.controller.updater.Utils;
 import client.model.bulletModel.NonRigidBulletModel;
@@ -19,13 +20,13 @@ public class OmenoctEnemy extends Enemy {
 
     private int lastAttackTime;
     private PanelModel currentPanel;
-    private final WallSideIndicator wallSideIndicator;
+    private WallSideIndicator wallSideIndicator;
     public static ArrayList<OmenoctEnemy> omenoctEnemyList = new ArrayList<>();
 
-    public OmenoctEnemy(Point2D center, double size, double speed, WallSideIndicator wallSideIndicator) {
+    public OmenoctEnemy(Point2D center, double size, double speed) {
         super(Utils.processRandomId(), size, speed, speed, false, OMENOCT_ENEMY_HP, OMENOCT_ENEMY_REDUCER_HP, OMENOCT_ENEMY_COLLECTIBLE_NUMBER, OMENOCT_ENEMY_COLLECTIBLE_XP,
                 center, new Direction(new Point2D.Double(0, 0)), new ArrayList<>());
-        this.wallSideIndicator = wallSideIndicator;
+        this.wallSideIndicator = RandomHelper.omenoctWallSide();
         calculateVertices();
         Controller.getINSTANCE().createOmenoctEnemyView(super.getId());
         Collidable.collidables.add(this);
@@ -151,6 +152,11 @@ public class OmenoctEnemy extends Enemy {
         }
         return false;
     }
+
+    public void setWallSideIndicator(WallSideIndicator wallSideIndicator) {
+        this.wallSideIndicator = wallSideIndicator;
+    }
+
     @Override
     public double getRadius() {
         return 0;

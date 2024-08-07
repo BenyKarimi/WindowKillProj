@@ -35,15 +35,20 @@ import client.view.container.FinishPanel;
 import client.view.container.GamePanel;
 import client.view.container.GlassFrame;
 import client.view.container.InformationPanel;
+import org.reflections.Reflections;
 
 import java.awt.geom.Point2D;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import static client.controller.constant.Constants.EPSILON_RADIUS;
 
 public class Logic {
     private EpsilonModel epsilon;
     private BossUpdater bossUpdater;
+    private ArrayList<Class<? extends Enemy>> enemyClasses;
     public Logic (boolean load) {
         if (!load) createInitialPanel();
         else {
@@ -51,6 +56,12 @@ public class Logic {
             epsilon = EpsilonModel.epsilonModelsList.get(0);
         }
         GameValues.canSpawn = false;
+        initiateEnemyClasses();
+    }
+    private void initiateEnemyClasses() {
+        Reflections reflections = new Reflections("client.model.charactersModel");
+        Set<Class<? extends Enemy>> subTypes = reflections.getSubTypesOf(Enemy.class);
+        enemyClasses = new ArrayList<>(subTypes);
     }
     private void createEpsilon(double panelX, double panelY) {
         epsilon = new EpsilonModel(new Point2D.Double(EPSILON_RADIUS + panelX, EPSILON_RADIUS + panelY), Utils.processRandomId());
@@ -79,44 +90,45 @@ public class Logic {
             GameValues.totalProgressTime += (GameValues.waveNumber * GameValues.waveLengthTime / 1000);
             GameValues.waveNumber++;
         }
+
         ArrayList<Point2D> enemiesCenter = RandomHelper.randomFirstWaveEnemyCenters(x, y, width, height);
-        for (Point2D ptr : enemiesCenter) {
-            if (RandomHelper.randomFirstWaveEnemyType() == 0) {
-                if (SquareEnemy.squareEnemyList.isEmpty()) new SquareEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-            }
-            else {
-                new TriangleEnemy(ptr, RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+        for (Point2D center : enemiesCenter) {
+            int pointer = RandomHelper.randomFirstWaveEnemyPointer(enemyClasses);
+
+            Class<? extends Enemy> enemy = enemyClasses.get(pointer);
+
+            Constructor<?> constructor = enemy.getConstructors()[0];
+            Object[] init = new Object[3];
+            init[0] = center;
+            init[1] = RandomHelper.randomWaveEnemySize(enemy);
+            init[2] = RandomHelper.randomWaveEnemySpeed(enemy);
+            try {
+                constructor.newInstance(init);
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
             }
         }
     }
     private void doSpawn() {
-        ArrayList<Pair<Point2D, Integer>> toSpawn = RandomHelper.randomSecondWaveEnemyCentersAndType();
-//        System.out.println(toSpawn.size());
+        ArrayList<Pair<Point2D, Integer>> toSpawn = RandomHelper.randomSecondWaveEnemyCentersAndPointer(enemyClasses);
 
-        for (Pair<Point2D, Integer> centerAndTime : toSpawn) {
-            if (centerAndTime.getSecond() == 1) {
-                new SquareEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
+        for (Pair<Point2D, Integer> centerAndPointer : toSpawn) {
+            Class<? extends Enemy> enemy = enemyClasses.get(centerAndPointer.getSecond());
+
+            if (enemy.equals(OrbEnemy.class)) {
+                new BlackOrbMiniBoss(centerAndPointer.getFirst(), RandomHelper.randomWaveEnemySize(OrbEnemy.class));
             }
-            else if (centerAndTime.getSecond() == 2) {
-                new TriangleEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-            }
-            else if (centerAndTime.getSecond() == 3) {
-                new OmenoctEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed() * 1.5, RandomHelper.omenoctWallSide());
-            }
-            else if (centerAndTime.getSecond() == 4) {
-                new NecropickEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-            }
-            else if (centerAndTime.getSecond() == 5) {
-                new ArchmireEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed());
-            }
-            else if (centerAndTime.getSecond() == 6) {
-                new WyrmEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize(), RandomHelper.randomWaveEnemySpeed(), false);
-            }
-            else if (centerAndTime.getSecond() == 7) {
-                new BarricadosEnemy(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize() * 1.5, RandomHelper.barricadosType(), GlassFrame.getINSTANCE().getTimer().getMiliSecond());
-            }
-            else if (centerAndTime.getSecond() == 8) {
-                new BlackOrbMiniBoss(centerAndTime.getFirst(), RandomHelper.randomWaveEnemySize());
+            else {
+                Constructor<?> constructor = enemy.getConstructors()[0];
+                Object[] init = new Object[3];
+                init[0] = centerAndPointer.getFirst();
+                init[1] = RandomHelper.randomWaveEnemySize(enemy);
+                init[2] = RandomHelper.randomWaveEnemySpeed(enemy);
+                try {
+                    constructor.newInstance(init);
+                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -137,7 +149,9 @@ public class Logic {
             GameValues.canSpawn = false;
         }
 
-        if (GameValues.canSpawn && time - GameValues.lastAttackUpdate >= 5000) {
+        if (!GameValues.canSpawn) return;
+
+        if (time - GameValues.lastAttackUpdate >= 5000) {
             GameValues.lastAttackUpdate = time;
             doSpawn();
         }

@@ -450,7 +450,9 @@ public class FileManager {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] strings = line.split("#");
                 Point2D center = new Point2D.Double(Double.parseDouble(strings[0]), Double.parseDouble(strings[1]));
-                new BarricadosEnemy(center, Double.parseDouble(strings[2]), Boolean.parseBoolean(strings[3]), Integer.parseInt(strings[4]));
+                BarricadosEnemy tmp = new BarricadosEnemy(center, Double.parseDouble(strings[2]), 0);
+                tmp.setPanelRigid(Boolean.parseBoolean(strings[3]));
+                tmp.setTimeMade(Integer.parseInt(strings[4]));
             }
 
             bufferedReader.close();
@@ -516,7 +518,8 @@ public class FileManager {
                 if (strings[4].equals("RIGHT")) wallSide = WallSideIndicator.RIGHT;
                 if (strings[4].equals("UP")) wallSide = WallSideIndicator.UP;
                 if (strings[4].equals("DOWN")) wallSide = WallSideIndicator.DOWN;
-                OmenoctEnemy tmp = new OmenoctEnemy(center, Double.parseDouble(strings[2]), Double.parseDouble(strings[3]), wallSide);
+                OmenoctEnemy tmp = new OmenoctEnemy(center, Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
+                tmp.setWallSideIndicator(wallSide);
                 tmp.setImpact(Boolean.parseBoolean(strings[5]));
             }
 
@@ -583,7 +586,8 @@ public class FileManager {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] strings = line.split("#");
                 Point2D center = new Point2D.Double(Double.parseDouble(strings[0]), Double.parseDouble(strings[1]));
-                new WyrmEnemy(center, Double.parseDouble(strings[2]), Double.parseDouble(strings[3]), Boolean.parseBoolean(strings[4]));
+                WyrmEnemy tmp = new WyrmEnemy(center, Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
+                tmp.setClockWise(Boolean.parseBoolean(strings[4]));
             }
 
             bufferedReader.close();

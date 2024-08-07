@@ -1,5 +1,6 @@
 package client.model.charactersModel;
 
+import client.controller.random.RandomHelper;
 import client.controller.updater.Controller;
 import client.controller.updater.Utils;
 import client.model.collision.Collidable;
@@ -9,6 +10,7 @@ import client.model.panelModel.Isometric;
 import client.model.panelModel.PanelModel;
 import client.model.panelModel.Rigid;
 import client.view.charecterViews.BarricadosEnemyView;
+import client.view.container.GlassFrame;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -17,17 +19,17 @@ import static client.controller.constant.Constants.*;
 
 public class BarricadosEnemy extends Enemy {
 
-    private final boolean panelRigid;
+    private boolean panelRigid;
     private PanelModel barricadosPanel;
-    private final int timeMade;
+    private int timeMade;
 
     public static ArrayList<BarricadosEnemy> barricadosEnemiesList = new ArrayList<>();
 
-    public BarricadosEnemy(Point2D center, double size, boolean panelRigid, int timeMade) {
+    public BarricadosEnemy(Point2D center, double size, double speed) {
         super(Utils.processRandomId(), size, 0, 0, false, BARRICADOS_ENEMY_HP, BARRICADOS_ENEMY_REDUCER_HP, BARRICADOS_ENEMY_COLLECTIBLE_NUMBER, BARRICADOS_ENEMY_COLLECTIBLE_XP,
                 center, new Direction(new Point2D.Double(0, 0)), new ArrayList<>());
-        this.panelRigid = panelRigid;
-        this.timeMade = timeMade;
+        this.panelRigid = RandomHelper.barricadosType();
+        this.timeMade = GlassFrame.getINSTANCE().getTimer().getMiliSecond();
         calculateVertices();
         makePanel();
         Controller.getINSTANCE().createBarricadosEnemyView(super.getId());
@@ -122,5 +124,13 @@ public class BarricadosEnemy extends Enemy {
 
     public int getTimeMade() {
         return timeMade;
+    }
+
+    public void setTimeMade(int timeMade) {
+        this.timeMade = timeMade;
+    }
+
+    public void setPanelRigid(boolean panelRigid) {
+        this.panelRigid = panelRigid;
     }
 }

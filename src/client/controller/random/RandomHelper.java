@@ -4,9 +4,7 @@ import client.controller.updater.Pair;
 import client.controller.updater.Utils;
 import client.controller.constant.GameValues;
 import client.controller.constant.Level;
-import client.model.charactersModel.BarricadosEnemy;
-import client.model.charactersModel.BlackOrbMiniBoss;
-import client.model.charactersModel.OmenoctEnemy;
+import client.model.charactersModel.*;
 import client.model.charactersModel.boss.BossAttackType;
 import client.model.panelModel.WallSideIndicator;
 
@@ -70,30 +68,32 @@ public class RandomHelper {
     public static double squareEnemySpeed(double currentSpeed) {
         return random.nextDouble(currentSpeed * 1.5, currentSpeed * 3);
     }
-    public static int randomFirstWaveEnemyType() {
-        return random.nextInt(0, 2);
+    public static int randomFirstWaveEnemyPointer(ArrayList<Class<? extends Enemy>> enemyClasses) {
+        ArrayList<Integer> pointers = new ArrayList<>();
+
+        for (int i = 0; i < enemyClasses.size(); i++) {
+            if (enemyClasses.get(i).equals(TriangleEnemy.class) || enemyClasses.get(i).equals(SquareEnemy.class)) pointers.add(i);
+        }
+
+        int num = random.nextInt(0, pointers.size());
+
+        return pointers.get(num);
     }
-    private static int randomSecondWaveEnemyType(int barricadosCnt, int blackOrbCnt) {
-        int type = 0;
+    private static int randomSecondWaveEnemyPointer(ArrayList<Class<? extends Enemy>> enemyClasses) {
+        int pointer = 0;
         while (true) {
+            pointer = random.nextInt(0, enemyClasses.size());
+
             if (GameValues.waveNumber < 7) {
-                type = random.nextInt(1, 7);
+                if (!(enemyClasses.get(pointer).equals(OrbEnemy.class) || enemyClasses.get(pointer).equals(BarricadosEnemy.class))) {
+                    if (!(enemyClasses.get(pointer).equals(OmenoctEnemy.class) && OmenoctEnemy.omenoctEnemyList.size() == 4)) break;
+                }
             }
             else {
-                if (barricadosCnt == 0 && BarricadosEnemy.barricadosEnemiesList.isEmpty()) {
-                    type = 7;
-                    break;
-                }
-                if (blackOrbCnt == 0 && BlackOrbMiniBoss.blackOrbMiniBossesList.isEmpty()) {
-                    type = 8;
-                    break;
-                }
-
-                type = random.nextInt(1, 9);
+                if (!(enemyClasses.get(pointer).equals(OmenoctEnemy.class) && OmenoctEnemy.omenoctEnemyList.size() == 4)) break;
             }
-            if (!(type == 3 && OmenoctEnemy.omenoctEnemyList.size() == 4)) break;
         }
-        return type;
+        return pointer;
     }
     public static WallSideIndicator omenoctWallSide() {
         boolean[] marked = new boolean[4];
@@ -118,24 +118,31 @@ public class RandomHelper {
         int type = random.nextInt(0, 2);
         return type != 0;
     }
-    public static double randomWaveEnemySpeed() {
+    public static double randomWaveEnemySpeed(Class<? extends Enemy> enemyClass) {
+        double num = 1;
+        if (enemyClass.equals(OmenoctEnemy.class)) num = 1.5;
+
+
         if (GameValues.level.equals(Level.EASY)) {
-            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL, ENEMY_SPEED_EASY_LEVEL + 1);
+            return num * random.nextDouble(ENEMY_SPEED_EASY_LEVEL, ENEMY_SPEED_EASY_LEVEL + 1);
         }
         else if (GameValues.level.equals(Level.MEDIUM)) {
-            return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 1, ENEMY_SPEED_EASY_LEVEL + 2);
+            return num * random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 1, ENEMY_SPEED_EASY_LEVEL + 2);
         }
-        else return random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 2, ENEMY_SPEED_EASY_LEVEL + 3);
+        else return num * random.nextDouble(ENEMY_SPEED_EASY_LEVEL + 2, ENEMY_SPEED_EASY_LEVEL + 3);
     }
-    public static double randomWaveEnemySize() {
+    public static double randomWaveEnemySize(Class<? extends Enemy> enemyClass) {
+        double num = 1;
+        if (enemyClass.equals(BarricadosEnemy.class)) num = 1.5;
+
         if (GameValues.level.equals(Level.EASY)) {
-            return random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 10, ENEMY_SIZE_EASY_LEVEL);
+            return num * random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 10, ENEMY_SIZE_EASY_LEVEL);
         }
         else if (GameValues.level.equals(Level.MEDIUM)) {
-            return random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 20, ENEMY_SIZE_EASY_LEVEL - 10);
+            return num * random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 20, ENEMY_SIZE_EASY_LEVEL - 10);
         }
         else {
-            return random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 30, ENEMY_SIZE_EASY_LEVEL - 20);
+            return num * random.nextDouble(ENEMY_SIZE_EASY_LEVEL - 30, ENEMY_SIZE_EASY_LEVEL - 20);
         }
     }
     private static ArrayList<Integer> randomArrayListIndices(int num, int listSize) {
@@ -151,7 +158,7 @@ public class RandomHelper {
         }
         return out;
     }
-    public static ArrayList<Pair<Point2D, Integer>> randomSecondWaveEnemyCentersAndType() {
+    public static ArrayList<Pair<Point2D, Integer>> randomSecondWaveEnemyCentersAndPointer(ArrayList<Class<? extends Enemy>> enemyClasses) {
         ArrayList<Rectangle2D> candidate = Utils.getCandidateRectangles();
         double tmp = 0;
         if (GameValues.level.equals(Level.EASY)) tmp = 1;
@@ -163,18 +170,13 @@ public class RandomHelper {
 
         ArrayList<Pair<Point2D, Integer>> out = new ArrayList<>();
 
-        int barricadosCnt = 0;
-        int blackOrnCnt = 0;
-
         for (Integer ptr : indices) {
             Point2D center = new Point2D.Double(random.nextDouble(candidate.get(ptr).getX(), candidate.get(ptr).getX() + candidate.get(ptr).getWidth()),
                     random.nextDouble(candidate.get(ptr).getY(), candidate.get(ptr).getY() + candidate.get(ptr).getHeight()));
 
-            int type =  randomSecondWaveEnemyType(barricadosCnt, blackOrnCnt);
-            if (type == 7) barricadosCnt++;
-            if (type == 8) blackOrnCnt++;
+            int pointer = randomSecondWaveEnemyPointer(enemyClasses);
 
-            out.add(new Pair<>(center, type));
+            out.add(new Pair<>(center, pointer));
         }
         return out;
     }

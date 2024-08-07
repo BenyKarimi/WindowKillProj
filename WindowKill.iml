@@ -19,5 +19,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="locationtech.jts.core" level="project" />
+    <orderEntry type="library" name="reflections" level="project" />
+    <orderEntry type="library" name="logback-classic-1.2.6" level="project" />
+    <orderEntry type="library" name="logback-core-1.2.6" level="project" />
   </component>
 </module>
