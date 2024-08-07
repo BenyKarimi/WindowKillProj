@@ -255,44 +255,7 @@ public class FileManager {
         loadCollectible(path + "/Collectible" + toAdd);
 
         if (checkPoint) {
-            File valueFile = new File(path + "/values" + toAdd);
-            valueFile.delete();
-
-            File epsilonFile = new File(path + "/Epsilon" + toAdd);
-            epsilonFile.delete();
-
-            File rigidFile = new File(path + "/Rigid" + toAdd);
-            rigidFile.delete();
-
-            File nonRigidFile = new File(path + "/NonRigid" + toAdd);
-            nonRigidFile.delete();
-
-            File archmireFile = new File(path + "/Archmire" + toAdd);
-            archmireFile.delete();
-
-            File barricadosFile = new File(path + "/Barricados" + toAdd);
-            barricadosFile.delete();
-
-            File blackOrbFile = new File(path + "/BlackOrb" + toAdd);
-            blackOrbFile.delete();
-
-            File necropickFile = new File(path + "/Necropick" + toAdd);
-            necropickFile.delete();
-
-            File omenoctFile = new File(path + "/Omenoct" + toAdd);
-            omenoctFile.delete();
-
-            File squarePath = new File(path + "/Square" + toAdd);
-            squarePath.delete();
-
-            File trianglePath = new File(path + "/Triangle" + toAdd);
-            trianglePath.delete();
-
-            File wyrmFile = new File(path + "/Wyrm" + toAdd);
-            wyrmFile.delete();
-
-            File collectible = new File(path + "/Collectible" + toAdd);
-            collectible.delete();
+            deleteFiles(true);
         }
     }
     public static String loadFinishGameInformation() {
@@ -617,5 +580,48 @@ public class FileManager {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static void deleteFiles(boolean checkPoint) {
+        String path = "C:\\Users\\benya\\Documents\\GitHub\\WindowKillProj\\save";
+        String toAdd = (checkPoint ? "CheckPoint.txt" : ".txt");
+
+        File valueFile = new File(path + "/values" + toAdd);
+        valueFile.delete();
+
+        File epsilonFile = new File(path + "/Epsilon" + toAdd);
+        epsilonFile.delete();
+
+        File rigidFile = new File(path + "/Rigid" + toAdd);
+        rigidFile.delete();
+
+        File nonRigidFile = new File(path + "/NonRigid" + toAdd);
+        nonRigidFile.delete();
+
+        File archmireFile = new File(path + "/Archmire" + toAdd);
+        archmireFile.delete();
+
+        File barricadosFile = new File(path + "/Barricados" + toAdd);
+        barricadosFile.delete();
+
+        File blackOrbFile = new File(path + "/BlackOrb" + toAdd);
+        blackOrbFile.delete();
+
+        File necropickFile = new File(path + "/Necropick" + toAdd);
+        necropickFile.delete();
+
+        File omenoctFile = new File(path + "/Omenoct" + toAdd);
+        omenoctFile.delete();
+
+        File squarePath = new File(path + "/Square" + toAdd);
+        squarePath.delete();
+
+        File trianglePath = new File(path + "/Triangle" + toAdd);
+        trianglePath.delete();
+
+        File wyrmFile = new File(path + "/Wyrm" + toAdd);
+        wyrmFile.delete();
+
+        File collectible = new File(path + "/Collectible" + toAdd);
+        collectible.delete();
     }
 }

@@ -191,6 +191,7 @@ public class Logic {
                 int enemyKilled = GameValues.enemyKilled;
                 String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
                 deleteAllInfo(true, false);
+                FileManager.deleteFiles(false);
                 new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
             }
         }
@@ -229,6 +230,7 @@ public class Logic {
             int enemyKilled = GameValues.enemyKilled;
             String totalTime = GlassFrame.getINSTANCE().getTimer().toString();
             deleteAllInfo(true, false);
+            FileManager.deleteFiles(false);
             new FinishPanel(finishXP, bulletFired, successfulBullet, enemyKilled, totalTime);
         }
     }
