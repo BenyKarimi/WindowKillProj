@@ -192,18 +192,18 @@ public class SquadPanel extends JPanel {
             int w = this.getWidth() / 2;
             int h = this.getHeight() / 12;
 
-            for (int i = 0; i < battleHistory.size(); i++) {
+            for (int i = 1; i < battleHistory.size(); i++) {
                 String[] parts = battleHistory.get(i).split("█");
 
                 JLabel name = new JLabel("Enemy Name: " + parts[0]);
                 name.setFont(new Font("akashi", Font.PLAIN, 25));
                 name.setForeground(SHOW_COLOR);
-                name.setBounds(25, h * (i + 1) + 40, 200, 40);
+                name.setBounds(25, h * i + 40, 400, 40);
 
                 JLabel result = new JLabel("Result: " + parts[1]);
                 result.setFont(new Font("akashi", Font.PLAIN, 25));
                 result.setForeground(SHOW_COLOR);
-                result.setBounds(w + 50, h * (i + 1) + 40, 200, 40);
+                result.setBounds(w + 50, h * i + 40, 200, 40);
 
                 this.add(name);
                 this.add(result);

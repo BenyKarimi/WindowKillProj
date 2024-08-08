@@ -12,6 +12,8 @@ public class Squad {
     private boolean adonis;
     private boolean gefjon;
     private int squadXP;
+    private int monomachiaWinCounter;
+    private int gainedXp;
     private ArrayList<String> history;
     public Squad(String name) {
         this.name = name;
@@ -21,10 +23,24 @@ public class Squad {
         adonis = false;
         gefjon = false;
         squadXP = 0;
+        gainedXp = 0;
+        monomachiaWinCounter = 0;
     }
 
     public String getName() {
         return name;
+    }
+
+    public int getGainedXp() {
+        return gainedXp;
+    }
+
+    public void setMonomachiaWinCounter(int monomachiaWinCounter) {
+        this.monomachiaWinCounter = monomachiaWinCounter;
+    }
+
+    public int getMonomachiaWinCounter() {
+        return monomachiaWinCounter;
     }
 
     public void setName(String name) {

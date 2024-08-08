@@ -40,6 +40,9 @@ public class TcpServer extends Thread {
                 if (init.equals("initiateSquadBattle")) {
                     initiateSquadBattle();
                 }
+                else if (init.equals("terminateSquadBattle")) {
+                    terminateSquadBattle();
+                }
             }
         });
         serverConsole.start();
@@ -72,6 +75,74 @@ public class TcpServer extends Thread {
             second.setEnemySquad(first);
         }
         battleAnnouncement();
+    }
+    private void handleWonAndLostBattle(Squad winner, Squad looser) {
+        int addXp = (winner.isGefjon() ? 1000 : 500);
+
+        for (int i = 0; i < winner.getMembers().size(); i++) {
+            winner.getMembers().get(i).setXp(winner.getMembers().get(i).getXp() + addXp);
+            winner.getMembers().get(i).setBattleStatus(BattleStatus.NO);
+            winner.getMembers().get(i).setXpDonation(0);
+        }
+        winner.setAdonis(false);
+        winner.setGefjon(false);
+        winner.getHistory().add(looser.getName() + "█" + "Won");
+
+        int reduceXp = 300;
+        if (looser.isPalioxis()) reduceXp = 100;
+        if (looser.isGefjon()) reduceXp *= 2;
+
+        for (int i = 0; i < looser.getMembers().size(); i++) {
+            looser.getMembers().get(i).setXp(looser.getMembers().get(i).getXp() - reduceXp);
+            looser.getMembers().get(i).setBattleStatus(BattleStatus.NO);
+            looser.getMembers().get(i).setXpDonation(0);
+        }
+        looser.setPalioxis(false);
+        looser.setAdonis(false);
+        looser.setGefjon(false);
+        looser.getHistory().add(looser.getName() + "█" + "Lost");
+    }
+    private void terminateSquadBattle() {
+        for (int i = 0; i < dataBase.getSquadsList().size(); i++) {
+            Squad first = dataBase.getSquadsList().get(i);
+            Squad second = first.getEnemySquad();
+
+            if (second == null) continue;
+
+            if (first.getGainedXp() > second.getGainedXp()) {
+                handleWonAndLostBattle(first, second);
+            }
+            else if (first.getGainedXp() < second.getGainedXp()) {
+                handleWonAndLostBattle(second, first);
+            }
+            else {
+                if (first.getMonomachiaWinCounter() > second.getMonomachiaWinCounter()) {
+                    handleWonAndLostBattle(first, second);;
+                }
+                else if (first.getMonomachiaWinCounter() < second.getMonomachiaWinCounter()) {
+                    handleWonAndLostBattle(second, first);
+                }
+                else {
+                    if (first.isGefjon() && !second.isGefjon()) {
+                        handleWonAndLostBattle(first, second);
+                    }
+                    else if (!first.isGefjon() && second.isGefjon()) {
+                        handleWonAndLostBattle(second, first);
+                    }
+                    else {
+                        if (RandomUtil.findRandomWinner() == 0) {
+                            handleWonAndLostBattle(first, second);
+                        }
+                        else {
+                            handleWonAndLostBattle(second, first);
+                        }
+                    }
+                }
+            }
+
+            second.setEnemySquad(null);
+            first.setEnemySquad(null);
+        }
     }
     private void battleAnnouncement() {
         for (int i = 0; i < dataBase.getSquadsList().size(); i++) {
@@ -124,8 +195,9 @@ public class TcpServer extends Thread {
             out.append(userSquad.getSquadXP()).append("█").append(userSquad.isPalioxis()).append("█").append(userSquad.isAdonis()).append("█").append(userSquad.isGefjon()).append("░░");
 
             out.append("╬");
-            for (String ptr : userSquad.getHistory()) {
-                out.append(ptr).append("╬");
+            for (int i = 0; i < userSquad.getHistory().size(); i++) {
+                out.append(userSquad.getHistory().get(i));
+                if (i != userSquad.getHistory().size() - 1) out.append("╬");
             }
         }
         else if (user.getSquadState().equals(SquadState.NO_SQUAD)) {

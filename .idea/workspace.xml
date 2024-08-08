@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Implementing spawn mechanism with reflection">
-      <change afterPath="$PROJECT_DIR$/src/client/clientHandler/BattleStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/models/BattleStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/util/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/util/RandomUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Implementing initiate battle&#10;Adding logic for battle in squad panel with four tabs and auto update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server_storage/information/users.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server_storage/information/users.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/clientHandler/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/clientHandler/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/clientHandler/ClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/clientHandler/ClientUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/TcpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/TcpServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/models/Squad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/models/Squad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/util/RandomUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/util/RandomUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +169,7 @@
       <workItem from="1723023478774" duration="5014000" />
       <workItem from="1723028575112" duration="2496000" />
       <workItem from="1723098807526" duration="1356000" />
-      <workItem from="1723100184204" duration="16831000" />
+      <workItem from="1723100184204" duration="21166000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -390,7 +381,14 @@
       <option name="project" value="LOCAL" />
       <updated>1723030444195</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Implementing initiate battle&#10;Adding logic for battle in squad panel with four tabs and auto update">
+      <created>1723119185190</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1723119185190</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -409,7 +407,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Finishing won game logic" />
     <MESSAGE value="Adding audios to game&#10;Adding minimize logic to game" />
     <MESSAGE value="Adding sound for collectible adding" />
     <MESSAGE value="Finishing logic for skill Tree" />
@@ -434,7 +431,8 @@
     <MESSAGE value="Adding logic for leave and delete squad and delete members for squad &#10;making client busy when start to play game and make online when come back to main menu" />
     <MESSAGE value="Adding logic for saving data at end of the game&#10;Adding logic for saving offline data when go online&#10;Adding leaderboard panel and implementing sort information by xp or total time" />
     <MESSAGE value="Implementing spawn mechanism with reflection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing spawn mechanism with reflection" />
+    <MESSAGE value="Implementing initiate battle&#10;Adding logic for battle in squad panel with four tabs and auto update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing initiate battle&#10;Adding logic for battle in squad panel with four tabs and auto update" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

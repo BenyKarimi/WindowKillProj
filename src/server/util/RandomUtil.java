@@ -25,4 +25,8 @@ public class RandomUtil {
         }
         return out;
     }
+
+    public static int findRandomWinner() {
+        return random.nextInt(0, 2);
+    }
 }
