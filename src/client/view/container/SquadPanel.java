@@ -599,7 +599,12 @@ public class SquadPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 String name = showNameInputDialog();
-                WindowKill.client.handleMakeSquad(name);
+                if (INITIAL_XP < 100) {
+                    JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "You do not have enough Xp!", "WARNING", JOptionPane.WARNING_MESSAGE);
+                }
+                else {
+                    WindowKill.client.handleMakeSquad(name, 100);
+                }
                 updateView();
                 newSquad.setFont(new Font(newSquad.getFont().getFontName(), Font.BOLD, 25));
             }

@@ -118,8 +118,8 @@ public class Client extends Thread{
         ArrayList<String> info = new ArrayList<>(Arrays.asList(parts).subList(1, parts.length));
         LeaderboardPanel.getINSTANCE().setInformation(info);
     }
-    public void handleMakeSquad(String name) {
-        tcpWriter.println("MAKE_SQUAD" + "░░" + name);
+    public void handleMakeSquad(String name, int reduceXp) {
+        tcpWriter.println("MAKE_SQUAD" + "░░" + name + "░░" + reduceXp);
     }
     public void handleBuyFromVault(String type, int minusXp) {
         tcpWriter.println("BUY_FROM_VAULT" + "░░" + type + "░░" + minusXp);

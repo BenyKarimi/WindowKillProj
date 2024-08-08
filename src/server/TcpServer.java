@@ -215,12 +215,13 @@ public class TcpServer extends Thread {
         }
         return out.toString();
     }
-    public void handleMakingSquad(String name, User leader) {
+    public void handleMakingSquad(String name, User leader, int reduceXp) {
         Squad newSquad = new Squad(name);
         newSquad.setLeader(leader);
         newSquad.getMembers().add(leader);
         leader.setSquadName(name);
         leader.setSquadState(SquadState.LEADER);
+        leader.setXp(leader.getXp() - reduceXp);
         dataBase.saveUsers();
         dataBase.addSquad(newSquad);
     }

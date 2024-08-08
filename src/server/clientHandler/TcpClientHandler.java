@@ -42,7 +42,7 @@ public class TcpClientHandler extends Thread {
 
                 if (parts[0].equals("LOGIN")) handleLogin(parts[1]);
                 else if (parts[0].equals("SQUAD_INFO")) handleSquadInfo();
-                else if (parts[0].equals("MAKE_SQUAD")) handleMakingSquad(parts[1]);
+                else if (parts[0].equals("MAKE_SQUAD")) handleMakingSquad(parts[1], Integer.parseInt(parts[2]));
                 else if (parts[0].equals("ASK_JOIN_SQUAD")) handleAskJoiningSquad(parts[1]);
                 else if (parts[0].equals("RESPONSE_JOIN_SQUAD")) handleResponseForJoiningSquad(parts[1], parts[2]);
                 else if (parts[0].equals("LEAVE_SQUAD")) handleLeaveSquad();
@@ -106,8 +106,8 @@ public class TcpClientHandler extends Thread {
         tcpServer.handleChangeUserState(user, UserState.ONLINE);
         sendQueuedMessages();
     }
-    private void handleMakingSquad(String name) {
-        tcpServer.handleMakingSquad(name, user);
+    private void handleMakingSquad(String name, int reduceXp) {
+        tcpServer.handleMakingSquad(name, user, reduceXp);
         handleSquadInfo();
     }
     private void handleAskJoiningSquad(String name) {
