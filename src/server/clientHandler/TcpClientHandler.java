@@ -52,6 +52,8 @@ public class TcpClientHandler extends Thread {
                 else if (parts[0].equals("MAKE_ONLINE")) handleMakeOnline();
                 else if (parts[0].equals("SAVE_DATA")) handleSavingData(parts[1], parts[2], parts[3]);
                 else if (parts[0].equals("LEADERBOARD_INFO")) handleLeaderboardInfo();
+                else if (parts[0].equals("SEND_XP_DONATION")) handleSendingDonation(Integer.parseInt(parts[1]));
+                else if (parts[0].equals("BUY_FROM_VAULT")) handleBuyFromVault(parts[1], Integer.parseInt(parts[2]));
             }
         } catch (IOException ignored) {}
         tcpServer.handleChangeUserState(user, UserState.OFFLINE);
@@ -65,15 +67,21 @@ public class TcpClientHandler extends Thread {
     private void handleLogin(String username) {
         user = tcpServer.handleLogin(username, this);
         sendQueuedMessages();
-        sendMessage("LOGGED_IN" + "░░" + user.getXp() + "░░" + user.getSquadState() + "░░" + user.getSquadName());
+        sendMessage("LOGGED_IN" + "░░" + user.getXp() + "░░" + user.getSquadState() + "░░" + user.getSquadName() + "░░" + user.getBattleStatus() + "░░" + user.getXpDonation());
     }
     public void handleSquadInfo() {
-        String res = "SQUAD_INFO" + "░░" + user.getSquadState() + "░░" + user.getSquadName() + "░░" + tcpServer.handleSuadInfo(user);
+        String res = "SQUAD_INFO" + "░░" + user.getSquadState() + "░░" + user.getSquadName() + "░░" + user.getBattleStatus() + "░░" + user.getXpDonation() + "░░" + user.getXp() + "░░" + tcpServer.handleSuadInfo(user);
         sendMessage(res);
+    }
+    private void handleBuyFromVault(String type, int minusXp) {
+        tcpServer.handleBuyFromVault(type, minusXp, user);
     }
     public void handleLeaderboardInfo() {
         String res = "LEADERBOARD_INFO" + "░░" + tcpServer.handleLeaderboardInfo();
         sendMessage(res);
+    }
+    private void handleSendingDonation(int xp) {
+        tcpServer.handleSendingDonation(xp, user);
     }
     private void handleLeaveSquad() {
         tcpServer.handleRemoveFromSquad(user.getUsername());
@@ -119,6 +127,9 @@ public class TcpClientHandler extends Thread {
     }
     public void sendDeletedSquad() {
         sendMessage("SQUAD_DELETED");
+    }
+    public void sendBattleAnnouncement() {
+        sendMessage("BATTLE_STARTED");
     }
 
     public void sendQueuedMessages() {

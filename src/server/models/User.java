@@ -11,8 +11,10 @@ public class User {
     private UserState userState;
     private TcpClientHandler clientHandler;
     private SquadState squadState;
+    private BattleStatus battleStatus;
     private String squadName;
     private ArrayList<String> messageQueue;
+    private int xpDonation;
 
     public User(int xp, String username, UserState userState, TcpClientHandler clientHandler) {
         this.xp = xp;
@@ -20,7 +22,17 @@ public class User {
         this.userState = userState;
         this.clientHandler = clientHandler;
         this.squadState = SquadState.NO_SQUAD;
+        this.battleStatus = BattleStatus.NO;
         this.messageQueue = new ArrayList<>();
+        this.xpDonation = 0;
+    }
+
+    public int getXpDonation() {
+        return xpDonation;
+    }
+
+    public void setXpDonation(int xpDonation) {
+        this.xpDonation = xpDonation;
     }
 
     public int getXp() {
@@ -45,6 +57,14 @@ public class User {
 
     public void setUserState(UserState userState) {
         this.userState = userState;
+    }
+
+    public BattleStatus getBattleStatus() {
+        return battleStatus;
+    }
+
+    public void setBattleStatus(BattleStatus battleStatus) {
+        this.battleStatus = battleStatus;
     }
 
     public ArrayList<String> getMessageQueue() {

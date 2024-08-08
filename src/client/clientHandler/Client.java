@@ -1,12 +1,10 @@
 package client.clientHandler;
 
-import client.clientHandler.ClientState;
 import client.controller.constant.Constants;
 import client.controller.saveAndLoad.FileManager;
 import client.view.container.GlassFrame;
 import client.view.container.LeaderboardPanel;
 import client.view.container.SquadPanel;
-import server.models.SquadState;
 
 import javax.swing.*;
 import java.io.BufferedReader;
@@ -17,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static client.clientHandler.ClientUtil.getBattleStateWithString;
 import static client.clientHandler.ClientUtil.getStateWithString;
 
 public class Client extends Thread{
@@ -29,7 +28,11 @@ public class Client extends Thread{
     private ClientState clientState;
     private SquadState squadState;
     private String squadName;
+    private String vaultInfo;
+    private BattleStatus battleStatus;
     private ArrayList<String> squadMembers;
+    private ArrayList<String> enemySquadMember;
+    private int xpDonation;
 
     public Client(String username, ClientState clientState) {
         this.username = username;
@@ -37,7 +40,9 @@ public class Client extends Thread{
         this.TCP_PORT = Constants.TCP_PORT;
         this.clientState = clientState;
         this.squadState = SquadState.NO_SQUAD;
+        battleStatus = BattleStatus.NO;
         squadMembers = new ArrayList<>();
+        enemySquadMember = new ArrayList<>();
     }
 
     public boolean canMakeConnection() {
@@ -74,10 +79,12 @@ public class Client extends Thread{
             handleSavingData(Integer.parseInt(parts[0]), parts[1]);
         }
     }
-    private void handleLoggedIn(int xp, String squadType, String squadName) {
+    private void handleLoggedIn(int xp, String squadType, String squadName, String battleType, int donation) {
         Constants.INITIAL_XP = xp;
         squadState = getStateWithString(squadType);
         this.squadName = squadName;
+        battleStatus = getBattleStateWithString(battleType);
+        xpDonation = donation;
     }
     public void handleSquadRequest() {
         tcpWriter.println("SQUAD_INFO");
@@ -88,13 +95,23 @@ public class Client extends Thread{
     private void handleSquadResponse(String[] parts) {
         squadState = getStateWithString(parts[1]);
         squadName = parts[2];
+        battleStatus = getBattleStateWithString(parts[3]);
+        xpDonation = Integer.parseInt(parts[4]);
+        Constants.INITIAL_XP = Integer.parseInt(parts[5]);
 
-        if (squadState.equals(SquadState.NO_SQUAD)) {
-            ArrayList<String> squads = new ArrayList<>(Arrays.asList(parts).subList(3, parts.length));
+        if (battleStatus.equals(BattleStatus.YES)) {
+            squadMembers = new ArrayList<>(Arrays.asList(parts[6].split("╬")));
+            enemySquadMember = new ArrayList<>(Arrays.asList(parts[7].split("╬")));
+            vaultInfo = parts[8];
+            ArrayList<String> history = new ArrayList<>(Arrays.asList(parts[9].split("╬")));
+            SquadPanel.getINSTANCE().setBattleHistory(history);
+        }
+        else if (squadState.equals(SquadState.NO_SQUAD)) {
+            ArrayList<String> squads = new ArrayList<>(Arrays.asList(parts).subList(6, parts.length));
             SquadPanel.getINSTANCE().setSquads(squads);
         }
         else {
-            squadMembers = new ArrayList<>(Arrays.asList(parts).subList(3, parts.length));
+            squadMembers = new ArrayList<>(Arrays.asList(parts).subList(6, parts.length));
         }
     }
     private void handleLeaderboardResponse(String[] parts) {
@@ -103,6 +120,9 @@ public class Client extends Thread{
     }
     public void handleMakeSquad(String name) {
         tcpWriter.println("MAKE_SQUAD" + "░░" + name);
+    }
+    public void handleBuyFromVault(String type, int minusXp) {
+        tcpWriter.println("BUY_FROM_VAULT" + "░░" + type + "░░" + minusXp);
     }
     public void handleJoinToSquad(String name) {
         tcpWriter.println("ASK_JOIN_SQUAD" + "░░" + name);
@@ -122,6 +142,9 @@ public class Client extends Thread{
     private void handleDeletedSquad() {
         JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "Your squad have been deleted by leader", "Squad Deleted", JOptionPane.INFORMATION_MESSAGE);
     }
+    private void handleBattleAnnouncement() {
+        JOptionPane.showMessageDialog(GlassFrame.getINSTANCE(), "Battle has started", "Battle Announcement", JOptionPane.INFORMATION_MESSAGE);
+    }
     public void handleLeaveSquad() {
         tcpWriter.println("LEAVE_SQUAD");
     }
@@ -137,6 +160,9 @@ public class Client extends Thread{
     public void makeClientOnline() {
         tcpWriter.println("MAKE_ONLINE");
     }
+    public void handleSendXPDonation(int xp) {
+        tcpWriter.println("SEND_XP_DONATION" + "░░" + xp);
+    }
     public void handleSavingData(int XP, String time) {
         String data = XP + "," + time;
         String hash = HashUtil.generateHash(data);
@@ -150,13 +176,14 @@ public class Client extends Thread{
             while ((request = tcpReader.readLine()) != null) {
                 String[] parts = request.split("░░");
 
-                if (parts[0].equals("LOGGED_IN")) handleLoggedIn(Integer.parseInt(parts[1]), parts[2], parts[3]);
+                if (parts[0].equals("LOGGED_IN")) handleLoggedIn(Integer.parseInt(parts[1]), parts[2], parts[3], parts[4], Integer.parseInt(parts[5]));
                 else if (parts[0].equals("SQUAD_INFO")) handleSquadResponse(parts);
                 else if (parts[0].equals("DO_YOU_ACCEPT_JOINING")) handleRequestForJoiningSquad(parts[1]);
                 else if (parts[0].equals("REJECT_JOIN_SQUAD")) handleRejectJoiningSquad();
                 else if (parts[0].equals("REMOVED_FROM_SQUAD")) handleRemovedFromSquad();
                 else if (parts[0].equals("SQUAD_DELETED")) handleDeletedSquad();
                 else if (parts[0].equals("LEADERBOARD_INFO")) handleLeaderboardResponse(parts);
+                else if (parts[0].equals("BATTLE_STARTED")) handleBattleAnnouncement();
             }
         } catch (IOException ignored) {}
         clientState = ClientState.OFFLINE;
@@ -171,6 +198,18 @@ public class Client extends Thread{
         return clientState;
     }
 
+    public ArrayList<String> getEnemySquadMember() {
+        return enemySquadMember;
+    }
+
+    public String getVaultInfo() {
+        return vaultInfo;
+    }
+
+    public int getXpDonation() {
+        return xpDonation;
+    }
+
     public SquadState getSquadState() {
         return squadState;
     }
@@ -181,5 +220,9 @@ public class Client extends Thread{
 
     public String getSquadName() {
         return squadName;
+    }
+
+    public BattleStatus getBattleStatus() {
+        return battleStatus;
     }
 }

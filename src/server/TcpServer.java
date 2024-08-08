@@ -3,30 +3,46 @@ package server;
 import server.clientHandler.TcpClientHandler;
 import server.fileManager.DataBase;
 import server.fileManager.FileManager;
-import server.models.Squad;
-import server.models.SquadState;
-import server.models.User;
-import server.models.UserState;
+import server.models.*;
+import server.util.Pair;
+import server.util.RandomUtil;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static client.controller.constant.Constants.TCP_PORT;
 
 public class TcpServer extends Thread {
     private DataBase dataBase;
     private ServerSocket tcpSocket;
+    private Thread serverConsole;
+    private Scanner consoleScanner;
 
     public TcpServer() {
         this.dataBase = new DataBase();
+        consoleScanner = new Scanner(System.in);
+        initiateConsoleThread();
 
         try {
             tcpSocket = new ServerSocket(TCP_PORT);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void initiateConsoleThread() {
+        serverConsole = new Thread(() -> {
+            while (true) {
+                String init = consoleScanner.next();
+                if (init.equals("initiateSquadBattle")) {
+                    initiateSquadBattle();
+                }
+            }
+        });
+        serverConsole.start();
     }
 
     @Override
@@ -45,6 +61,33 @@ public class TcpServer extends Thread {
         }
     }
 
+    private void initiateSquadBattle() {
+        ArrayList<Pair<Integer, Integer>> pointers = RandomUtil.randomSquadInitiation(dataBase.getSquadsList());
+
+        for (Pair<Integer, Integer> ptr : pointers) {
+            Squad first = dataBase.getSquadsList().get(ptr.getFirst());
+            Squad second = dataBase.getSquadsList().get(ptr.getSecond());
+
+            first.setEnemySquad(second);
+            second.setEnemySquad(first);
+        }
+        battleAnnouncement();
+    }
+    private void battleAnnouncement() {
+        for (int i = 0; i < dataBase.getSquadsList().size(); i++) {
+            Squad tmp = dataBase.getSquadsList().get(i);
+
+            if (tmp.getEnemySquad() != null) {
+                for (int j = 0; j < tmp.getMembers().size(); j++) {
+                    User tmpUser = tmp.getMembers().get(j);
+                    tmpUser.setBattleStatus(BattleStatus.YES);
+                    tmpUser.setXpDonation(0);
+                    tmpUser.getClientHandler().sendBattleAnnouncement();
+                }
+            }
+        }
+        dataBase.saveUsers();
+    }
     public User handleLogin(String username, TcpClientHandler clientHandler) {
         User out = dataBase.getUser(username);
         if (out != null) {
@@ -54,7 +97,7 @@ public class TcpServer extends Thread {
             return out;
         }
         else {
-            User toAdd = new User(0, username, UserState.ONLINE, clientHandler);
+            User toAdd = new User(1000, username, UserState.ONLINE, clientHandler);
             dataBase.addUser(toAdd);
             dataBase.saveUsers();
             return toAdd;
@@ -62,7 +105,30 @@ public class TcpServer extends Thread {
     }
     public String handleSuadInfo(User user) {
         StringBuilder out = new StringBuilder();
-        if (user.getSquadState().equals(SquadState.NO_SQUAD)) {
+        if (user.getBattleStatus().equals(BattleStatus.YES)) {
+
+            Squad userSquad = dataBase.getSquad(user.getSquadName());
+            ArrayList<User> mem = userSquad.getMembers();
+            for (int i = 0; i < mem.size(); i++) {
+                out.append(mem.get(i).getUsername()).append("█").append(mem.get(i).getXp()).append("█").append(mem.get(i).getUserState()).append("╬");
+            }
+            out.append("░░");
+
+            Squad enemySquad = userSquad.getEnemySquad();
+            ArrayList<User> enemyMem = enemySquad.getMembers();
+            for (int i = 0; i < enemyMem.size(); i++) {
+                out.append(enemyMem.get(i).getUsername()).append("█").append(enemyMem.get(i).getXp()).append("█").append(enemyMem.get(i).getUserState()).append("╬");
+            }
+            out.append("░░");
+
+            out.append(userSquad.getSquadXP()).append("█").append(userSquad.isPalioxis()).append("█").append(userSquad.isAdonis()).append("█").append(userSquad.isGefjon()).append("░░");
+
+            out.append("╬");
+            for (String ptr : userSquad.getHistory()) {
+                out.append(ptr).append("╬");
+            }
+        }
+        else if (user.getSquadState().equals(SquadState.NO_SQUAD)) {
             ArrayList<Squad> squads = dataBase.getSquadsList();
             for (int i = 0; i < squads.size(); i++) {
                 out.append(squads.get(i).getName()).append("█").append(squads.get(i).getMembers().size()).append("░░");
@@ -162,5 +228,20 @@ public class TcpServer extends Thread {
         }
 
         return out.toString();
+    }
+    public void handleSendingDonation(int xp, User user) {
+        Squad squad = dataBase.getSquad(user.getSquadName());
+        squad.setSquadXP(squad.getSquadXP() + xp);
+        user.setXpDonation(user.getXpDonation() + xp);
+        user.setXp(user.getXp() - xp);
+        dataBase.saveUsers();
+    }
+    public void handleBuyFromVault(String type, int minusXp, User user) {
+        Squad squad = dataBase.getSquad(user.getSquadName());
+
+        squad.setSquadXP(squad.getSquadXP() - minusXp);
+        if (type.equals("PALIOXIS")) squad.setPalioxis(true);
+        else if (type.equals("ADONIS")) squad.setAdonis(true);
+        else if (type.equals("GEFJON")) squad.setGefjon(true);
     }
 }

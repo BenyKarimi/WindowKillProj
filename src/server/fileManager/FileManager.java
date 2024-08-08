@@ -12,7 +12,7 @@ public class FileManager {
 
         try (FileWriter writer = new FileWriter(usersFile, false)) {
             for (User ptr : users) {
-                writer.write(ptr.getUsername() + "░░" + ptr.getXp() + "░░" + ptr.getUserState() + "░░" + ptr.getSquadState() + "░░" + ptr.getSquadName() + "\n");
+                writer.write(ptr.getUsername() + "░░" + ptr.getXp() + "░░" + ptr.getUserState() + "░░" + ptr.getSquadState() + "░░" + ptr.getSquadName() + "░░" + ptr.getBattleStatus() + "░░" + ptr.getXpDonation() + "\n");
             }
         }
         catch (IOException e) {

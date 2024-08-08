@@ -7,10 +7,20 @@ public class Squad {
     private String name;
     private User leader;
     private ArrayList<User> members;
-
+    private Squad enemySquad;
+    private boolean palioxis;
+    private boolean adonis;
+    private boolean gefjon;
+    private int squadXP;
+    private ArrayList<String> history;
     public Squad(String name) {
         this.name = name;
         members = new ArrayList<>();
+        history = new ArrayList<>();
+        palioxis = false;
+        adonis = false;
+        gefjon = false;
+        squadXP = 0;
     }
 
     public String getName() {
@@ -31,6 +41,50 @@ public class Squad {
 
     public ArrayList<User> getMembers() {
         return members;
+    }
+
+    public Squad getEnemySquad() {
+        return enemySquad;
+    }
+
+    public ArrayList<String> getHistory() {
+        return history;
+    }
+
+    public void setEnemySquad(Squad enemySquad) {
+        this.enemySquad = enemySquad;
+    }
+
+    public boolean isPalioxis() {
+        return palioxis;
+    }
+
+    public void setPalioxis(boolean palioxis) {
+        this.palioxis = palioxis;
+    }
+
+    public boolean isAdonis() {
+        return adonis;
+    }
+
+    public void setAdonis(boolean adonis) {
+        this.adonis = adonis;
+    }
+
+    public boolean isGefjon() {
+        return gefjon;
+    }
+
+    public void setGefjon(boolean gefjon) {
+        this.gefjon = gefjon;
+    }
+
+    public int getSquadXP() {
+        return squadXP;
+    }
+
+    public void setSquadXP(int squadXP) {
+        this.squadXP = squadXP;
     }
 
     @Override
