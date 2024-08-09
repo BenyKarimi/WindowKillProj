@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Implementing terminating battle logic">
+    <list default="true" id="178ea179-1b24-4a79-93aa-beda8c852582" name="Changes" comment="Minor Bug Fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server_storage/information/users.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server_storage/information/users.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/clientHandler/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/clientHandler/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/view/container/SquadPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/TcpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/TcpServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/clientHandler/TcpClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/fileManager/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/fileManager/DataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/fileManager/FileManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,25 +44,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/benya/Desktop/tmp",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/benya/Desktop/tmp&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\benya\Documents\GitHub\WindowKillProj\resources" />
@@ -169,7 +168,8 @@
       <workItem from="1723023478774" duration="5014000" />
       <workItem from="1723028575112" duration="2496000" />
       <workItem from="1723098807526" duration="1356000" />
-      <workItem from="1723100184204" duration="23721000" />
+      <workItem from="1723100184204" duration="23762000" />
+      <workItem from="1723191234078" duration="1216000" />
     </task>
     <task id="LOCAL-00001" summary="Finish model update except game over and bullet collision to panel&#10;Adding collectibles and impact and movement &#10;Adding wave randomly according to level and wave number">
       <created>1713729996536</created>
@@ -395,7 +395,14 @@
       <option name="project" value="LOCAL" />
       <updated>1723125029930</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Minor Bug Fixes">
+      <created>1723127665203</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1723127665203</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -414,7 +421,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Adding sound for collectible adding" />
     <MESSAGE value="Finishing logic for skill Tree" />
     <MESSAGE value="Adding Skill tree Panel to main menu panel" />
     <MESSAGE value="Deleted Deprecated Files and Minor Bug Fixes" />
@@ -439,7 +445,8 @@
     <MESSAGE value="Implementing spawn mechanism with reflection" />
     <MESSAGE value="Implementing initiate battle&#10;Adding logic for battle in squad panel with four tabs and auto update" />
     <MESSAGE value="Implementing terminating battle logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing terminating battle logic" />
+    <MESSAGE value="Minor Bug Fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor Bug Fixes" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/WindowKill$WindowKill.ic" NAME="WindowKill Coverage Results" MODIFIED="1713879855777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

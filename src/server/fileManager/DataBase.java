@@ -43,6 +43,9 @@ public class DataBase {
     public void saveUsers() {
         FileManager.saveUsersInFile(usersList);
     }
+    public void saveSquads() {
+        FileManager.saveSquadsInFile(squadsList);
+    }
     public ArrayList<Squad> getSquadsList() {
         return squadsList;
     }

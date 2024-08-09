@@ -47,7 +47,7 @@ public class TcpClientHandler extends Thread {
                 else if (parts[0].equals("RESPONSE_JOIN_SQUAD")) handleResponseForJoiningSquad(parts[1], parts[2]);
                 else if (parts[0].equals("LEAVE_SQUAD")) handleLeaveSquad();
                 else if (parts[0].equals("REMOVE_FROM_SQUAD")) handleRemoveFromSquad(parts[1]);
-                else if (parts[0].equals("DELETE_SQUAD")) handleRemoveSquad();
+                else if (parts[0].equals("DELETE_SQUAD")) handleDeleteSquad();
                 else if (parts[0].equals("MAKE_BUSY")) handleMakeBusy();
                 else if (parts[0].equals("MAKE_ONLINE")) handleMakeOnline();
                 else if (parts[0].equals("SAVE_DATA")) handleSavingData(parts[1], parts[2], parts[3]);
@@ -96,8 +96,8 @@ public class TcpClientHandler extends Thread {
         tcpServer.sendRemovedFromSquad(username);
         tcpServer.handleRemoveFromSquad(username);
     }
-    private void handleRemoveSquad() {
-        tcpServer.handleRemoveSquad(user.getSquadName());
+    private void handleDeleteSquad() {
+        tcpServer.handleDeleteSquad(user.getSquadName());
     }
     private void handleMakeBusy() {
         tcpServer.handleChangeUserState(user, UserState.BUSY);

@@ -74,6 +74,7 @@ public class TcpServer extends Thread {
             first.setEnemySquad(second);
             second.setEnemySquad(first);
         }
+        dataBase.saveSquads();
         battleAnnouncement();
     }
     private void handleWonAndLostBattle(Squad winner, Squad looser) {
@@ -101,6 +102,8 @@ public class TcpServer extends Thread {
         looser.setAdonis(false);
         looser.setGefjon(false);
         looser.getHistory().add(looser.getName() + "█" + "Lost");
+
+        dataBase.saveSquads();
     }
     private void terminateSquadBattle() {
         for (int i = 0; i < dataBase.getSquadsList().size(); i++) {
@@ -143,6 +146,8 @@ public class TcpServer extends Thread {
             second.setEnemySquad(null);
             first.setEnemySquad(null);
         }
+
+        dataBase.saveSquads();
     }
     private void battleAnnouncement() {
         for (int i = 0; i < dataBase.getSquadsList().size(); i++) {
@@ -224,6 +229,7 @@ public class TcpServer extends Thread {
         leader.setXp(leader.getXp() - reduceXp);
         dataBase.saveUsers();
         dataBase.addSquad(newSquad);
+        dataBase.saveSquads();
     }
     public void handleAskJoiningSquad(String name, User applicator) {
         Squad dest = dataBase.getSquad(name);
@@ -239,6 +245,7 @@ public class TcpServer extends Thread {
             applicator.setSquadName(squadName);
             destSquad.getMembers().add(applicator);
             dataBase.saveUsers();
+            dataBase.saveSquads();
             applicator.getClientHandler().handleSquadInfo();
         }
         else {
@@ -259,6 +266,7 @@ public class TcpServer extends Thread {
         user.setSquadName(null);
         user.setSquadState(SquadState.NO_SQUAD);
         dataBase.saveUsers();
+        dataBase.saveSquads();
         user.getClientHandler().handleSquadInfo();
     }
     public void sendRemovedFromSquad(String username) {
@@ -266,7 +274,7 @@ public class TcpServer extends Thread {
 
         user.getClientHandler().sendRemovedFromSquad();
     }
-    public void handleRemoveSquad(String squadName) {
+    public void handleDeleteSquad(String squadName) {
         Squad squad = dataBase.getSquad(squadName);
 
         for (int i = 0; i < squad.getMembers().size(); i++) {
@@ -280,6 +288,7 @@ public class TcpServer extends Thread {
         }
 
         dataBase.deleteSquad(squad);
+        dataBase.saveSquads();
     }
     public void handleChangeUserState(User user, UserState state) {
         user.setUserState(state);
@@ -308,6 +317,7 @@ public class TcpServer extends Thread {
         user.setXpDonation(user.getXpDonation() + xp);
         user.setXp(user.getXp() - xp);
         dataBase.saveUsers();
+        dataBase.saveSquads();
     }
     public void handleBuyFromVault(String type, int minusXp, User user) {
         Squad squad = dataBase.getSquad(user.getSquadName());
@@ -316,5 +326,7 @@ public class TcpServer extends Thread {
         if (type.equals("PALIOXIS")) squad.setPalioxis(true);
         else if (type.equals("ADONIS")) squad.setAdonis(true);
         else if (type.equals("GEFJON")) squad.setGefjon(true);
+
+        dataBase.saveSquads();
     }
 }
